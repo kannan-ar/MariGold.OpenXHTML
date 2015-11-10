@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 5.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MariGold.OpenXHTML", "MariGold.OpenXHTML.csproj", "{9FB6A08A-4053-40B9-A7EA-86F7A12CC339}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MariGold.OpenXHTML.Tests", "..\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.csproj", "{2FBA45DA-697E-4458-B5B6-D91A863675CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FB6A08A-4053-40B9-A7EA-86F7A12CC339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB6A08A-4053-40B9-A7EA-86F7A12CC339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB6A08A-4053-40B9-A7EA-86F7A12CC339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB6A08A-4053-40B9-A7EA-86F7A12CC339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FBA45DA-697E-4458-B5B6-D91A863675CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FBA45DA-697E-4458-B5B6-D91A863675CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FBA45DA-697E-4458-B5B6-D91A863675CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FBA45DA-697E-4458-B5B6-D91A863675CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
