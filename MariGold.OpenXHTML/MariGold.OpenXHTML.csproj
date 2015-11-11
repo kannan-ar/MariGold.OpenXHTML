@@ -37,6 +37,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HtmlElement.cs" />
+    <Compile Include="HtmlParser.cs" />
     <Compile Include="IHtmlElement.cs" />
     <Compile Include="IHtmlParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
