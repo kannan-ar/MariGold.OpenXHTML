@@ -2,8 +2,11 @@
 {
 	using System;
 	
+	/// <summary>
+	/// 
+	/// </summary>
 	public interface IHtmlParser
 	{
-		
+		IHtmlElement FindBodyOrFirstElement();
 	}
 }
