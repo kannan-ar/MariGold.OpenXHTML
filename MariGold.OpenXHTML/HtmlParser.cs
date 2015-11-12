@@ -1,13 +1,14 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
+	using MariGold.HtmlParser;
 	
 	/// <summary>
 	/// 
 	/// </summary>
-	public class HtmlParser : IHtmlParser
+	public class HtmlParser : IParser
 	{
-		public IHtmlElement FindBodyOrFirstElement()
+		public HtmlNode FindBodyOrFirstElement()
 		{
 			throw new NotImplementedException();
 		}
