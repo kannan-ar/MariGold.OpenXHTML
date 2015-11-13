@@ -50,9 +50,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\DocxDiv.cs" />
     <Compile Include="HtmlParser.cs" />
     <Compile Include="IParser.cs" />
+    <Compile Include="IWordContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordContext.cs" />
     <Compile Include="WordDocument.cs" />
     <Compile Include="WordElement.cs" />
   </ItemGroup>

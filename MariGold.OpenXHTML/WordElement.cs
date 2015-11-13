@@ -5,6 +5,20 @@
 	
 	internal abstract class WordElement
 	{
-		internal abstract void Process(HtmlNode element);
+		private readonly IWordContext context;
+		
+		
+		internal WordElement(IWordContext context)
+		{
+			if (context == null)
+			{
+				throw new ArgumentNullException("context");
+			}
+			
+			this.context = context;
+		}
+		
+		internal abstract bool CanConvert(HtmlNode node);
+		internal abstract void Process(HtmlNode node);
 	}
 }

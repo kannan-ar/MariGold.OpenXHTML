@@ -5,38 +5,20 @@
 	using DocumentFormat.OpenXml.Packaging;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using System.IO;
+	using MariGold.HtmlParser;
 	
 	/// <summary>
 	/// 
 	/// </summary>
 	public sealed class WordDocument
 	{
-		private WordprocessingDocument document;
-		private MainDocumentPart mainPart;
-		
-		private void PrepareWordDocument(WordprocessingDocument document)
-		{
-			this.document = document;
-			mainPart = this.document.AddMainDocumentPart();
-			mainPart.Document = new Document();
-		}
-		
-		private void Clear()
-		{
-			document = null;
-			mainPart = null;
-		}
+		private readonly IWordContext context;
 		
 		public WordprocessingDocument WordprocessingDocument
 		{
 			get
 			{
-				if (document == null)
-				{
-					throw new InvalidOperationException("Document is not opened!");
-				}
-				
-				return document;
+				return context.WordprocessingDocument;
 			}
 		}
 		
@@ -44,12 +26,7 @@
 		{
 			get
 			{
-				if (mainPart == null)
-				{
-					throw new InvalidOperationException("Document is not opened!");
-				}
-				
-				return mainPart;
+				return context.MainDocumentPart;
 			}
 		}
 		
@@ -57,31 +34,55 @@
 		{
 			get
 			{
-				return MainDocumentPart.Document;
+				return context.Document;
 			}
 		}
 		
 		public WordDocument(string fileName)
 		{
-			PrepareWordDocument(WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document));
+			if (string.IsNullOrEmpty(fileName))
+			{
+				throw new ArgumentNullException("fileName");
+			}
+			
+			context = new WordContext(WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document));
 		}
 		
 		public WordDocument(MemoryStream stream)
 		{
-			PrepareWordDocument(WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document));
+			if (stream == null)
+			{
+				throw new ArgumentNullException("stream");
+			}
+			
+			context = new WordContext(WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document));
 		}
 		
 		public void Process(IParser parser)
 		{
-			throw new NotImplementedException();
+			if (parser == null)
+			{
+				throw new ArgumentNullException("parser");
+			}
+		
+			HtmlNode node = parser.FindBodyOrFirstElement();
+			
+			while (node != null)
+			{
+				WordElement element = context.Convert(node);
+				
+				if (element != null)
+				{
+					element.Process(node);
+				}
+				
+				node = node.Next;
+			}
 		}
 		
 		public void Save()
 		{
-			document.Close();
-			document.Dispose();
-			
-			Clear();
+			context.Clear();
 		}
 	}
 }
