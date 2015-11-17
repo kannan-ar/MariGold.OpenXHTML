@@ -6,7 +6,7 @@
 	/// <summary>
 	/// 
 	/// </summary>
-	public class HtmlParser : IParser
+	public sealed class HtmlParser : IParser
 	{
 		private readonly string html;
 		
@@ -53,7 +53,8 @@
 				{
 					break;
 				}
-				else if (node.Next != null)
+				else
+				if (node.Next != null)
 				{
 					node = node.Next;
 				}

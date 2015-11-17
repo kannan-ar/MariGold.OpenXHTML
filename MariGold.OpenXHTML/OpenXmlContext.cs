@@ -6,7 +6,7 @@
 	using System.Collections.Generic;
 	using MariGold.HtmlParser;
 	
-	internal sealed class WordContext : IWordContext
+	internal sealed class OpenXmlContext : IOpenXmlContext
 	{
 		private WordprocessingDocument document;
 		private MainDocumentPart mainPart;
@@ -14,13 +14,13 @@
 		
 		private void PrepareWordElements()
 		{
-			elements = new List<WordElement>()
+			elements = new List<WordElement>() 
 			{
 				new DocxDiv(this)
 			};
 		}
 		
-		internal WordContext(WordprocessingDocument document)
+		internal OpenXmlContext(WordprocessingDocument document)
 		{
 			this.document = document;
 			mainPart = this.document.AddMainDocumentPart();
@@ -74,15 +74,20 @@
 		
 		public WordElement Convert(HtmlNode node)
 		{
-			foreach (WordElement element in elements) 
+			foreach (WordElement element in elements)
 			{
-				if(element.CanConvert(node))
+				if (element.CanConvert(node))
 				{
 					return element;
 				}
 			}
 			
 			return null;
+		}
+		
+		public WordElement GetBodyElement()
+		{
+			return new DocxBody(this);
 		}
 	}
 }

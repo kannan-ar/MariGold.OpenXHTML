@@ -12,7 +12,7 @@
 	/// </summary>
 	public sealed class WordDocument
 	{
-		private readonly IWordContext context;
+		private readonly IOpenXmlContext context;
 		
 		public WordprocessingDocument WordprocessingDocument
 		{
@@ -45,7 +45,7 @@
 				throw new ArgumentNullException("fileName");
 			}
 			
-			context = new WordContext(WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document));
+			context = new OpenXmlContext(WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document));
 		}
 		
 		public WordDocument(MemoryStream stream)
@@ -55,7 +55,7 @@
 				throw new ArgumentNullException("stream");
 			}
 			
-			context = new WordContext(WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document));
+			context = new OpenXmlContext(WordprocessingDocument.Create(stream, WordprocessingDocumentType.Document));
 		}
 		
 		public void Process(IParser parser)
@@ -67,16 +67,11 @@
 		
 			HtmlNode node = parser.FindBodyOrFirstElement();
 			
-			while (node != null)
+			if (node != null)
 			{
-				WordElement element = context.Convert(node);
+				WordElement body = context.GetBodyElement();
 				
-				if (element != null)
-				{
-					element.Process(node);
-				}
-				
-				node = node.Next;
+				body.Process(node, null);
 			}
 		}
 		
