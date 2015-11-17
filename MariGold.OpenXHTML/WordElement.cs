@@ -3,6 +3,7 @@
 	using System;
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml;
+	using DocumentFormat.OpenXml.Wordprocessing;
 	
 	internal abstract class WordElement
 	{
@@ -14,6 +15,11 @@
 					
 			if (element != null)
 			{
+				if(element.IsBlockLine)
+				{
+					parent.AppendChild(new Break());
+				}
+				
 				element.Process(node, parent);
 			}
 		}

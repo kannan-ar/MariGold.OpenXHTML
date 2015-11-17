@@ -7,18 +7,45 @@
 	
 	internal sealed class DocxTable : WordElement
 	{
-		private void ProcessTd(HtmlNode td)
+		private void ProcessTd(HtmlNode td, TableRow row)
 		{
 			if (td.HasChildren)
 			{
-				foreach (HtmlNode child in td.Children) 
+				TableCell cell = new TableCell();
+				Run run = null;
+				
+				foreach (HtmlNode child in td.Children)
 				{
-					
+					if (child.IsText)
+					{
+						if (run == null)
+						{
+							run = new Run();
+						}
+						
+						run.AppendChild(new Text(child.InnerHtml));
+					}
+					else
+					{
+						if (run != null)
+						{
+							cell.Append(run);
+						}
+						
+						ProcessChild(child, cell);
+					}
 				}
+				
+				if (run != null)
+				{
+					cell.Append(run);
+				}
+				
+				row.Append(cell);
 			}
 		}
 		
-		private void ProcessTr(HtmlNode tr)
+		private void ProcessTr(HtmlNode tr, Table table)
 		{
 			if (tr.HasChildren)
 			{
@@ -28,10 +55,11 @@
 				{
 					if (string.Compare(td.Tag, "td", true) == 0)
 					{
-						ProcessTd(td);
+						ProcessTd(td, row);
 					}
 				}
 				
+				table.Append(row);
 			}
 		}
 		
@@ -60,15 +88,15 @@
 				return;
 			}
 			
-			Table table = parent.AppendChild(new Table());
-			
 			if (node.HasChildren)
 			{
+				Table table = parent.AppendChild(new Table());
+				
 				foreach (HtmlNode tr in node.Children)
 				{
 					if (string.Compare(tr.Tag, "tr", true) == 0)
 					{
-						ProcessTr(tr);
+						ProcessTr(tr, table);
 					}
 				}
 			}

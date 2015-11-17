@@ -34,7 +34,7 @@
 				
 				foreach (HtmlNode child in node.Children)
 				{
-					if (child.Tag == "#text")
+					if (child.IsText)
 					{
 						if (run == null)
 						{

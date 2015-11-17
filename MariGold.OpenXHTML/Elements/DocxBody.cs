@@ -15,13 +15,14 @@
 			
 			while (node != null)
 			{
-				if (node.Tag == "#text")
+				if (node.IsText)
 				{
-					if (paragraph == null && run == null)
+					if (run == null)
 					{
 						run = body.AppendChild(new Run());
 					}
 					
+					run.AppendChild(new Text(node.InnerHtml));
 				}
 				else
 				{

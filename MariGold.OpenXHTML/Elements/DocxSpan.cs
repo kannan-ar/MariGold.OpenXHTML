@@ -22,12 +22,32 @@
 		
 		internal override bool CanConvert(HtmlNode node)
 		{
-			throw new NotImplementedException();
+			return string.Compare(node.Tag, "span", true) == 0;
 		}
 		
 		internal override void Process(HtmlNode node, OpenXmlElement parent)
 		{
-			throw new NotImplementedException();
+			if (node != null && parent != null)
+			{
+				Run run = null;
+				
+				foreach (HtmlNode child in node.Children) 
+				{
+					if (child.IsText)
+					{
+						if (run == null)
+						{
+							run = parent.AppendChild(new Run());
+						}
+						
+						run.AppendChild(new Text(node.InnerHtml));
+					}
+					else
+					{
+						ProcessChild(child, run);
+					}
+				}
+			}
 		}
 	}
 }
