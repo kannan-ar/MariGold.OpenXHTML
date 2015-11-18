@@ -15,11 +15,6 @@
 					
 			if (element != null)
 			{
-				if(element.IsBlockLine)
-				{
-					parent.AppendChild(new Break());
-				}
-				
 				element.Process(node, parent);
 			}
 		}
@@ -33,8 +28,6 @@
 			
 			this.context = context;
 		}
-		
-		internal abstract bool IsBlockLine{ get; }
 		
 		internal abstract bool CanConvert(HtmlNode node);
 		internal abstract void Process(HtmlNode node, OpenXmlElement parent);

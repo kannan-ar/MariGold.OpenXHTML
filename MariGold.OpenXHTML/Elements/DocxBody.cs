@@ -19,7 +19,7 @@
 				{
 					if (run == null)
 					{
-						run = body.AppendChild(new Run());
+						run = body.AppendChild(new Paragraph()).AppendChild(new Run());
 					}
 					
 					run.AppendChild(new Text(node.InnerHtml));
@@ -39,14 +39,6 @@
 		public DocxBody(IOpenXmlContext context)
 			: base(context)
 		{
-		}
-		
-		internal override bool IsBlockLine
-		{
-			get
-			{
-				return true;
-			}
 		}
 		
 		internal override bool CanConvert(HtmlNode node)

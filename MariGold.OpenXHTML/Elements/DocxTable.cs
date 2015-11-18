@@ -68,14 +68,6 @@
 		{
 		}
 		
-		internal override bool IsBlockLine
-		{
-			get
-			{
-				return true;
-			}
-		}
-		
 		internal override bool CanConvert(HtmlNode node)
 		{
 			return string.Compare(node.Tag, "table", true) == 0;

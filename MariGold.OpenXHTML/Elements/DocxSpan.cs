@@ -12,14 +12,6 @@
 		{
 		}
 		
-		internal override bool IsBlockLine
-		{
-			get
-			{
-				return false;
-			}
-		}
-		
 		internal override bool CanConvert(HtmlNode node)
 		{
 			return string.Compare(node.Tag, "span", true) == 0;
@@ -31,13 +23,27 @@
 			{
 				Run run = null;
 				
-				foreach (HtmlNode child in node.Children) 
+				foreach (HtmlNode child in node.Children)
 				{
 					if (child.IsText)
 					{
 						if (run == null)
 						{
-							run = parent.AppendChild(new Run());
+							if (parent is Paragraph)
+							{
+								run = parent.AppendChild(new Run());
+							}
+							else
+							{
+								Paragraph para = parent.LastChild as Paragraph;
+								
+								if (para == null)
+								{
+									para = parent.AppendChild(new Paragraph());
+								}
+								
+								run = para.AppendChild(new Run());
+							}
 						}
 						
 						run.AppendChild(new Text(node.InnerHtml));
