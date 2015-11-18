@@ -49,15 +49,12 @@
 			{
 				body = FindBody(node);
 				
-				if (body != null)
+				if (body != null || node.Next == null)
 				{
 					break;
 				}
-				else
-				if (node.Next != null)
-				{
-					node = node.Next;
-				}
+				
+				node = node.Next;
 			}
 			
 			return body ?? parser.Current;

@@ -7,10 +7,10 @@
 	
 	internal sealed class DocxBody : WordElement
 	{
+		private OpenXmlElement body;
+		
 		private void ProcessBody(HtmlNode node)
 		{
-			OpenXmlElement body = context.Document.AppendChild(new Body());
-			
 			Run run = null;
 			
 			while (node != null)
@@ -48,6 +48,8 @@
 		
 		internal override void Process(HtmlNode node, OpenXmlElement parent)
 		{
+			body = context.Document.AppendChild(new Body());
+			
 			//If the node is body tag, find the first children to process
 			if (CanConvert(node))
 			{

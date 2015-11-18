@@ -17,7 +17,8 @@
 			elements = new List<WordElement>() 
 			{
 				new DocxDiv(this),
-				new DocxSpan(this)
+				new DocxSpan(this),
+				new DocxTable(this)
 			};
 		}
 		

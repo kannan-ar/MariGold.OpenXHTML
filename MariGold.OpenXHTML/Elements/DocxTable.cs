@@ -12,6 +12,7 @@
 			if (td.HasChildren)
 			{
 				TableCell cell = new TableCell();
+				Paragraph para = null;
 				Run run = null;
 				
 				foreach (HtmlNode child in td.Children)
@@ -20,25 +21,26 @@
 					{
 						if (run == null)
 						{
-							run = new Run();
+							para = new Paragraph();
+							run = para.AppendChild(new Run());
 						}
 						
 						run.AppendChild(new Text(child.InnerHtml));
 					}
 					else
 					{
-						if (run != null)
+						if (para != null)
 						{
-							cell.Append(run);
+							cell.Append(para);
 						}
 						
 						ProcessChild(child, cell);
 					}
 				}
 				
-				if (run != null)
+				if (para != null)
 				{
-					cell.Append(run);
+					cell.Append(para);
 				}
 				
 				row.Append(cell);
@@ -82,7 +84,7 @@
 			
 			if (node.HasChildren)
 			{
-				Table table = parent.AppendChild(new Table());
+				Table table = new Table();
 				
 				foreach (HtmlNode tr in node.Children)
 				{
@@ -91,6 +93,8 @@
 						ProcessTr(tr, table);
 					}
 				}
+				
+				parent.Append(table);
 			}
 		}
 	}
