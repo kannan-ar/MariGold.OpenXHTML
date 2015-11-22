@@ -10,11 +10,12 @@
 	{
 		private WordprocessingDocument document;
 		private MainDocumentPart mainPart;
-		private List<WordElement> elements;
+		private List<DocxElement> elements;
+		private Paragraph paragraph;
 		
 		private void PrepareWordElements()
 		{
-			elements = new List<WordElement>() 
+			elements = new List<DocxElement>()
 			{
 				new DocxDiv(this),
 				new DocxSpan(this),
@@ -65,8 +66,23 @@
 			}
 		}
 		
+		public Paragraph LastParagraph
+		{
+			get
+			{
+				return paragraph;
+			}
+			
+			set
+			{
+				paragraph = value;
+			}
+		}
+		
 		public void Clear()
 		{
+			Document.Save();
+			
 			document.Close();
 			document.Dispose();
 			
@@ -74,9 +90,9 @@
 			mainPart = null;
 		}
 		
-		public WordElement Convert(HtmlNode node)
+		public DocxElement Convert(HtmlNode node)
 		{
-			foreach (WordElement element in elements)
+			foreach (DocxElement element in elements)
 			{
 				if (element.CanConvert(node))
 				{
@@ -87,7 +103,7 @@
 			return null;
 		}
 		
-		public WordElement GetBodyElement()
+		public DocxElement GetBodyElement()
 		{
 			return new DocxBody(this);
 		}

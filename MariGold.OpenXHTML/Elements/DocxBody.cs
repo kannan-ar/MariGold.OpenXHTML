@@ -5,7 +5,7 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxBody : WordElement
+	internal sealed class DocxBody : DocxElement
 	{
 		private OpenXmlElement body;
 		
@@ -19,7 +19,9 @@
 				{
 					if (run == null)
 					{
-						run = body.AppendChild(new Paragraph()).AppendChild(new Run());
+						context.LastParagraph = body.AppendChild(new Paragraph());
+						
+						run = context.LastParagraph.AppendChild(new Run());
 					}
 					
 					run.AppendChild(new Text(node.InnerHtml));

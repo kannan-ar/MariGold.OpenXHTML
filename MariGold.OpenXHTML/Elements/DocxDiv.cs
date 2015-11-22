@@ -5,7 +5,7 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxDiv : WordElement
+	internal sealed class DocxDiv : DocxElement
 	{
 		internal DocxDiv(IOpenXmlContext context)
 			: base(context)
@@ -21,6 +21,7 @@
 		{
 			if (node != null && parent != null)
 			{
+				context.LastParagraph = null;
 				OpenXmlElement paragraph = parent.AppendChild(new Paragraph());
 				Run run = null;
 				

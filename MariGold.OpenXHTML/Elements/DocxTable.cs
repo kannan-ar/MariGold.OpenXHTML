@@ -5,7 +5,7 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxTable : WordElement
+	internal sealed class DocxTable : DocxElement
 	{
 		private void ProcessTd(HtmlNode td, TableRow row)
 		{
@@ -81,6 +81,8 @@
 			{
 				return;
 			}
+			
+			context.LastParagraph = null;
 			
 			if (node.HasChildren)
 			{

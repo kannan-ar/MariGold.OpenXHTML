@@ -10,9 +10,10 @@
 		WordprocessingDocument WordprocessingDocument{ get; }
 		MainDocumentPart MainDocumentPart{ get; }
 		Document Document{ get; }
+		Paragraph LastParagraph{ get; set; }
 		
 		void Clear();
-		WordElement Convert(HtmlNode node);
-		WordElement GetBodyElement();
+		DocxElement Convert(HtmlNode node);
+		DocxElement GetBodyElement();
 	}
 }

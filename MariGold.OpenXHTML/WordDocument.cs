@@ -69,7 +69,7 @@
 			
 			if (node != null)
 			{
-				WordElement body = context.GetBodyElement();
+				DocxElement body = context.GetBodyElement();
 				
 				body.Process(node, null);
 			}

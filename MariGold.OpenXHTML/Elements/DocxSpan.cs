@@ -5,7 +5,7 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxSpan : WordElement
+	internal sealed class DocxSpan : DocxElement
 	{
 		public DocxSpan(IOpenXmlContext context)
 			: base(context)
@@ -35,14 +35,12 @@
 							}
 							else
 							{
-								Paragraph para = parent.LastChild as Paragraph;
-								
-								if (para == null)
+								if (context.LastParagraph == null)
 								{
-									para = parent.AppendChild(new Paragraph());
+									context.LastParagraph = parent.AppendChild(new Paragraph());
 								}
 								
-								run = para.AppendChild(new Run());
+								run = context.LastParagraph.AppendChild(new Run());
 							}
 						}
 						
