@@ -366,9 +366,63 @@
 				Run run = link.ChildElements[0] as Run;
 				
 				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
+				Assert.AreEqual(2, run.ChildElements.Count);
 				
-				Word.Text text = run.ChildElements[0] as Word.Text;
+				RunProperties properties = run.ChildElements[0] as RunProperties;
+				
+				Assert.IsNotNull(properties);
+				Assert.AreEqual(1, properties.ChildElements.Count);
+				
+				RunStyle runStyle = properties.ChildElements[0] as RunStyle;
+				
+				Assert.IsNotNull(runStyle);
+				Assert.AreEqual("Hyperlink", runStyle.Val.Value);
+				
+				Word.Text text = run.ChildElements[1] as Word.Text;
+				
+				Assert.IsNotNull(text);
+				Assert.AreEqual("click here", text.InnerText);
+			}
+		}
+		
+		[Test]
+		public void AOnDivBody()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<div><a href='http://google.com'>click here</a></div>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Hyperlink link = para.ChildElements[0] as Hyperlink;
+				
+				Assert.IsNotNull(link);
+				Assert.AreEqual(1, link.ChildElements.Count);
+				
+				Run run = link.ChildElements[0] as Run;
+				
+				Assert.IsNotNull(run);
+				Assert.AreEqual(2, run.ChildElements.Count);
+				
+				RunProperties properties = run.ChildElements[0] as RunProperties;
+				
+				Assert.IsNotNull(properties);
+				Assert.AreEqual(1, properties.ChildElements.Count);
+				
+				RunStyle runStyle = properties.ChildElements[0] as RunStyle;
+				
+				Assert.IsNotNull(runStyle);
+				Assert.AreEqual("Hyperlink", runStyle.Val.Value);
+				
+				Word.Text text = run.ChildElements[1] as Word.Text;
 				
 				Assert.IsNotNull(text);
 				Assert.AreEqual("click here", text.InnerText);

@@ -39,16 +39,32 @@
 				var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
 				
 				Run run = new Run();
+				run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
 				
 				foreach (HtmlNode child in node.Children)
 				{
-					if(child.IsText)
+					if (child.IsText && !string.IsNullOrEmpty(child.InnerHtml))
 					{
-						
+						run.AppendChild(new Text(child.InnerHtml));
 					}
 				}
+				
+				hyperLink.Append(run);
+				
+				if (parent is Paragraph)
+				{
+					parent.Append(hyperLink);
+				}
+				else
+				{
+					if (context.LastParagraph == null)
+					{
+						context.LastParagraph = parent.AppendChild(new Paragraph());
+					}
+					
+					context.LastParagraph.Append(hyperLink);
+				}
 			}
-			
 		}
 	}
 }

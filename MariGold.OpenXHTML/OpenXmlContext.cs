@@ -19,6 +19,7 @@
 			{
 				new DocxDiv(this),
 				new DocxSpan(this),
+				new DocxA(this),
 				new DocxTable(this)
 			};
 		}
