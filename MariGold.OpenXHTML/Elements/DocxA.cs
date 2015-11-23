@@ -1,7 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
-	using System.Linq;
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
@@ -51,19 +50,7 @@
 				
 				hyperLink.Append(run);
 				
-				if (parent is Paragraph)
-				{
-					parent.Append(hyperLink);
-				}
-				else
-				{
-					if (context.LastParagraph == null)
-					{
-						context.LastParagraph = parent.AppendChild(new Paragraph());
-					}
-					
-					context.LastParagraph.Append(hyperLink);
-				}
+				AppendToParagraph(parent, hyperLink);
 			}
 		}
 	}

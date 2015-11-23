@@ -29,19 +29,7 @@
 					{
 						if (run == null)
 						{
-							if (parent is Paragraph)
-							{
-								run = parent.AppendChild(new Run());
-							}
-							else
-							{
-								if (context.LastParagraph == null)
-								{
-									context.LastParagraph = parent.AppendChild(new Paragraph());
-								}
-								
-								run = context.LastParagraph.AppendChild(new Run());
-							}
+							run = AppendRun(parent);
 						}
 						
 						run.AppendChild(new Text(node.InnerHtml));

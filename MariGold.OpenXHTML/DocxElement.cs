@@ -38,6 +38,61 @@
 			return string.Empty;
 		}
 		
+		protected void AppendToParagraph(OpenXmlElement parent, OpenXmlElement element)
+		{
+			if (parent is Paragraph)
+			{
+				parent.Append(element);
+			}
+			else
+			{
+				if (context.LastParagraph == null)
+				{
+					context.LastParagraph = parent.AppendChild(new Paragraph());
+				}
+					
+				context.LastParagraph.Append(element);
+			}
+		}
+		
+		protected void AppendToParagraphWithRun(OpenXmlElement parent, OpenXmlElement element)
+		{
+			if (parent is Paragraph)
+			{
+				parent.Append(new Run(element));
+			}
+			else
+			{
+				if (context.LastParagraph == null)
+				{
+					context.LastParagraph = parent.AppendChild(new Paragraph());
+				}
+					
+				context.LastParagraph.Append(new Run(element));
+			}
+		}
+		
+		protected Run AppendRun(OpenXmlElement parent)
+		{
+			Run run = null;
+			
+			if (parent is Paragraph)
+			{
+				run = parent.AppendChild(new Run());
+			}
+			else
+			{
+				if (context.LastParagraph == null)
+				{
+					context.LastParagraph = parent.AppendChild(new Paragraph());
+				}
+								
+				run = context.LastParagraph.AppendChild(new Run());
+			}
+			
+			return run;
+		}
+		
 		internal DocxElement(IOpenXmlContext context)
 		{
 			if (context == null)
