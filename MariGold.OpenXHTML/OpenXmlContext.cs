@@ -21,6 +21,7 @@
 				new DocxImage(this),
 				new DocxSpan(this),
 				new DocxA(this),
+				new DocxBr(this),
 				new DocxTable(this)
 			};
 		}

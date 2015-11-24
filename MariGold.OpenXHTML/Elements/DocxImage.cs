@@ -70,7 +70,10 @@
 						cx = (long)bitmap.Width * (long)((float)914400 / bitmap.HorizontalResolution);
 						cy = (long)bitmap.Height * (long)((float)914400 / bitmap.VerticalResolution);
 					}
-					
+				}
+				
+				using (Stream stream = client.OpenRead(new Uri(src)))
+				{
 					ImagePart imagePart = context.MainDocumentPart.AddImagePart(GetImagePartType(src));
 					
 					imagePart.FeedData(stream);
