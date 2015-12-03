@@ -8,7 +8,48 @@
 	
 	internal abstract class DocxElement
 	{
+		private Paragraph paragraph;
+		private DocxElement parent;
+		
 		protected readonly IOpenXmlContext context;
+		
+		private void RunCreated(HtmlNode node, Run run)
+		{
+			DocxRunStyle style = new DocxRunStyle();
+			style.Process(run, node.Styles);
+		}
+		
+		private void ParagraphCreated(HtmlNode node, Paragraph para)
+		{
+			DocxParagraphStyle style = new DocxParagraphStyle();
+			style.Process(para, node.Styles);
+		}
+		
+		internal Paragraph Current
+		{
+			get
+			{
+				return paragraph;
+			}
+			
+			set
+			{
+				paragraph = value;
+			}
+		}
+		
+		internal DocxElement Parent
+		{
+			get
+			{
+				return parent;
+			}
+			
+			set
+			{
+				parent = value;
+			}
+		}
 		
 		protected void ProcessChild(HtmlNode node, OpenXmlElement parent)
 		{
@@ -16,6 +57,7 @@
 					
 			if (element != null)
 			{
+				element.Parent = this;
 				element.Process(node, parent);
 			}
 		}
@@ -38,7 +80,7 @@
 			return string.Empty;
 		}
 		
-		protected void AppendToParagraph(OpenXmlElement parent, OpenXmlElement element)
+		protected void AppendToParagraph(HtmlNode node, OpenXmlElement parent, OpenXmlElement element)
 		{
 			if (parent is Paragraph)
 			{
@@ -46,50 +88,87 @@
 			}
 			else
 			{
-				if (context.LastParagraph == null)
+				if (Parent.Current == null)
 				{
-					context.LastParagraph = parent.AppendChild(new Paragraph());
+					Parent.Current = parent.AppendChild(new Paragraph());
+					ParagraphCreated(node, Parent.Current);
 				}
 					
-				context.LastParagraph.Append(element);
+				Parent.Current.Append(element);
 			}
 		}
 		
-		protected void AppendToParagraphWithRun(OpenXmlElement parent, OpenXmlElement element)
+		protected void AppendToParagraphWithRun(HtmlNode node, OpenXmlElement parent, OpenXmlElement element)
 		{
 			if (parent is Paragraph)
 			{
-				parent.Append(new Run(element));
+				Run run = new Run(element);
+				parent.Append(run);
+				RunCreated(node, run);
 			}
 			else
 			{
-				if (context.LastParagraph == null)
+				if (Parent.Current == null)
 				{
-					context.LastParagraph = parent.AppendChild(new Paragraph());
+					Parent.Current = parent.AppendChild(new Paragraph());
+					ParagraphCreated(node, Parent.Current);
 				}
-					
-				context.LastParagraph.Append(new Run(element));
+				
+				Run run = new Run(element);
+				Parent.Current.Append(run);
+				RunCreated(node, run);
 			}
 		}
 		
-		protected Run AppendRun(OpenXmlElement parent)
+		protected Run AppendRun(HtmlNode node, OpenXmlElement parent)
 		{
 			Run run = null;
 			
 			if (parent is Paragraph)
 			{
 				run = parent.AppendChild(new Run());
+				RunCreated(node, run);
 			}
 			else
 			{
-				if (context.LastParagraph == null)
+				if (Parent.Current == null)
 				{
-					context.LastParagraph = parent.AppendChild(new Paragraph());
+					Parent.Current = parent.AppendChild(new Paragraph());
+					ParagraphCreated(node, Parent.Current);
 				}
 								
-				run = context.LastParagraph.AppendChild(new Run());
+				run = Parent.Current.AppendChild(new Run());
+				RunCreated(node, run);
 			}
 			
+			return run;
+		}
+		
+		protected Run CreateRun(HtmlNode node)
+		{
+			Run run = new Run();
+			RunCreated(node, run);
+			return run;
+		}
+		
+		protected Paragraph CreateParagraph(HtmlNode node)
+		{
+			Paragraph para = new Paragraph();
+			ParagraphCreated(node, para);
+			return para;
+		}
+		
+		protected Paragraph CreateParagraph(HtmlNode node, OpenXmlElement parent)
+		{
+			Paragraph para = parent.AppendChild(new Paragraph());
+			ParagraphCreated(node, para);
+			return para;
+		}
+		
+		protected Run CreateRun(HtmlNode node, OpenXmlElement parent)
+		{
+			Run run = parent.AppendChild(new Run());
+			RunCreated(node, run);
 			return run;
 		}
 		

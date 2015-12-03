@@ -21,7 +21,7 @@
 		{
 			if (node != null && parent != null)
 			{
-				AppendToParagraphWithRun(parent, new Break());
+				AppendToParagraphWithRun(node, parent, new Break());
 			}
 		}
 	}

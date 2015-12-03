@@ -12,7 +12,6 @@
 		internal DocxA(IOpenXmlContext context)
 			: base(context)
 		{
-			
 		}
 		
 		internal override bool CanConvert(HtmlNode node)
@@ -37,7 +36,7 @@
 				
 				var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
 				
-				Run run = new Run();
+				Run run = CreateRun(node);
 				run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
 				
 				foreach (HtmlNode child in node.Children)
@@ -50,7 +49,7 @@
 				
 				hyperLink.Append(run);
 				
-				AppendToParagraph(parent, hyperLink);
+				AppendToParagraph(node, parent, hyperLink);
 			}
 		}
 	}

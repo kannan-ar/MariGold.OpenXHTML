@@ -11,7 +11,6 @@
 		private WordprocessingDocument document;
 		private MainDocumentPart mainPart;
 		private List<DocxElement> elements;
-		private Paragraph paragraph;
 		
 		private void PrepareWordElements()
 		{
@@ -66,19 +65,6 @@
 			get
 			{
 				return MainDocumentPart.Document;
-			}
-		}
-		
-		public Paragraph LastParagraph
-		{
-			get
-			{
-				return paragraph;
-			}
-			
-			set
-			{
-				paragraph = value;
 			}
 		}
 		

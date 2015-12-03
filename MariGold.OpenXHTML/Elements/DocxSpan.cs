@@ -21,7 +21,7 @@
 		{
 			if (node != null && parent != null)
 			{
-				Run run = null;
+				Run	run = null;
 				
 				foreach (HtmlNode child in node.Children)
 				{
@@ -29,7 +29,7 @@
 					{
 						if (run == null)
 						{
-							run = AppendRun(parent);
+							run = AppendRun(node, parent);
 						}
 						
 						run.AppendChild(new Text(node.InnerHtml));

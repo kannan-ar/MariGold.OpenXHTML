@@ -19,10 +19,10 @@
 				{
 					if (child.IsText)
 					{
-						if (run == null)
+						if (para == null)
 						{
-							para = new Paragraph();
-							run = para.AppendChild(new Run());
+							para = CreateParagraph(td);
+							run = CreateRun(td, para);
 						}
 						
 						run.AppendChild(new Text(child.InnerHtml));
@@ -82,7 +82,7 @@
 				return;
 			}
 			
-			context.LastParagraph = null;
+			Parent.Current = null;
 			
 			if (node.HasChildren)
 			{

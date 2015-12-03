@@ -70,7 +70,7 @@
 			if (node != null)
 			{
 				DocxElement body = context.GetBodyElement();
-				
+				body.Parent = body;
 				body.Process(node, null);
 			}
 		}

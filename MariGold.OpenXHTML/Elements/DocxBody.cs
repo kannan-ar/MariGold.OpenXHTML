@@ -11,26 +11,14 @@
 		
 		private void ProcessBody(HtmlNode node)
 		{
-			Run run = null;
-			
 			while (node != null)
 			{
 				if (node.IsText)
 				{
-					if (run == null)
-					{
-						context.LastParagraph = body.AppendChild(new Paragraph());
-						
-						run = context.LastParagraph.AppendChild(new Run());
-					}
-					
-					run.AppendChild(new Text(node.InnerHtml));
+					AppendToParagraphWithRun(node, body, new Text(node.InnerHtml));
 				}
 				else
 				{
-					//Reset the run to finilize the text area and restart after appending the current node.
-					run = null;
-					
 					ProcessChild(node, body);
 				}
 				

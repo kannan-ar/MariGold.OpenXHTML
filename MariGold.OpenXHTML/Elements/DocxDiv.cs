@@ -22,25 +22,17 @@
 		{
 			if (node != null && parent != null)
 			{
-				context.LastParagraph = null;
-				OpenXmlElement paragraph = parent.AppendChild(new Paragraph());
-				Run run = null;
+				Parent.Current = null;
+				OpenXmlElement paragraph = CreateParagraph(node, parent);
 				
 				foreach (HtmlNode child in node.Children)
 				{
 					if (child.IsText)
 					{
-						if (run == null)
-						{
-							run = paragraph.AppendChild(new Run());
-						}
-						
-						run.AppendChild(new Text(node.InnerHtml));
+						AppendRun(node, paragraph).AppendChild(new Text(node.InnerHtml));
 					}
 					else
 					{
-						run = null;
-						
 						ProcessChild(child, paragraph);
 					}
 				}

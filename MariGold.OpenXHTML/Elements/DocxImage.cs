@@ -165,7 +165,7 @@
 				
 				if (drawing != null)
 				{
-					AppendToParagraphWithRun(parent, drawing);
+					AppendToParagraphWithRun(node, parent, drawing);
 				}
 			}
 		}
