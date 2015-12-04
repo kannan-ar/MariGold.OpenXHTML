@@ -37,7 +37,15 @@
 				var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
 				
 				Run run = CreateRun(node);
-				run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
+				
+				if (run.RunProperties == null)
+				{
+					run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
+				}
+				else
+				{
+					run.RunProperties.Append(new RunStyle() { Val = "Hyperlink" });
+				}
 				
 				foreach (HtmlNode child in node.Children)
 				{

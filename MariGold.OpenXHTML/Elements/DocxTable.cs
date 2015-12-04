@@ -77,7 +77,7 @@
 		
 		internal override void Process(HtmlNode node, OpenXmlElement parent)
 		{
-			if (node == null || parent == null || string.Compare(node.Tag, "table", true) != 0)
+			if (node == null || parent == null || !CanConvert(node))
 			{
 				return;
 			}
