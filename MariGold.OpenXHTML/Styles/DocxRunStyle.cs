@@ -7,11 +7,11 @@
 	
 	internal sealed class DocxRunStyle : DocxStyle<Run>
 	{
-		private readonly DocxColor docxColor;
+		private readonly StyleParser parser;
 		
 		public DocxRunStyle()
 		{
-			docxColor = new DocxColor();
+			parser = new StyleParser();
 		}
 		
 		internal override void Process(Run element, Dictionary<string, string> styles)
@@ -20,24 +20,40 @@
 			
 			foreach (KeyValuePair<string,string> style in styles)
 			{
-				if (string.Compare(backGroundColor, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				if (string.Compare(StyleParser.backGroundColor, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
 				{
-					string hex = docxColor.GetHexColor(style.Value);
+					Shading shading = parser.GetBackGroundColor(style.Value);
 					
-					if (!string.IsNullOrEmpty(hex))
+					if (shading != null)
 					{
-						list.Add(new Shading(){ Fill = hex });
+						list.Add(shading);
 					}
-				}
-				else if (string.Compare(color, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
-				{
-					string hex = docxColor.GetHexColor(style.Value);
 					
-					list.Add(new Color(){ Val = hex });
+					continue;
 				}
-				else if (string.Compare(fontFamily, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				
+				if (string.Compare(StyleParser.color, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
 				{
+					Color color = parser.GetColor(style.Value);
 					
+					if (color != null)
+					{
+						list.Add(color);
+					}
+					
+					continue;
+				}
+				
+				if (string.Compare(StyleParser.fontFamily, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				{
+					RunFonts font = parser.GetFonts(style.Value);
+					
+					if (font != null)
+					{
+						list.Add(font);
+					}
+					
+					continue;
 				}
 			}
 			

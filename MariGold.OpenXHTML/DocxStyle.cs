@@ -7,10 +7,6 @@
 	internal abstract class DocxStyle<T>
 		where T : OpenXmlElement
 	{
-		protected const string backGroundColor = "background-color";
-		protected const string color = "color";
-		protected const string fontFamily = "font-family";
-		
 		internal abstract void Process(T element, Dictionary<string,string> styles);
 	}
 }
