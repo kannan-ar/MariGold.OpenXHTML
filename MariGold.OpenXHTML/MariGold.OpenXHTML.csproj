@@ -67,10 +67,10 @@
     <Compile Include="IOpenXmlContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OpenXmlContext.cs" />
+    <Compile Include="Styles\DocxAlignment.cs" />
     <Compile Include="Styles\DocxColor.cs" />
     <Compile Include="Styles\DocxFont.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />
-    <Compile Include="Styles\StyleParser.cs" />
     <Compile Include="WordDocument.cs" />
     <Compile Include="DocxElement.cs" />
     <Compile Include="Styles\DocxRunStyle.cs" />

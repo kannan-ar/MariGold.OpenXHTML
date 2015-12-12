@@ -2,15 +2,19 @@
 {
 	using System;
 	using System.Drawing;
+	using Word = DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxColor
+	internal static class DocxColor
 	{
-		private bool IsRGB(string styleValue)
+		internal const string backGroundColor = "background-color";
+		internal const string color = "color";
+		
+		private static bool IsRGB(string styleValue)
 		{
 			return styleValue.IndexOf("rgb", StringComparison.CurrentCultureIgnoreCase) >= 0;
 		}
 		
-		private string GetHex(string rgb)
+		private static string GetHex(string rgb)
 		{
 			int startIndex = rgb.IndexOf("(");
 			int endIndex = rgb.IndexOf(")");
@@ -42,12 +46,22 @@
 			return hex;
 		}
 		
-		public bool IsHex(string styleValue)
+		internal static bool IsBackGroundColor(string styleName)
+		{
+			return string.Compare(backGroundColor, styleName, StringComparison.InvariantCultureIgnoreCase) == 0;
+		}
+		
+		internal static bool IsColor(string styleName)
+		{
+			return string.Compare(color, styleName, StringComparison.InvariantCultureIgnoreCase) == 0;
+		}
+		
+		internal static bool IsHex(string styleValue)
 		{
 			return styleValue.IndexOf("#") >= 0;
 		}
 		
-		public string GetHexColor(string styleValue)
+		internal static string GetHexColor(string styleValue)
 		{
 			string hex = string.Empty;
 			
@@ -60,12 +74,38 @@
 			{
 				hex = GetHex(styleValue);
 			}
-			else if(IsHex(styleValue))
+			else
+			if (IsHex(styleValue))
 			{
 				hex = styleValue.Replace("#", string.Empty);
 			}
 			
 			return hex;
+		}
+		
+		internal static Word.Shading GetBackGroundColor(string value)
+		{
+			string hex = GetHexColor(value);
+					
+			if (!string.IsNullOrEmpty(hex))
+			{
+				return new Word.Shading(){ Fill = hex };
+			}
+			
+			return null;
+		}
+		
+		internal static Word.Color GetColor(string value)
+		{
+			
+			string hex = GetHexColor(value);
+					
+			if (!string.IsNullOrEmpty(hex))
+			{
+				return new Word.Color(){ Val = hex };
+			}
+			
+			return null;
 		}
 	}
 }

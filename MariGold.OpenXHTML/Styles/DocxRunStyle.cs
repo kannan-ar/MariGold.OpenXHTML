@@ -7,22 +7,15 @@
 	
 	internal sealed class DocxRunStyle : DocxStyle<Run>
 	{
-		private readonly StyleParser parser;
-		
-		public DocxRunStyle()
-		{
-			parser = new StyleParser();
-		}
-		
 		internal override void Process(Run element, Dictionary<string, string> styles)
 		{
 			List<OpenXmlElement> list = new List<OpenXmlElement>();
 			
 			foreach (KeyValuePair<string,string> style in styles)
 			{
-				if (string.Compare(StyleParser.backGroundColor, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				if (DocxColor.IsBackGroundColor(style.Key))
 				{
-					Shading shading = parser.GetBackGroundColor(style.Value);
+					Shading shading = DocxColor.GetBackGroundColor(style.Value);
 					
 					if (shading != null)
 					{
@@ -32,9 +25,9 @@
 					continue;
 				}
 				
-				if (string.Compare(StyleParser.color, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				if (DocxColor.IsColor(style.Key))
 				{
-					Color color = parser.GetColor(style.Value);
+					Color color = DocxColor.GetColor(style.Value);
 					
 					if (color != null)
 					{
@@ -44,9 +37,9 @@
 					continue;
 				}
 				
-				if (string.Compare(StyleParser.fontFamily, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				if (DocxFont.IsFontFamily(style.Key))
 				{
-					RunFonts font = parser.GetFonts(style.Value);
+					RunFonts font = DocxFont.GetFonts(style.Value);
 					
 					if (font != null)
 					{
