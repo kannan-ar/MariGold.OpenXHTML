@@ -9,58 +9,62 @@
 	{
 		internal override void Process(Run element, Dictionary<string, string> styles)
 		{
-			List<OpenXmlElement> list = new List<OpenXmlElement>();
+			RunProperties properties = element.RunProperties;
 			
-			foreach (KeyValuePair<string,string> style in styles)
+			if (properties == null) 
 			{
-				if (DocxColor.IsBackGroundColor(style.Key))
+				properties = new RunProperties();
+			}
+			
+			foreach (KeyValuePair<string,string> style in styles) 
+			{
+				if (DocxColor.IsBackGroundColor(style.Key)) 
 				{
 					Shading shading = DocxColor.GetBackGroundColor(style.Value);
 					
-					if (shading != null)
+					if (shading != null) 
 					{
-						list.Add(shading);
+						properties.Append(shading);
 					}
 					
 					continue;
 				}
 				
-				if (DocxColor.IsColor(style.Key))
+				if (DocxColor.IsColor(style.Key)) 
 				{
 					Color color = DocxColor.GetColor(style.Value);
 					
-					if (color != null)
+					if (color != null) 
 					{
-						list.Add(color);
+						properties.Append(color);
 					}
 					
 					continue;
 				}
 				
-				if (DocxFont.IsFontFamily(style.Key))
+				if (DocxFont.IsFontFamily(style.Key)) 
 				{
 					RunFonts font = DocxFont.GetFonts(style.Value);
 					
-					if (font != null)
+					if (font != null) 
 					{
-						list.Add(font);
+						properties.Append(font);
 					}
+					
+					continue;
+				}
+				
+				if (DocxFont.IsFontWeight(style.Key, style.Value))
+				{
+					properties.Append(DocxFont.GetBold());
 					
 					continue;
 				}
 			}
 			
-			if (list.Count > 0)
+			if (element.RunProperties == null && properties.HasChildren) 
 			{
-				if (element.RunProperties == null)
-				{
-					element.RunProperties = new RunProperties();
-				}
-				
-				foreach (OpenXmlElement item in list)
-				{
-					element.RunProperties.Append(item);
-				}
+				element.RunProperties = properties;
 			}
 		}
 	}

@@ -9,46 +9,43 @@
 	{
 		internal override void Process(Paragraph element, Dictionary<string, string> styles)
 		{
-			List<OpenXmlElement> list = new List<OpenXmlElement>();
+			ParagraphProperties properties = element.ParagraphProperties;
 			
-			foreach (KeyValuePair<string,string> style in styles)
+			if (element.ParagraphProperties == null) 
 			{
-				if (DocxAlignment.IsTextAlign(style.Key))
+				properties = new ParagraphProperties();
+			}
+			
+			foreach (KeyValuePair<string,string> style in styles) 
+			{
+				if (DocxAlignment.IsTextAlign(style.Key)) 
 				{
 					JustificationValues alignment;
 					
-					if (DocxAlignment.GetJustificationValue(style.Value, out alignment))
+					if (DocxAlignment.GetJustificationValue(style.Value, out alignment)) 
 					{
-						list.Add(new Justification() { Val = alignment });
+						properties.Append(new Justification() { Val = alignment });
 					}
 					
 					continue;
 				}
 				
-				if (DocxColor.IsBackGroundColor(style.Key))
+				if (DocxColor.IsBackGroundColor(style.Key)) 
 				{
 					Shading shading = DocxColor.GetBackGroundColor(style.Value);
 					
-					if (shading != null)
+					if (shading != null) 
 					{
-						list.Add(shading);
+						properties.Append(shading);
 					}
 					
 					continue;
 				}
 			}
 			
-			if (list.Count > 0)
+			if (element.ParagraphProperties == null && properties.HasChildren) 
 			{
-				if (element.ParagraphProperties == null)
-				{
-					element.ParagraphProperties = new ParagraphProperties();
-				}
-				
-				foreach (OpenXmlElement item in list)
-				{
-					element.ParagraphProperties.Append(item);
-				}
+				element.ParagraphProperties = properties;
 			}
 		}
 	}
