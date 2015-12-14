@@ -2,11 +2,30 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
 	internal sealed class DocxParagraphStyle : DocxStyle<Paragraph>
 	{
+		private bool CheckAlignment(KeyValuePair<string,string> style, ParagraphProperties properties)
+		{
+			if (DocxAlignment.ApplyTextAlign(style.Key, style.Value, properties)) 
+			{
+				return true;
+			}
+			
+			return false;
+		}
+		
+		private bool CheckColor(KeyValuePair<string,string> style, ParagraphProperties properties)
+		{
+			if (DocxColor.ApplyBackGroundColor(style.Key, style.Value, properties)) 
+			{
+				return true;
+			}
+			
+			return false;
+		}
+		
 		internal override void Process(Paragraph element, Dictionary<string, string> styles)
 		{
 			ParagraphProperties properties = element.ParagraphProperties;
@@ -18,29 +37,12 @@
 			
 			foreach (KeyValuePair<string,string> style in styles) 
 			{
-				if (DocxAlignment.IsTextAlign(style.Key)) 
+				if (CheckAlignment(style, properties)) 
 				{
-					JustificationValues alignment;
-					
-					if (DocxAlignment.GetJustificationValue(style.Value, out alignment)) 
-					{
-						properties.Append(new Justification() { Val = alignment });
-					}
-					
 					continue;
 				}
 				
-				if (DocxColor.IsBackGroundColor(style.Key)) 
-				{
-					Shading shading = DocxColor.GetBackGroundColor(style.Value);
-					
-					if (shading != null) 
-					{
-						properties.Append(shading);
-					}
-					
-					continue;
-				}
+				CheckColor(style, properties);
 			}
 			
 			if (element.ParagraphProperties == null && properties.HasChildren) 

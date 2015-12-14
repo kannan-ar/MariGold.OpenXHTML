@@ -7,6 +7,41 @@
 	
 	internal sealed class DocxRunStyle : DocxStyle<Run>
 	{
+		private bool CheckFonts(KeyValuePair<string,string> style, RunProperties properties)
+		{
+			if(DocxFont.ApplyFontFamily(style.Key,style.Value, properties))
+			{
+				return true;
+			}
+			
+			if(DocxFont.ApplyFontWeight(style.Key,style.Value,properties))
+			{
+				return true;
+			}
+				
+			if(DocxFont.ApplyTextDecoration(style.Key, style.Value, properties))
+			{
+				return true;
+			}
+			
+			return false;
+		}
+		
+		private bool CheckColor(KeyValuePair<string,string> style, RunProperties properties)
+		{
+			if (DocxColor.ApplyBackGroundColor(style.Key,style.Value,properties)) 
+			{
+				return true;
+			}
+				
+			if (DocxColor.ApplyColor(style.Key,style.Value,properties)) 
+			{
+				return true;
+			}
+			
+			return false;
+		}
+		
 		internal override void Process(Run element, Dictionary<string, string> styles)
 		{
 			RunProperties properties = element.RunProperties;
@@ -18,48 +53,12 @@
 			
 			foreach (KeyValuePair<string,string> style in styles) 
 			{
-				if (DocxColor.IsBackGroundColor(style.Key)) 
+				if(CheckColor(style, properties))
 				{
-					Shading shading = DocxColor.GetBackGroundColor(style.Value);
-					
-					if (shading != null) 
-					{
-						properties.Append(shading);
-					}
-					
 					continue;
 				}
 				
-				if (DocxColor.IsColor(style.Key)) 
-				{
-					Color color = DocxColor.GetColor(style.Value);
-					
-					if (color != null) 
-					{
-						properties.Append(color);
-					}
-					
-					continue;
-				}
-				
-				if (DocxFont.IsFontFamily(style.Key)) 
-				{
-					RunFonts font = DocxFont.GetFonts(style.Value);
-					
-					if (font != null) 
-					{
-						properties.Append(font);
-					}
-					
-					continue;
-				}
-				
-				if (DocxFont.IsFontWeight(style.Key, style.Value))
-				{
-					properties.Append(DocxFont.GetBold());
-					
-					continue;
-				}
+				CheckFonts(style, properties);
 			}
 			
 			if (element.RunProperties == null && properties.HasChildren) 

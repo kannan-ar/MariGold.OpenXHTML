@@ -1,15 +1,28 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
+	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
 	internal static class DocxAlignment
 	{
-		internal const string textAlign = "text-align";
+		private const string textAlign = "text-align";
 		
-		internal static bool IsTextAlign(string styleName)
+		internal static bool ApplyTextAlign(string styleName, string value, OpenXmlElement styleElement)
 		{
-			return string.Compare(textAlign, styleName, StringComparison.InvariantCultureIgnoreCase) == 0;
+			if (string.Compare(textAlign, styleName, StringComparison.InvariantCultureIgnoreCase) != 0) 
+			{
+				return false;
+			}
+			
+			JustificationValues alignment;
+					
+			if (DocxAlignment.GetJustificationValue(value, out alignment)) 
+			{
+				styleElement.Append(new Justification() { Val = alignment });
+			}
+			
+			return true;
 		}
 		
 		internal static bool GetJustificationValue(string value, out JustificationValues alignment)
@@ -17,7 +30,7 @@
 			alignment = JustificationValues.Left;
 			bool assigned = false;
 
-			switch (value.ToLower())
+			switch (value.ToLower()) 
 			{
 				case "right":
 					assigned = true;
