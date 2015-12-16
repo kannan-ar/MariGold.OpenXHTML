@@ -80,5 +80,20 @@
 			
 			return true;
 		}
+		
+		internal static void ApplyUnderline(OpenXmlElement styleElement)
+		{
+			styleElement.Append(new Underline(){ Val = UnderlineValues.Single });
+		}
+		
+		internal static void ApplyFontItalic(OpenXmlElement styleElement)
+		{
+			styleElement.Append(new Italic());
+		}
+		
+		internal static void ApplyBold(OpenXmlElement styleElement)
+		{
+			styleElement.Append(new Bold());
+		}
 	}
 }

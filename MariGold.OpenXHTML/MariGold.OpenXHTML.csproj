@@ -56,12 +56,16 @@
   <ItemGroup>
     <Compile Include="DocxStyle.cs" />
     <Compile Include="Elements\DocxA.cs" />
+    <Compile Include="Elements\DocxBold.cs" />
     <Compile Include="Elements\DocxBody.cs" />
     <Compile Include="Elements\DocxBr.cs" />
     <Compile Include="Elements\DocxDiv.cs" />
+    <Compile Include="Elements\DocxHeader.cs" />
+    <Compile Include="Elements\DocxItalic.cs" />
     <Compile Include="Elements\DocxImage.cs" />
     <Compile Include="Elements\DocxSpan.cs" />
     <Compile Include="Elements\DocxTable.cs" />
+    <Compile Include="Elements\DocxUnderline.cs" />
     <Compile Include="HtmlParser.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="IOpenXmlContext.cs" />

@@ -21,6 +21,9 @@
 				new DocxSpan(this),
 				new DocxA(this),
 				new DocxBr(this),
+				new DocxUnderline(this),
+				new DocxItalic(this),
+				new DocxBold(this),
 				new DocxTable(this)
 			};
 		}

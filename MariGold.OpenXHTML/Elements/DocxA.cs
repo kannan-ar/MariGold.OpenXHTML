@@ -16,7 +16,7 @@
 		
 		internal override bool CanConvert(HtmlNode node)
 		{
-			return string.Compare(node.Tag, "a", true) == 0;
+			return string.Compare(node.Tag, "a", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
 		internal override void Process(HtmlNode node, OpenXmlElement parent)
