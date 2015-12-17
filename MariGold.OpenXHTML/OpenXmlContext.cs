@@ -24,6 +24,7 @@
 				new DocxUnderline(this),
 				new DocxItalic(this),
 				new DocxBold(this),
+				new DocxHeader(this),
 				new DocxTable(this)
 			};
 		}

@@ -95,5 +95,17 @@
 		{
 			styleElement.Append(new Bold());
 		}
+		
+		internal static void ApplyFont(int size, bool isBold, OpenXmlElement styleElement)
+		{
+			FontSize fontSize = new FontSize(){ Val = size.ToString() };
+			
+			styleElement.Append(fontSize);
+			
+			if (isBold) 
+			{
+				styleElement.Append(new Bold());
+			}
+		}
 	}
 }
