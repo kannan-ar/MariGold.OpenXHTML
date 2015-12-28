@@ -150,12 +150,12 @@
 		{
 		}
 		
-		internal override bool CanConvert(HtmlNode node)
+		internal override bool CanConvert(IHtmlNode node)
 		{
 			return string.Compare(node.Tag, "img", true) == 0;
 		}
 		
-		internal override void Process(HtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent)
 		{
 			string src = ExtractAttributeValue("src", node);
 			

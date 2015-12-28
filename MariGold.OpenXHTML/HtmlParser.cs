@@ -10,16 +10,16 @@
 	{
 		private readonly string html;
 		
-		private HtmlNode FindBody(HtmlNode node)
+		private IHtmlNode FindBody(IHtmlNode node)
 		{
 			if (string.Compare(node.Tag, "body", true) == 0)
 			{
 				return node;
 			}
 			
-			foreach (HtmlNode child in node.Children)
+			foreach (IHtmlNode child in node.Children)
 			{
-				HtmlNode body = FindBody(child);
+				IHtmlNode body = FindBody(child);
 				
 				if (body != null)
 				{
@@ -35,15 +35,15 @@
 			this.html = html;
 		}
 		
-		public HtmlNode FindBodyOrFirstElement()
+		public IHtmlNode FindBodyOrFirstElement()
 		{
 			MariGold.HtmlParser.HtmlParser parser = new HtmlTextParser(html);
 			
 			parser.Parse();
 			parser.ParseCSS();
 			
-			HtmlNode node = parser.Current;
-			HtmlNode body = null;
+			IHtmlNode node = parser.Current;
+			IHtmlNode body = null;
 			
 			while (node != null)
 			{

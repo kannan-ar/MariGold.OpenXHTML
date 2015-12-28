@@ -7,7 +7,7 @@
 	
 	internal sealed class DocxTable : DocxElement
 	{
-		private void ProcessTd(HtmlNode td, TableRow row)
+		private void ProcessTd(IHtmlNode td, TableRow row)
 		{
 			if (td.HasChildren)
 			{
@@ -15,7 +15,7 @@
 				Paragraph para = null;
 				Run run = null;
 				
-				foreach (HtmlNode child in td.Children)
+				foreach (IHtmlNode child in td.Children)
 				{
 					if (child.IsText)
 					{
@@ -47,13 +47,13 @@
 			}
 		}
 		
-		private void ProcessTr(HtmlNode tr, Table table)
+		private void ProcessTr(IHtmlNode tr, Table table)
 		{
 			if (tr.HasChildren)
 			{
 				TableRow row = new TableRow();
 				
-				foreach (HtmlNode td in tr.Children)
+				foreach (IHtmlNode td in tr.Children)
 				{
 					if (string.Compare(td.Tag, "td", true) == 0)
 					{
@@ -70,12 +70,12 @@
 		{
 		}
 		
-		internal override bool CanConvert(HtmlNode node)
+		internal override bool CanConvert(IHtmlNode node)
 		{
 			return string.Compare(node.Tag, "table", true) == 0;
 		}
 		
-		internal override void Process(HtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent)
 		{
 			if (node == null || parent == null || !CanConvert(node))
 			{
@@ -88,7 +88,7 @@
 			{
 				Table table = new Table();
 				
-				foreach (HtmlNode tr in node.Children)
+				foreach (IHtmlNode tr in node.Children)
 				{
 					if (string.Compare(tr.Tag, "tr", true) == 0)
 					{

@@ -13,13 +13,13 @@
 		
 		protected readonly IOpenXmlContext context;
 		
-		private void RunCreated(HtmlNode node, Run run)
+		private void RunCreated(IHtmlNode node, Run run)
 		{
 			DocxRunStyle style = new DocxRunStyle();
 			style.Process(run, node.Styles);
 		}
 		
-		private void ParagraphCreated(HtmlNode node, Paragraph para)
+		private void ParagraphCreated(IHtmlNode node, Paragraph para)
 		{
 			DocxParagraphStyle style = new DocxParagraphStyle();
 			style.Process(para, node.Styles);
@@ -51,7 +51,7 @@
 			}
 		}
 		
-		protected void ProcessChild(HtmlNode node, OpenXmlElement parent)
+		protected void ProcessChild(IHtmlNode node, OpenXmlElement parent)
 		{
 			DocxElement element = context.Convert(node);
 					
@@ -62,7 +62,7 @@
 			}
 		}
 		
-		protected string ExtractAttributeValue(string attributeName, HtmlNode node)
+		protected string ExtractAttributeValue(string attributeName, IHtmlNode node)
 		{
 			if (node == null)
 			{
@@ -80,7 +80,7 @@
 			return string.Empty;
 		}
 		
-		protected void AppendToParagraph(HtmlNode node, OpenXmlElement parent, OpenXmlElement element)
+		protected void AppendToParagraph(IHtmlNode node, OpenXmlElement parent, OpenXmlElement element)
 		{
 			if (parent is Paragraph)
 			{
@@ -98,7 +98,7 @@
 			}
 		}
 		
-		protected void AppendToParagraphWithRun(HtmlNode node, OpenXmlElement parent, OpenXmlElement element)
+		protected void AppendToParagraphWithRun(IHtmlNode node, OpenXmlElement parent, OpenXmlElement element)
 		{
 			if (parent is Paragraph)
 			{
@@ -120,7 +120,7 @@
 			}
 		}
 		
-		protected Run AppendRun(HtmlNode node, OpenXmlElement parent)
+		protected Run AppendRun(IHtmlNode node, OpenXmlElement parent)
 		{
 			Run run = null;
 			
@@ -144,28 +144,28 @@
 			return run;
 		}
 		
-		protected Run CreateRun(HtmlNode node)
+		protected Run CreateRun(IHtmlNode node)
 		{
 			Run run = new Run();
 			RunCreated(node, run);
 			return run;
 		}
 		
-		protected Paragraph CreateParagraph(HtmlNode node)
+		protected Paragraph CreateParagraph(IHtmlNode node)
 		{
 			Paragraph para = new Paragraph();
 			ParagraphCreated(node, para);
 			return para;
 		}
 		
-		protected Paragraph CreateParagraph(HtmlNode node, OpenXmlElement parent)
+		protected Paragraph CreateParagraph(IHtmlNode node, OpenXmlElement parent)
 		{
 			Paragraph para = parent.AppendChild(new Paragraph());
 			ParagraphCreated(node, para);
 			return para;
 		}
 		
-		protected Run CreateRun(HtmlNode node, OpenXmlElement parent)
+		protected Run CreateRun(IHtmlNode node, OpenXmlElement parent)
 		{
 			Run run = parent.AppendChild(new Run());
 			RunCreated(node, run);
@@ -182,7 +182,7 @@
 			this.context = context;
 		}
 		
-		internal abstract bool CanConvert(HtmlNode node);
-		internal abstract void Process(HtmlNode node, OpenXmlElement parent);
+		internal abstract bool CanConvert(IHtmlNode node);
+		internal abstract void Process(IHtmlNode node, OpenXmlElement parent);
 	}
 }

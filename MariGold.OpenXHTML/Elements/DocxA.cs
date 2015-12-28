@@ -14,12 +14,12 @@
 		{
 		}
 		
-		internal override bool CanConvert(HtmlNode node)
+		internal override bool CanConvert(IHtmlNode node)
 		{
 			return string.Compare(node.Tag, "a", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(HtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent)
 		{
 			if (node == null)
 			{
@@ -47,7 +47,7 @@
 					run.RunProperties.Append(new RunStyle() { Val = "Hyperlink" });
 				}
 				
-				foreach (HtmlNode child in node.Children)
+				foreach (IHtmlNode child in node.Children)
 				{
 					if (child.IsText && !string.IsNullOrEmpty(child.InnerHtml))
 					{

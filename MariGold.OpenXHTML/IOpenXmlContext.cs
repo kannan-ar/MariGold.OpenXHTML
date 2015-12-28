@@ -12,7 +12,7 @@
 		Document Document{ get; }
 		
 		void Clear();
-		DocxElement Convert(HtmlNode node);
+		DocxElement Convert(IHtmlNode node);
 		DocxElement GetBodyElement();
 	}
 }

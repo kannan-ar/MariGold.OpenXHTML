@@ -10,7 +10,7 @@
 	{
 		private Regex isValid;
 		
-		private int GetHeaderNumber(HtmlNode node)
+		private int GetHeaderNumber(IHtmlNode node)
 		{
 			int value = -1;
 			Regex regex = new Regex("[1-6]{1}$");
@@ -59,7 +59,7 @@
 			return fontSize;
 		}
 		
-		private void ApplyStyle(HtmlNode node, Run run)
+		private void ApplyStyle(IHtmlNode node, Run run)
 		{
 			int fontSize = CalculateFontSize(GetHeaderNumber(node));
 			
@@ -82,19 +82,19 @@
 			isValid = new Regex(@"^[hH][1-6]{1}$");
 		}
 		
-		internal override bool CanConvert(HtmlNode node)
+		internal override bool CanConvert(IHtmlNode node)
 		{
 			return isValid.IsMatch(node.Tag);
 		}
 		
-		internal override void Process(HtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent)
 		{
 			if (node != null && parent != null) 
 			{
 				Parent.Current = null;
 				OpenXmlElement paragraph = CreateParagraph(node, parent);
 			
-				foreach (HtmlNode child in node.Children) 
+				foreach (IHtmlNode child in node.Children) 
 				{
 					if (child.IsText) 
 					{

@@ -83,7 +83,7 @@
 			mainPart = null;
 		}
 		
-		public DocxElement Convert(HtmlNode node)
+		public DocxElement Convert(IHtmlNode node)
 		{
 			foreach (DocxElement element in elements)
 			{

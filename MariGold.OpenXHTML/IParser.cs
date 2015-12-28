@@ -8,6 +8,6 @@
 	/// </summary>
 	public interface IParser
 	{
-		HtmlNode FindBodyOrFirstElement();
+		IHtmlNode FindBodyOrFirstElement();
 	}
 }

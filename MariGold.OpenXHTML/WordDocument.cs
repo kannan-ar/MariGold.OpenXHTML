@@ -65,7 +65,7 @@
 				throw new ArgumentNullException("parser");
 			}
 		
-			HtmlNode node = parser.FindBodyOrFirstElement();
+			IHtmlNode node = parser.FindBodyOrFirstElement();
 			
 			if (node != null)
 			{
