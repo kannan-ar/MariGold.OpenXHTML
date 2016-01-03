@@ -55,7 +55,7 @@
 				
 				foreach (IHtmlNode td in tr.Children)
 				{
-					if (string.Compare(td.Tag, "td", true) == 0)
+					if (string.Compare(td.Tag, "td", StringComparison.InvariantCultureIgnoreCase) == 0)
 					{
 						ProcessTd(td, row);
 					}
@@ -72,7 +72,7 @@
 		
 		internal override bool CanConvert(IHtmlNode node)
 		{
-			return string.Compare(node.Tag, "table", true) == 0;
+			return string.Compare(node.Tag, "table", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent)
@@ -90,7 +90,7 @@
 				
 				foreach (IHtmlNode tr in node.Children)
 				{
-					if (string.Compare(tr.Tag, "tr", true) == 0)
+					if (string.Compare(tr.Tag, "tr", StringComparison.InvariantCultureIgnoreCase) == 0)
 					{
 						ProcessTr(tr, table);
 					}

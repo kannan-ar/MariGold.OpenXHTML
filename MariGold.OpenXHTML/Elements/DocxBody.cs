@@ -34,7 +34,7 @@
 		
 		internal override bool CanConvert(IHtmlNode node)
 		{
-			return string.Compare(node.Tag, "body", true) == 0;
+			return string.Compare(node.Tag, "body", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent)

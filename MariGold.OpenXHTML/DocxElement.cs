@@ -183,6 +183,7 @@
 		}
 		
 		internal abstract bool CanConvert(IHtmlNode node);
+		
 		internal abstract void Process(IHtmlNode node, OpenXmlElement parent);
 	}
 }

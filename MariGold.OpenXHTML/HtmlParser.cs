@@ -12,7 +12,7 @@
 		
 		private IHtmlNode FindBody(IHtmlNode node)
 		{
-			if (string.Compare(node.Tag, "body", true) == 0)
+			if (string.Compare(node.Tag, "body", StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				return node;
 			}
