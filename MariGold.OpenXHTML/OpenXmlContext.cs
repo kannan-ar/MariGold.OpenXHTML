@@ -17,6 +17,7 @@
 			elements = new List<DocxElement>()
 			{
 				new DocxDiv(this),
+				new DocxUL(this),
 				new DocxImage(this),
 				new DocxSpan(this),
 				new DocxA(this),

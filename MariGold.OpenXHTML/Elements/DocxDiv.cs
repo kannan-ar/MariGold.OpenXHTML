@@ -29,7 +29,7 @@
 				{
 					if (child.IsText)
 					{
-						AppendRun(node, paragraph).AppendChild(new Text(node.InnerHtml));
+						AppendRun(node, paragraph).AppendChild(new Text(child.InnerHtml));
 					}
 					else
 					{

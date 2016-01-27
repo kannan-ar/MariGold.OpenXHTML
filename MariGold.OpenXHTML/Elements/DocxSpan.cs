@@ -32,7 +32,7 @@
 							run = AppendRun(node, parent);
 						}
 						
-						run.AppendChild(new Text(node.InnerHtml));
+						run.AppendChild(new Text(child.InnerHtml));
 					}
 					else
 					{

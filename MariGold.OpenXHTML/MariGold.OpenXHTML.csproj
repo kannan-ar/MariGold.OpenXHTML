@@ -63,8 +63,10 @@
     <Compile Include="Elements\DocxHeader.cs" />
     <Compile Include="Elements\DocxItalic.cs" />
     <Compile Include="Elements\DocxImage.cs" />
+    <Compile Include="Elements\DocxOL.cs" />
     <Compile Include="Elements\DocxSpan.cs" />
     <Compile Include="Elements\DocxTable.cs" />
+    <Compile Include="Elements\DocxUL.cs" />
     <Compile Include="Elements\DocxUnderline.cs" />
     <Compile Include="HtmlParser.cs" />
     <Compile Include="IParser.cs" />
