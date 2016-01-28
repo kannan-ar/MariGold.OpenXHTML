@@ -77,7 +77,7 @@
 		
 		public void Save()
 		{
-			context.Clear();
+			context.Save();
 		}
 	}
 }

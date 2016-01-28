@@ -10,6 +10,7 @@
 	{
 		private const string elementName = "ul";
 		private const string liName = "li";
+		private const NumberFormatValues numberFormat = NumberFormatValues.Bullet;
 		
 		private void ProcessLi(IHtmlNode li, OpenXmlElement parent)
 		{
@@ -36,39 +37,56 @@
 
 			NumberingProperties numberingProperties = new NumberingProperties();
 			NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = 0 };
-			NumberingId numberingId = new NumberingId() { Val = 1 };
-			//Indentation indentation = new Indentation() { Left = (720 * 0).ToString(), Hanging = "360" };
+			NumberingId numberingId = new NumberingId() { Val = (Int32)numberFormat };
 
 			numberingProperties.Append(numberingLevelReference);
 			numberingProperties.Append(numberingId);
 
 			paragraphProperties.Append(paragraphStyleId);
 			paragraphProperties.Append(numberingProperties);
-			//paragraphProperties.Append(indentation);
 
 			return paragraphProperties;
 		}
 		
 		private void InitNumberDefinitions()
 		{
-			if (context.MainDocumentPart.NumberingDefinitionsPart == null)
+			if (!context.HasNumberingDefinition(numberFormat))
 			{
-				NumberingDefinitionsPart numberingPart =
-					context.MainDocumentPart.AddNewPart<NumberingDefinitionsPart>("numberingDefinitionsPart");
-					
-				Numbering element = 
-					new Numbering(
-						new AbstractNum(
-							new Level(
-								new NumberingFormat() { Val = NumberFormatValues.Bullet },
-								new LevelText() { Val = "•" }
-							) { LevelIndex = 0 }
-						){ AbstractNumberId = 1 },
-						new NumberingInstance(
-							new AbstractNumId(){ Val = 1 }
-						){ NumberID = 1 });
+				Int32 numberId = (Int32)numberFormat;
+				
+				AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
 
-				element.Save(numberingPart);
+				Level level = new Level() { LevelIndex = 0 };
+				StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
+				NumberingFormat numberingFormat = new NumberingFormat() { Val = numberFormat };
+				LevelText levelText = new LevelText() { Val = "·" };
+				LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
+
+				PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
+				Indentation indentation = new Indentation() { Start = "720", Hanging = "360" };
+
+				previousParagraphProperties.Append(indentation);
+
+				NumberingSymbolRunProperties numberingSymbolRunProperties = new NumberingSymbolRunProperties();
+				RunFonts runFonts = new RunFonts() { Hint = FontTypeHintValues.Default, Ascii = "Symbol", HighAnsi = "Symbol" };
+
+				numberingSymbolRunProperties.Append(runFonts);
+
+				level.Append(startNumberingValue);
+				level.Append(numberingFormat);
+				level.Append(levelText);
+				level.Append(levelJustification);
+				level.Append(previousParagraphProperties);
+				level.Append(numberingSymbolRunProperties);
+            
+				abstractNum.Append(level);
+				
+				NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numberId };
+				AbstractNumId abstractNumId = new AbstractNumId() { Val = numberId };
+
+				numberingInstance.Append(abstractNumId);
+				
+				context.SaveNumberingDefinition(numberFormat, abstractNum, numberingInstance);
 			}
 		}
 		

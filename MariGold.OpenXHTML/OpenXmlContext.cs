@@ -5,12 +5,15 @@
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using System.Collections.Generic;
 	using MariGold.HtmlParser;
+	using System.Linq;
 	
 	internal sealed class OpenXmlContext : IOpenXmlContext
 	{
 		private WordprocessingDocument document;
 		private MainDocumentPart mainPart;
 		private List<DocxElement> elements;
+		private Dictionary<NumberFormatValues,AbstractNum> abstractNumList;
+		private Dictionary<NumberFormatValues,NumberingInstance> numberingInstanceList;
 		
 		private void PrepareWordElements()
 		{
@@ -28,6 +31,28 @@
 				new DocxHeader(this),
 				new DocxTable(this)
 			};
+		}
+		
+		private void SaveNumberDefinitions()
+		{
+			if (mainPart.NumberingDefinitionsPart == null)
+			{
+				NumberingDefinitionsPart numberingPart = mainPart.AddNewPart<NumberingDefinitionsPart>("numberingDefinitionsPart");
+			}
+			
+			Numbering numbering = new Numbering();
+			
+			foreach (var abstractNum in abstractNumList) 
+			{
+				numbering.Append(abstractNum.Value);
+			}
+			
+			foreach (var numberingInstance in numberingInstanceList) 
+			{
+				numbering.Append(numberingInstance.Value);
+			}
+			
+			mainPart.NumberingDefinitionsPart.Numbering = numbering;
 		}
 		
 		internal OpenXmlContext(WordprocessingDocument document)
@@ -73,8 +98,10 @@
 			}
 		}
 		
-		public void Clear()
+		public void Save()
 		{
+			SaveNumberDefinitions();
+			
 			Document.Save();
 			
 			document.Close();
@@ -100,6 +127,34 @@
 		public DocxElement GetBodyElement()
 		{
 			return new DocxBody(this);
+		}
+		
+		public bool HasNumberingDefinition(NumberFormatValues format)
+		{
+			return abstractNumList != null && numberingInstanceList != null && abstractNumList.ContainsKey(format) && numberingInstanceList.ContainsKey(format);
+		}
+		
+		public void SaveNumberingDefinition(NumberFormatValues format, AbstractNum abstractNum, NumberingInstance numberingInstance)
+		{
+			if (abstractNumList == null)
+			{
+				abstractNumList = new Dictionary<NumberFormatValues, AbstractNum>();
+			}
+			
+			if (numberingInstanceList == null)
+			{
+				numberingInstanceList = new Dictionary<NumberFormatValues, NumberingInstance>();
+			}
+			
+			if (!abstractNumList.ContainsKey(format))
+			{
+				abstractNumList.Add(format, abstractNum);
+			}
+			
+			if (!numberingInstanceList.ContainsKey(format))
+			{
+				numberingInstanceList.Add(format, numberingInstance);
+			}
 		}
 	}
 }
