@@ -21,6 +21,7 @@
 			{
 				new DocxDiv(this),
 				new DocxUL(this),
+				new DocxOL(this),
 				new DocxImage(this),
 				new DocxSpan(this),
 				new DocxA(this),
@@ -35,24 +36,27 @@
 		
 		private void SaveNumberDefinitions()
 		{
-			if (mainPart.NumberingDefinitionsPart == null)
+			if (abstractNumList != null && numberingInstanceList != null)
 			{
-				NumberingDefinitionsPart numberingPart = mainPart.AddNewPart<NumberingDefinitionsPart>("numberingDefinitionsPart");
+				if (mainPart.NumberingDefinitionsPart == null)
+				{
+					NumberingDefinitionsPart numberingPart = mainPart.AddNewPart<NumberingDefinitionsPart>("numberingDefinitionsPart");
+				}
+			
+				Numbering numbering = new Numbering();
+			
+				foreach (var abstractNum in abstractNumList)
+				{
+					numbering.Append(abstractNum.Value);
+				}
+			
+				foreach (var numberingInstance in numberingInstanceList)
+				{
+					numbering.Append(numberingInstance.Value);
+				}
+			
+				mainPart.NumberingDefinitionsPart.Numbering = numbering;
 			}
-			
-			Numbering numbering = new Numbering();
-			
-			foreach (var abstractNum in abstractNumList) 
-			{
-				numbering.Append(abstractNum.Value);
-			}
-			
-			foreach (var numberingInstance in numberingInstanceList) 
-			{
-				numbering.Append(numberingInstance.Value);
-			}
-			
-			mainPart.NumberingDefinitionsPart.Numbering = numbering;
 		}
 		
 		internal OpenXmlContext(WordprocessingDocument document)

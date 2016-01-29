@@ -4,7 +4,6 @@
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
-	using DocumentFormat.OpenXml.Packaging;
 	
 	internal sealed class DocxUL : DocxElement
 	{
@@ -14,8 +13,14 @@
 		
 		private void ProcessLi(IHtmlNode li, OpenXmlElement parent)
 		{
-			OpenXmlElement paragraph = CreateParagraph(li, parent);
-			paragraph.Append(GetBulletProperties());
+			Paragraph paragraph = CreateParagraph(li, parent);
+			
+			if (paragraph.ParagraphProperties == null)
+			{
+				paragraph.ParagraphProperties = new ParagraphProperties();
+			}
+			
+			GetBulletProperties(paragraph.ParagraphProperties);
 			
 			foreach (IHtmlNode child in li.Children)
 			{
@@ -30,9 +35,8 @@
 			}
 		}
 		
-		private ParagraphProperties GetBulletProperties()
+		private ParagraphProperties GetBulletProperties(ParagraphProperties paragraphProperties)
 		{
-			ParagraphProperties paragraphProperties = new ParagraphProperties();
 			ParagraphStyleId paragraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
 			NumberingProperties numberingProperties = new NumberingProperties();
