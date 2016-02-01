@@ -20,7 +20,7 @@
 				paragraph.ParagraphProperties = new ParagraphProperties();
 			}
 			
-			GetBulletProperties(paragraph.ParagraphProperties);
+			SetListProperties(paragraph.ParagraphProperties);
 			
 			foreach (IHtmlNode child in li.Children)
 			{
@@ -35,7 +35,7 @@
 			}
 		}
 		
-		private ParagraphProperties GetBulletProperties(ParagraphProperties paragraphProperties)
+		private void SetListProperties(ParagraphProperties paragraphProperties)
 		{
 			ParagraphStyleId paragraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
@@ -48,8 +48,6 @@
 
 			paragraphProperties.Append(paragraphStyleId);
 			paragraphProperties.Append(numberingProperties);
-
-			return paragraphProperties;
 		}
 		
 		private void InitNumberDefinitions()

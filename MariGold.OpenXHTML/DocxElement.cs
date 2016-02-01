@@ -71,7 +71,7 @@
 			
 			foreach (KeyValuePair<string,string> attribute in node.Attributes)
 			{
-				if (string.Compare(attributeName, attribute.Key) == 0)
+				if (string.Compare(attributeName, attribute.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
 				{
 					return attribute.Value;
 				}

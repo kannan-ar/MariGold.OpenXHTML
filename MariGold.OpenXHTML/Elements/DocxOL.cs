@@ -47,9 +47,8 @@
 			}
 		}
 		
-		private ParagraphProperties GetListProperties(NumberFormatValues numberFormat)
+		private void SetListProperties(NumberFormatValues numberFormat, ParagraphProperties paragraphProperties)
 		{
-			ParagraphProperties paragraphProperties = new ParagraphProperties();
 			ParagraphStyleId paragraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
 			NumberingProperties numberingProperties = new NumberingProperties();
@@ -61,14 +60,18 @@
 
 			paragraphProperties.Append(paragraphStyleId);
 			paragraphProperties.Append(numberingProperties);
-
-			return paragraphProperties;
 		}
 		
 		private void ProcessLi(IHtmlNode li, OpenXmlElement parent, NumberFormatValues numberFormat)
 		{
-			OpenXmlElement paragraph = CreateParagraph(li, parent);
-			paragraph.Append(GetListProperties(numberFormat));
+			Paragraph paragraph = CreateParagraph(li, parent);
+			
+			if (paragraph.ParagraphProperties == null)
+			{
+				paragraph.ParagraphProperties = new ParagraphProperties();
+			}
+			
+			SetListProperties(numberFormat, paragraph.ParagraphProperties);
 			
 			foreach (IHtmlNode child in li.Children)
 			{
@@ -87,9 +90,9 @@
 		{
 			NumberFormatValues numberFormat = NumberFormatValues.Decimal;
 			
-			string type;
+			string type = ExtractAttributeValue("type", node);
 			
-			if (node.Attributes.TryGetValue("type", out type))
+			if (!string.IsNullOrEmpty(type))
 			{
 				switch (type)
 				{
