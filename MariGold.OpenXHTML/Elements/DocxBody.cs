@@ -10,17 +10,27 @@
 	{
 		private OpenXmlElement body;
 		
-		private void ProcessBody(IHtmlNode node)
+		private void ProcessBody(IHtmlNode node, ref Paragraph paragraph)
 		{
+			
 			while (node != null)
 			{
 				if (node.IsText)
 				{
-					AppendToParagraphWithRun(node, body, new Text(node.InnerHtml));
+					//AppendToParagraphWithRun(node, body, new Text(node.InnerHtml));
+					
+					if (paragraph == null)
+					{
+						paragraph = body.AppendChild(new Paragraph());
+						ParagraphCreated(node, paragraph);
+					}
+					
+					Run run = paragraph.AppendChild(new Run(new Text(node.InnerHtml)));
+					RunCreated(node, run);
 				}
 				else
 				{
-					ProcessChild(node, body);
+					ProcessChild(node, body, ref paragraph);
 				}
 				
 				node = node.Next;
@@ -37,7 +47,7 @@
 			return string.Compare(node.Tag, "body", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			body = context.Document.AppendChild(new Body());
 			
@@ -53,7 +63,7 @@
 				node = node.Children.ElementAt(0);
 			}
 			
-			ProcessBody(node);
+			ProcessBody(node, ref paragraph);
 		}
 	}
 }

@@ -155,7 +155,7 @@
 			return string.Compare(node.Tag, "img", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			string src = ExtractAttributeValue("src", node);
 			
@@ -165,7 +165,16 @@
 				
 				if (drawing != null)
 				{
-					AppendToParagraphWithRun(node, parent, drawing);
+					//AppendToParagraphWithRun(node, parent, drawing);
+					
+					if (paragraph == null)
+					{
+						paragraph = parent.AppendChild(new Paragraph());
+						ParagraphCreated(node, paragraph);
+					}
+					
+					Run run = paragraph.AppendChild(new Run(drawing));
+					RunCreated(node, run);
 				}
 			}
 		}

@@ -19,7 +19,7 @@
 			return string.Compare(node.Tag, "a", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			if (node == null)
 			{
@@ -36,7 +36,9 @@
 				
 				var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
 				
-				Run run = CreateRun(node);
+				//Run run = CreateRun(node);
+				Run run = new Run();
+				RunCreated(node, run);
 				
 				if (run.RunProperties == null)
 				{
@@ -57,7 +59,15 @@
 				
 				hyperLink.Append(run);
 				
-				AppendToParagraph(node, parent, hyperLink);
+				//AppendToParagraph(node, parent, hyperLink);
+				
+				if (paragraph == null)
+				{
+					paragraph = parent.AppendChild(new Paragraph());
+					ParagraphCreated(node, paragraph);
+				}
+				
+				paragraph.Append(hyperLink);
 			}
 		}
 	}

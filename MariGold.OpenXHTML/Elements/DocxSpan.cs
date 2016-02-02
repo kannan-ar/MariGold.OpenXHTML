@@ -17,26 +17,37 @@
 			return string.Compare(node.Tag, "span", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			if (node != null && parent != null)
 			{
-				Run	run = null;
+				//Run	run = null;
 				
 				foreach (IHtmlNode child in node.Children)
 				{
 					if (child.IsText)
 					{
+						if (paragraph == null)
+						{
+							paragraph = parent.AppendChild(new Paragraph());
+							ParagraphCreated(node, paragraph);
+						}
+						
+						Run run = paragraph.AppendChild(new Run(new Text(child.InnerHtml)));
+						RunCreated(child, run);
+						
+						/*
 						if (run == null)
 						{
 							run = AppendRun(node, parent);
 						}
 						
 						run.AppendChild(new Text(child.InnerHtml));
+						*/
 					}
 					else
 					{
-						ProcessChild(child, run);
+						ProcessChild(child, parent, ref paragraph);
 					}
 				}
 			}

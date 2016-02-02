@@ -17,7 +17,7 @@
 			return string.Compare(node.Tag, "u", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			if (node == null)
 			{
@@ -28,7 +28,15 @@
 			{
 				if (child.IsText)
 				{
-					Run run = CreateRun(child);
+					if (paragraph == null)
+					{
+						paragraph = parent.AppendChild(new Paragraph());
+						ParagraphCreated(node, paragraph);
+					}
+					
+					//Run run = CreateRun(child);
+					Run run = paragraph.AppendChild(new Run());
+					RunCreated(child, run);
 					
 					if (run.RunProperties == null)
 					{
@@ -39,11 +47,11 @@
 					
 					run.AppendChild(new Text(child.InnerHtml));
 					
-					AppendToParagraph(node, parent, run);
+					//AppendToParagraph(node, parent, run);
 				}
 				else
 				{
-					ProcessChild(child, parent);
+					ProcessChild(child, parent, ref paragraph);
 				}
 			}
 		}

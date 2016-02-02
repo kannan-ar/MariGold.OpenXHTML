@@ -13,7 +13,7 @@
 			{
 				TableCell cell = new TableCell();
 				Paragraph para = null;
-				Run run = null;
+				//Run run = null;
 				
 				foreach (IHtmlNode child in td.Children)
 				{
@@ -21,11 +21,15 @@
 					{
 						if (para == null)
 						{
-							para = CreateParagraph(td);
-							run = CreateRun(td, para);
+							para = new Paragraph();
+							ParagraphCreated(td, para);
+							//para = CreateParagraph(td);
+							//run = CreateRun(td, para);
 						}
 						
-						run.AppendChild(new Text(child.InnerHtml));
+						Run run = para.AppendChild(new Run(new Text(child.InnerHtml)));
+						RunCreated(child, run);
+						//run.AppendChild(new Text(child.InnerHtml));
 					}
 					else
 					{
@@ -34,7 +38,7 @@
 							cell.Append(para);
 						}
 						
-						ProcessChild(child, cell);
+						ProcessChild(child, cell, ref para);
 					}
 				}
 				
@@ -75,14 +79,15 @@
 			return string.Compare(node.Tag, "table", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			if (node == null || parent == null || !CanConvert(node))
 			{
 				return;
 			}
 			
-			Parent.Current = null;
+			//Parent.Current = null;
+			paragraph = null;
 			
 			if (node.HasChildren)
 			{

@@ -8,23 +8,24 @@
 	
 	internal abstract class DocxElement
 	{
-		private Paragraph paragraph;
-		private DocxElement parent;
+		//private Paragraph paragraph;
+		//private DocxElement parent;
 		
 		protected readonly IOpenXmlContext context;
 		
-		private void RunCreated(IHtmlNode node, Run run)
+		protected void RunCreated(IHtmlNode node, Run run)
 		{
 			DocxRunStyle style = new DocxRunStyle();
 			style.Process(run, node.Styles);
 		}
 		
-		private void ParagraphCreated(IHtmlNode node, Paragraph para)
+		protected void ParagraphCreated(IHtmlNode node, Paragraph para)
 		{
 			DocxParagraphStyle style = new DocxParagraphStyle();
 			style.Process(para, node.Styles);
 		}
 		
+		/*
 		internal Paragraph Current
 		{
 			get
@@ -50,15 +51,16 @@
 				parent = value;
 			}
 		}
+		*/
 		
-		protected void ProcessChild(IHtmlNode node, OpenXmlElement parent)
+		protected void ProcessChild(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			DocxElement element = context.Convert(node);
 					
 			if (element != null)
 			{
-				element.Parent = this;
-				element.Process(node, parent);
+				//element.Parent = this;
+				element.Process(node, parent, ref paragraph);
 			}
 		}
 		
@@ -79,7 +81,7 @@
 			
 			return string.Empty;
 		}
-		
+		/*
 		protected void AppendToParagraph(IHtmlNode node, OpenXmlElement parent, OpenXmlElement element)
 		{
 			if (parent is Paragraph)
@@ -171,7 +173,7 @@
 			RunCreated(node, run);
 			return run;
 		}
-		
+		*/
 		internal DocxElement(IOpenXmlContext context)
 		{
 			if (context == null)
@@ -184,6 +186,6 @@
 		
 		internal abstract bool CanConvert(IHtmlNode node);
 		
-		internal abstract void Process(IHtmlNode node, OpenXmlElement parent);
+		internal abstract void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph);
 	}
 }

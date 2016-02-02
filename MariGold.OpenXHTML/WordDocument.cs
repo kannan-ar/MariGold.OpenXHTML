@@ -70,8 +70,9 @@
 			if (node != null)
 			{
 				DocxElement body = context.GetBodyElement();
-				body.Parent = body;
-				body.Process(node, null);
+				//body.Parent = body;
+				Paragraph paragraph = null;
+				body.Process(node, null, ref paragraph);
 			}
 		}
 		

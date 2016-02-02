@@ -64,7 +64,9 @@
 		
 		private void ProcessLi(IHtmlNode li, OpenXmlElement parent, NumberFormatValues numberFormat)
 		{
-			Paragraph paragraph = CreateParagraph(li, parent);
+			//Paragraph paragraph = CreateParagraph(li, parent);
+			Paragraph paragraph = parent.AppendChild(new Paragraph());
+			ParagraphCreated(li, paragraph);
 			
 			if (paragraph.ParagraphProperties == null)
 			{
@@ -77,11 +79,13 @@
 			{
 				if (child.IsText)
 				{
-					AppendRun(li, paragraph).AppendChild(new Text(child.InnerHtml));
+					//AppendRun(li, paragraph).AppendChild(new Text(child.InnerHtml));
+					Run run = paragraph.AppendChild(new Run(new Text(child.InnerHtml)));
+					RunCreated(li, run);
 				}
 				else
 				{
-					ProcessChild(child, paragraph);
+					ProcessChild(child, parent, ref paragraph);
 				}
 			}
 		}
@@ -131,12 +135,14 @@
 			return string.Compare(node.Tag, elementName, StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			if (node == null || !CanConvert(node))
 			{
 				return;
 			}
+			
+			paragraph = null;
 			
 			if (node.HasChildren)
 			{

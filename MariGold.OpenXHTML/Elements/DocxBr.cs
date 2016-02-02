@@ -17,11 +17,20 @@
 			return string.Compare(node.Tag, "br", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
 			if (node != null && parent != null)
 			{
-				AppendToParagraphWithRun(node, parent, new Break());
+				//AppendToParagraphWithRun(node, parent, new Break());
+				
+				if (paragraph == null)
+				{
+					paragraph = parent.AppendChild(new Paragraph());
+					ParagraphCreated(node, paragraph);
+				}
+				
+				Run run = paragraph.AppendChild(new Run(new Break()));
+				RunCreated(node, run);
 			}
 		}
 	}

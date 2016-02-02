@@ -17,7 +17,7 @@
 			
 			Match match = regex.Match(node.Tag);
 			
-			if (match != null) 
+			if (match != null)
 			{
 				Int32.TryParse(match.Value, out value);
 			}
@@ -29,7 +29,7 @@
 		{
 			int fontSize = -1;
 			
-			switch (headerSize) 
+			switch (headerSize)
 			{
 				case 1:
 					fontSize = 32;
@@ -63,12 +63,12 @@
 		{
 			int fontSize = CalculateFontSize(GetHeaderNumber(node));
 			
-			if (fontSize == -1) 
+			if (fontSize == -1)
 			{
 				return;
 			}
 			
-			if (run.RunProperties == null) 
+			if (run.RunProperties == null)
 			{
 				run.RunProperties = new RunProperties();
 			}
@@ -87,26 +87,36 @@
 			return isValid.IsMatch(node.Tag);
 		}
 		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent)
+		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
-			if (node != null && parent != null) 
+			if (node != null && parent != null)
 			{
-				Parent.Current = null;
-				OpenXmlElement paragraph = CreateParagraph(node, parent);
+				//Parent.Current = null;
+				//OpenXmlElement paragraph = CreateParagraph(node, parent);
 			
-				foreach (IHtmlNode child in node.Children) 
+				paragraph = null;
+				Paragraph headerParagraph = null;
+				
+				foreach (IHtmlNode child in node.Children)
 				{
-					if (child.IsText) 
+					if (child.IsText)
 					{
-						Run run = AppendRun(node, paragraph);
+						if (headerParagraph == null)
+						{
+							headerParagraph = parent.AppendChild(new Paragraph());
+							ParagraphCreated(node, headerParagraph);
+						}
 						
+						//Run run = AppendRun(node, paragraph);
+						Run run = headerParagraph.AppendChild(new Run());
+						RunCreated(child, run);
 						ApplyStyle(node, run);
 						
 						run.AppendChild(new Text(child.InnerHtml));
 					}
-					else 
+					else
 					{
-						ProcessChild(child, parent);
+						ProcessChild(child, parent, ref headerParagraph);
 					}
 				}
 			}
