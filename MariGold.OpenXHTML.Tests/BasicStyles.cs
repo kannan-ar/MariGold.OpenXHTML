@@ -7,6 +7,8 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using Word = DocumentFormat.OpenXml.Wordprocessing;
+	using DocumentFormat.OpenXml.Validation;
+	using System.Linq;
 	
 	[TestFixture]
 	public class BasicStyles
@@ -35,6 +37,10 @@
 				Assert.IsNotNull(run.RunProperties);
 				Assert.IsNotNull(run.RunProperties.Color);
 				Assert.AreEqual("ff0000", run.RunProperties.Color.Val.Value);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -62,6 +68,10 @@
 				Assert.IsNotNull(run.RunProperties);
 				Assert.IsNotNull(run.RunProperties.Color);
 				Assert.AreEqual("FF0000", run.RunProperties.Color.Val.Value);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 	}

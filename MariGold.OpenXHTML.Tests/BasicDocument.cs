@@ -7,6 +7,8 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using Word = DocumentFormat.OpenXml.Wordprocessing;
+	using DocumentFormat.OpenXml.Validation;
+	using System.Linq;
 	
 	[TestFixture]
 	public class BasicDocument
@@ -36,6 +38,10 @@
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual(" ", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 			
 		}
@@ -51,6 +57,10 @@
 				
 				Assert.IsNotNull(doc.Document.Body);
 				Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -79,6 +89,10 @@
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("test", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -124,6 +138,10 @@
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("1", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -163,6 +181,10 @@
 				
 				Assert.IsNotNull(text);
 				Assert.AreEqual("2", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 				
@@ -207,6 +229,10 @@
 				
 				Assert.IsNotNull(text);
 				Assert.AreEqual("2", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -251,6 +277,10 @@
 				
 				Assert.IsNotNull(text);
 				Assert.AreEqual("2", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -295,6 +325,10 @@
 				
 				Assert.IsNotNull(text);
 				Assert.AreEqual("2", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -337,6 +371,10 @@
 				run = para.ChildElements[1] as Run;
 				text = run.ChildElements[0] as Word.Text;
 				Assert.AreEqual("3", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -381,6 +419,10 @@
 				
 				Assert.IsNotNull(text);
 				Assert.AreEqual("click here", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -425,6 +467,10 @@
 				
 				Assert.IsNotNull(text);
 				Assert.AreEqual("click here", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 		
@@ -457,6 +503,10 @@
 				text = run.ChildElements[0] as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual("test1", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
 			}
 		}
 	}
