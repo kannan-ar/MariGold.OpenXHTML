@@ -111,9 +111,9 @@
 				Table table = doc.Document.Body.ChildElements[0] as Table;
 				
 				Assert.IsNotNull(table);
-				Assert.AreEqual(1, table.ChildElements.Count);
+				Assert.AreEqual(3, table.ChildElements.Count);
 				
-				TableRow row = table.ChildElements[0] as TableRow;
+				TableRow row = table.ChildElements[2] as TableRow;
 				
 				Assert.IsNotNull(row);
 				Assert.AreEqual(1, row.ChildElements.Count);
@@ -138,11 +138,11 @@
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("1", text.InnerText);
-				/*
+				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);
 				Assert.AreEqual(0, errors.Count());
-				*/
+				
 			}
 		}
 		
@@ -745,6 +745,43 @@
 				text = run.ChildElements[0] as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual("two", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
+		[Test]
+		public void H1Only()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<h1>test</h1>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Run run = para.ChildElements[0] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(2, run.ChildElements.Count);
+				var text = run.ChildElements[1] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual("test", text.InnerText);
+				
+				Assert.IsNotNull(run.RunProperties);
+				Bold bold = run.RunProperties.ChildElements[0] as Bold;
+				Assert.IsNotNull(bold);
+				FontSize fontSize = run.RunProperties.ChildElements[1] as FontSize;
+				Assert.IsNotNull(fontSize);
+				Assert.AreEqual("32", fontSize.Val.Value);
+				
 				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);

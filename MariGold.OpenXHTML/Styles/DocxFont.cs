@@ -100,12 +100,12 @@
 		{
 			FontSize fontSize = new FontSize(){ Val = size.ToString() };
 			
-			styleElement.Append(fontSize);
-			
 			if (isBold) 
 			{
 				styleElement.Append(new Bold());
 			}
+			
+			styleElement.Append(fontSize);
 		}
 	}
 }

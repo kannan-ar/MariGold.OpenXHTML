@@ -4,6 +4,8 @@
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
+	using System.Linq;
+	using System.Collections.Generic;
 	
 	internal sealed class DocxTable : DocxElement
 	{
@@ -69,6 +71,29 @@
 			}
 		}
 		
+		private void ApplyTableProperties(Table table, IHtmlNode node)
+		{
+			TableProperties tableProp = new TableProperties();
+			TableStyle tableStyle = new TableStyle() { Val = "TableGrid" };
+			
+			tableProp.Append(tableStyle);
+			table.AppendChild(tableProp);
+			
+			int count = node.Children.Count();
+			
+			if (count > 0)
+			{
+				TableGrid tg = new TableGrid();
+				
+				for (int i = 0; i < count; i++)
+				{
+					tg.AppendChild(new GridColumn());
+				}
+				
+				table.AppendChild(tg);
+			}
+		}
+		
 		internal DocxTable(IOpenXmlContext context)
 			: base(context)
 		{
@@ -92,6 +117,8 @@
 			if (node.HasChildren)
 			{
 				Table table = new Table();
+				
+				ApplyTableProperties(table, node);
 				
 				foreach (IHtmlNode tr in node.Children)
 				{
