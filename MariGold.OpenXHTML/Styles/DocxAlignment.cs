@@ -50,5 +50,10 @@
 
 			return assigned;
 		}
+		
+		internal static void AlignCenter(OpenXmlElement styleElement)
+		{
+			styleElement.Append(new Justification() { Val = JustificationValues.Center });
+		}
 	}
 }

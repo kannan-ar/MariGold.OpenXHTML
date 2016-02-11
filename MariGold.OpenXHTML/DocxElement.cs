@@ -81,6 +81,25 @@
 			
 			return string.Empty;
 		}
+		
+		protected string ExtractStyleValue(string styleName, IHtmlNode node)
+		{
+			if (node == null)
+			{
+				return string.Empty;
+			}
+			
+			foreach (KeyValuePair<string,string> style in node.Styles)
+			{
+				if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				{
+					return style.Value;
+				}
+			}
+			
+			return string.Empty;
+		}
+		
 		/*
 		protected void AppendToParagraph(IHtmlNode node, OpenXmlElement parent, OpenXmlElement element)
 		{

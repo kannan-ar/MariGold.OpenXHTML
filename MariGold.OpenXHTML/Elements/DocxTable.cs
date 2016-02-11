@@ -9,13 +9,17 @@
 	
 	internal sealed class DocxTable : DocxElement
 	{
-		private void ProcessTd(IHtmlNode td, TableRow row)
+		private void ApplyTableCellProperties(Table table)
+		{
+			
+		}
+		
+		private void ProcessTd(IHtmlNode td, TableRow row, bool isHeader)
 		{
 			if (td.HasChildren)
 			{
 				TableCell cell = new TableCell();
 				Paragraph para = null;
-				//Run run = null;
 				
 				foreach (IHtmlNode child in td.Children)
 				{
@@ -25,13 +29,10 @@
 						{
 							para = new Paragraph();
 							ParagraphCreated(td, para);
-							//para = CreateParagraph(td);
-							//run = CreateRun(td, para);
 						}
 						
 						Run run = para.AppendChild(new Run(new Text(child.InnerHtml)));
 						RunCreated(child, run);
-						//run.AppendChild(new Text(child.InnerHtml));
 					}
 					else
 					{
@@ -61,9 +62,11 @@
 				
 				foreach (IHtmlNode td in tr.Children)
 				{
-					if (string.Compare(td.Tag, "td", StringComparison.InvariantCultureIgnoreCase) == 0)
+					bool isHeader = string.Compare(td.Tag, "th", StringComparison.InvariantCultureIgnoreCase) == 0;
+					
+					if (string.Compare(td.Tag, "td", StringComparison.InvariantCultureIgnoreCase) == 0 || isHeader)
 					{
-						ProcessTd(td, row);
+						ProcessTd(td, row, isHeader);
 					}
 				}
 				
@@ -71,12 +74,38 @@
 			}
 		}
 		
+		private void ApplyTableBorder(TableStyle tableStyle, IHtmlNode node)
+		{
+			string borderStyle = ExtractAttributeValue("border", node);
+			
+			if (borderStyle == "1")
+			{
+				TableBorders tableBorders = new TableBorders();
+				
+				DocxBorder.ApplyDefaultBorders(tableBorders);
+			
+				tableStyle.Append(tableBorders);
+			}
+			else
+			{
+				borderStyle = ExtractStyleValue("border", node);
+				
+				if (!string.IsNullOrEmpty(borderStyle))
+				{
+					
+				}
+			}
+		}
+		
 		private void ApplyTableProperties(Table table, IHtmlNode node)
 		{
 			TableProperties tableProp = new TableProperties();
-			TableStyle tableStyle = new TableStyle() { Val = "TableGrid" };
 			
+			TableStyle tableStyle = new TableStyle() { Val = "TableGrid" };
 			tableProp.Append(tableStyle);
+			
+			ApplyTableBorder(tableStyle, node);
+			
 			table.AppendChild(tableProp);
 			
 			int count = node.Children.Count();
@@ -111,7 +140,6 @@
 				return;
 			}
 			
-			//Parent.Current = null;
 			paragraph = null;
 			
 			if (node.HasChildren)

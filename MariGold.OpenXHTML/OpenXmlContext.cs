@@ -27,6 +27,7 @@
 				new DocxA(this),
 				new DocxBr(this),
 				new DocxUnderline(this),
+				new DocxCenter(this),
 				new DocxItalic(this),
 				new DocxBold(this),
 				new DocxHeader(this),
