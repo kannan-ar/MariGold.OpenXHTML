@@ -157,7 +157,9 @@
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
-			string src = ExtractAttributeValue("src", node);
+			DocxNode docxNode = new DocxNode(node);
+			
+			string src = docxNode.ExtractAttributeValue("src");
 			
 			if (!string.IsNullOrEmpty(src))
 			{

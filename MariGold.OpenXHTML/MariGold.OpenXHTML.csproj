@@ -54,7 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocxStyle.cs" />
+    <Compile Include="DocxNode.cs" />
     <Compile Include="Elements\DocxA.cs" />
     <Compile Include="Elements\DocxBold.cs" />
     <Compile Include="Elements\DocxBody.cs" />
@@ -79,6 +79,7 @@
     <Compile Include="Styles\DocxColor.cs" />
     <Compile Include="Styles\DocxFont.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />
+    <Compile Include="Styles\DocxTableStyle.cs" />
     <Compile Include="WordDocument.cs" />
     <Compile Include="DocxElement.cs" />
     <Compile Include="Styles\DocxRunStyle.cs" />

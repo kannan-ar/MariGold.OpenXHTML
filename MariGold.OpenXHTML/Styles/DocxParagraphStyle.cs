@@ -4,7 +4,7 @@
 	using System.Collections.Generic;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxParagraphStyle : DocxStyle<Paragraph>
+	internal sealed class DocxParagraphStyle
 	{
 		private bool CheckAlignment(KeyValuePair<string,string> style, ParagraphProperties properties)
 		{
@@ -26,7 +26,7 @@
 			return false;
 		}
 		
-		internal override void Process(Paragraph element, Dictionary<string, string> styles)
+		internal void Process(Paragraph element, Dictionary<string, string> styles)
 		{
 			ParagraphProperties properties = element.ParagraphProperties;
 			

@@ -5,7 +5,7 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxRunStyle : DocxStyle<Run>
+	internal sealed class DocxRunStyle
 	{
 		private bool CheckFonts(KeyValuePair<string,string> style, RunProperties properties)
 		{
@@ -42,7 +42,7 @@
 			return false;
 		}
 		
-		internal override void Process(Run element, Dictionary<string, string> styles)
+		internal void Process(Run element, Dictionary<string, string> styles)
 		{
 			RunProperties properties = element.RunProperties;
 			

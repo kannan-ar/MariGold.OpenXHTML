@@ -26,7 +26,9 @@
 				return;
 			}
 			
-			string link = ExtractAttributeValue(href, node);
+			DocxNode docxNode = new DocxNode(node);
+			
+			string link = docxNode.ExtractAttributeValue(href);
 			
 			if (!string.IsNullOrEmpty(link))
 			{

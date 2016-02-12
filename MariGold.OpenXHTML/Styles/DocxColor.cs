@@ -28,15 +28,15 @@
 			int endIndex = rgb.IndexOf(")");
 			string hex = string.Empty;
 			
-			if (startIndex >= 0 && endIndex > startIndex) 
+			if (startIndex >= 0 && endIndex > startIndex)
 			{
 				string val = rgb.Substring(startIndex + 1, endIndex - startIndex - 1);
 				
-				if (!string.IsNullOrEmpty(val)) 
+				if (!string.IsNullOrEmpty(val))
 				{
 					string[] colors = val.Split(new char[]{ ',' }, StringSplitOptions.RemoveEmptyEntries);
 					
-					if (colors.Length > 2) 
+					if (colors.Length > 2)
 					{
 						int r, g, b = 0;
 						
@@ -206,9 +206,25 @@
 			namedColors.Add("slategray", "708090");
 			namedColors.Add("darkslategray", "2F4F4F");
 			namedColors.Add("black", "000000");
+		}
+		
+		//Convert 3 char length hex to 6 char length hex
+		private static string FillHex(string hex)
+		{
+			//Can apply this method. Thus return with original value
+			if (hex.Length != 3)
+			{
+				return hex;	
+			}
 			
+			string _hex = string.Empty;
 			
+			for (int i = 0; 3 > i; i++)
+			{
+				_hex = string.Concat(_hex, hex[i], hex[i]);
+			}
 			
+			return _hex;
 		}
 		
 		internal static bool IsHex(string styleValue)
@@ -220,18 +236,39 @@
 		{
 			string hex = string.Empty;
 			
-			if (string.IsNullOrEmpty(styleValue)) 
+			if (string.IsNullOrEmpty(styleValue))
 			{
 				return string.Empty;
 			}
 			
-			if (IsRGB(styleValue)) 
+			if (IsRGB(styleValue))
 			{
 				hex = GetHex(styleValue);
 			}
-			else if (IsHex(styleValue)) 
+			else
+			if (IsHex(styleValue))
 			{
 				hex = styleValue.Replace("#", string.Empty);
+				
+				if (!string.IsNullOrEmpty(hex) && hex.Length == 3)
+				{
+					hex = FillHex(hex);
+				}
+				
+				//Invalid hex value.
+				if (hex.Length != 6)
+				{
+					hex = string.Empty;
+				}
+			}
+			else
+			{
+				string value;
+				
+				if (namedColors.TryGetValue(styleValue.Trim().ToLower(), out value))
+				{
+					hex = value;
+				}
 			}
 			
 			return hex;
@@ -239,11 +276,11 @@
 		
 		internal static bool ApplyBackGroundColor(string styleName, string value, OpenXmlElement styleElement)
 		{
-			if (string.Compare(backGroundColor, styleName, StringComparison.InvariantCultureIgnoreCase) == 0) 
+			if (string.Compare(backGroundColor, styleName, StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				string hex = GetHexColor(value);
 					
-				if (!string.IsNullOrEmpty(hex)) 
+				if (!string.IsNullOrEmpty(hex))
 				{
 					styleElement.Append(new Word.Shading(){ Fill = hex });
 				}
@@ -256,11 +293,11 @@
 		
 		internal static bool ApplyColor(string styleName, string value, OpenXmlElement styleElement)
 		{
-			if (string.Compare(color, styleName, StringComparison.InvariantCultureIgnoreCase) == 0) 
+			if (string.Compare(color, styleName, StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				string hex = GetHexColor(value);
 					
-				if (!string.IsNullOrEmpty(hex)) 
+				if (!string.IsNullOrEmpty(hex))
 				{
 					styleElement.Append(new Word.Color(){ Val = hex });
 				}

@@ -5,15 +5,9 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using System.Linq;
-	using System.Collections.Generic;
 	
 	internal sealed class DocxTable : DocxElement
 	{
-		private void ApplyTableCellProperties(Table table)
-		{
-			
-		}
-		
 		private void ProcessTd(IHtmlNode td, TableRow row, bool isHeader)
 		{
 			if (td.HasChildren)
@@ -74,37 +68,16 @@
 			}
 		}
 		
-		private void ApplyTableBorder(TableStyle tableStyle, IHtmlNode node)
-		{
-			string borderStyle = ExtractAttributeValue("border", node);
-			
-			if (borderStyle == "1")
-			{
-				TableBorders tableBorders = new TableBorders();
-				
-				DocxBorder.ApplyDefaultBorders(tableBorders);
-			
-				tableStyle.Append(tableBorders);
-			}
-			else
-			{
-				borderStyle = ExtractStyleValue("border", node);
-				
-				if (!string.IsNullOrEmpty(borderStyle))
-				{
-					
-				}
-			}
-		}
-		
 		private void ApplyTableProperties(Table table, IHtmlNode node)
 		{
 			TableProperties tableProp = new TableProperties();
 			
 			TableStyle tableStyle = new TableStyle() { Val = "TableGrid" };
+			
 			tableProp.Append(tableStyle);
 			
-			ApplyTableBorder(tableStyle, node);
+			DocxTableStyle style = new DocxTableStyle();
+			style.Process(tableProp, node);
 			
 			table.AppendChild(tableProp);
 			

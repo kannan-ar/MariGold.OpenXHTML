@@ -93,8 +93,9 @@
 		private NumberFormatValues GetNumberFormat(IHtmlNode node)
 		{
 			NumberFormatValues numberFormat = NumberFormatValues.Decimal;
+			DocxNode docxNode = new DocxNode(node);
 			
-			string type = ExtractAttributeValue("type", node);
+			string type = docxNode.ExtractAttributeValue("type");
 			
 			if (!string.IsNullOrEmpty(type))
 			{
