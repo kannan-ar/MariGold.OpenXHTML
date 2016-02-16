@@ -1,7 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
-	using System.Collections;
 	using System.Text.RegularExpressions;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
@@ -10,6 +9,12 @@
 	internal static class DocxBorder
 	{
 		private static IDictionary<string,BorderValues> boderStyles;
+		
+		internal const string borderName = "border";
+		internal const string leftBorderName = "border-left";
+		internal const string topBorderName = "border-top";
+		internal const string rightBorderName = "border-right";
+		internal const string bottomBorderName = "border-bottom";
 		
 		static DocxBorder()
 		{
@@ -103,48 +108,62 @@
 			return border;
 		}
 		
-		internal static void ApplyDefaultBorders(OpenXmlCompositeElement element)
-		{
-			TopBorder topBorder = new TopBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
-			LeftBorder leftBorder = new LeftBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
-			BottomBorder bottomBorder = new BottomBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
-			RightBorder rightBorder = new RightBorder() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
-				
-			element.Append(topBorder);
-			element.Append(leftBorder);
-			element.Append(bottomBorder);
-			element.Append(rightBorder);
-		}
-		
-		internal static void ApplyBorders(OpenXmlCompositeElement element, 
-			string boderStyle, 
-			string leftBorderStyle, 
-			string topBorderStyle, 
-			string rightBorderStyle, 
-			string bottomBorderStyle)
+		private static void ApplyBorder<T>(string cssStyle, OpenXmlCompositeElement element)
+			where T : BorderType, new()
 		{
 			BorderValues borderValue;
 			string color;
 			UInt32 width;
 			
-			GetBorderProperties(boderStyle, out borderValue, out color, out width);
+			GetBorderProperties(cssStyle, out borderValue, out color, out width);
+				
+			T border = GetBorderType<T>(borderValue, color, width);
+				
+			if (border != null)
+			{
+				element.Append(border);
+			}
+		}
+		
+		private static void ApplyDefaultBorder<T>(OpenXmlCompositeElement element)
+			where T : BorderType, new()
+		{
+			T border = new T() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };
+			element.Append(border);
+		}
+		
+		internal static void ApplyDefaultBorders(OpenXmlCompositeElement element)
+		{
+			ApplyDefaultBorder<TopBorder>(element);
+			ApplyDefaultBorder<LeftBorder>(element);
+			ApplyDefaultBorder<BottomBorder>(element);
+			ApplyDefaultBorder<RightBorder>(element);
+		}
+		
+		internal static void ApplyBorders(OpenXmlCompositeElement element, 
+			string borderStyle, 
+			string leftBorderStyle, 
+			string topBorderStyle, 
+			string rightBorderStyle, 
+			string bottomBorderStyle,
+			bool useDefaultBorder)
+		{
+			BorderValues borderValue = BorderValues.None;
+			string color = string.Empty;
+			UInt32 width = 0;
+			bool hasBorder = false;
+			
+			if (!string.IsNullOrEmpty(borderStyle))
+			{
+				hasBorder = true;
+				GetBorderProperties(borderStyle, out borderValue, out color, out width);
+			}
 			
 			if (!string.IsNullOrEmpty(topBorderStyle))
 			{
-				BorderValues topBorderValue;
-				string topColor;
-				UInt32 topWidth;
-			
-				GetBorderProperties(topBorderStyle, out topBorderValue, out topColor, out topWidth);
-				
-				TopBorder topBorder = GetBorderType<TopBorder>(topBorderValue, topColor, topWidth);
-				
-				if (topBorder != null)
-				{
-					element.Append(topBorder);
-				}
+				ApplyBorder<TopBorder>(topBorderStyle, element);
 			}
-			else
+			else if (hasBorder)
 			{
 				TopBorder topBorder = GetBorderType<TopBorder>(borderValue, color, width);
 				
@@ -153,23 +172,16 @@
 					element.Append(topBorder);
 				}
 			}
+			else if(useDefaultBorder)
+			{
+				ApplyDefaultBorder<TopBorder>(element);
+			}
 			
 			if (!string.IsNullOrEmpty(leftBorderStyle))
 			{
-				BorderValues leftBorderValue;
-				string leftColor;
-				UInt32 leftWidth;
-			
-				GetBorderProperties(leftBorderStyle, out leftBorderValue, out leftColor, out leftWidth);
-				
-				LeftBorder leftBorder = GetBorderType<LeftBorder>(leftBorderValue, leftColor, leftWidth);
-				
-				if (leftBorder != null)
-				{
-					element.Append(leftBorder);
-				}
+				ApplyBorder<TopBorder>(leftBorderStyle, element);
 			}
-			else
+			else if (hasBorder)
 			{
 				LeftBorder leftBorder = GetBorderType<LeftBorder>(borderValue, color, width);
 				
@@ -178,23 +190,16 @@
 					element.Append(leftBorder);
 				}
 			}
+			else if(useDefaultBorder)
+			{
+				ApplyDefaultBorder<LeftBorder>(element);
+			}
 			
 			if (!string.IsNullOrEmpty(bottomBorderStyle))
 			{
-				BorderValues bottomBorderValue;
-				string bottomColor;
-				UInt32 bottomWidth;
-			
-				GetBorderProperties(bottomBorderStyle, out bottomBorderValue, out bottomColor, out bottomWidth);
-				
-				BottomBorder bottomBorder = GetBorderType<BottomBorder>(bottomBorderValue, bottomColor, bottomWidth);
-				
-				if (bottomBorder != null)
-				{
-					element.Append(bottomBorder);
-				}
+				ApplyBorder<BottomBorder>(bottomBorderStyle, element);
 			}
-			else
+			else if (hasBorder)
 			{
 				BottomBorder bottomBorder = GetBorderType<BottomBorder>(borderValue, color, width);
 				
@@ -203,23 +208,16 @@
 					element.Append(bottomBorder);
 				}
 			}
+			else if(useDefaultBorder)
+			{
+				ApplyDefaultBorder<BottomBorder>(element);
+			}
 			
 			if (!string.IsNullOrEmpty(rightBorderStyle))
 			{
-				BorderValues rightBorderValue;
-				string rightColor;
-				UInt32 rightWidth;
-			
-				GetBorderProperties(rightBorderStyle, out rightBorderValue, out rightColor, out rightWidth);
-				
-				RightBorder rightBorder = GetBorderType<RightBorder>(rightBorderValue, rightColor, rightWidth);
-				
-				if (rightBorder != null)
-				{
-					element.Append(rightBorder);
-				}
+				ApplyBorder<RightBorder>(rightBorderStyle, element);
 			}
-			else
+			else if (hasBorder)
 			{
 				RightBorder rightBorder = GetBorderType<RightBorder>(borderValue, color, width);
 				
@@ -227,6 +225,10 @@
 				{
 					element.Append(rightBorder);
 				}
+			}
+			else if(useDefaultBorder)
+			{
+				ApplyDefaultBorder<RightBorder>(element);
 			}
 		}
 	}

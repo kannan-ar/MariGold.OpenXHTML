@@ -6,11 +6,11 @@
 	
 	internal sealed class DocxTableStyle
 	{
-		private void ApplyTableBorder(TableProperties tableProperties, IHtmlNode node)
+		internal void Process(TableProperties tableProperties, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
 			
-			string borderStyle = docxNode.ExtractAttributeValue("border");
+			string borderStyle = docxNode.ExtractAttributeValue(DocxBorder.borderName);
 			
 			if (borderStyle == "1")
 			{
@@ -20,21 +20,49 @@
 			}
 			else
 			{
-				borderStyle = docxNode.ExtractStyleValue("border");
+				borderStyle = docxNode.ExtractStyleValue(DocxBorder.borderName);
+				string leftBorder = docxNode.ExtractStyleValue(DocxBorder.leftBorderName);
+				string topBorder = docxNode.ExtractStyleValue(DocxBorder.topBorderName);
+				string rightBorder = docxNode.ExtractStyleValue(DocxBorder.rightBorderName);
+				string bottomBorder = docxNode.ExtractStyleValue(DocxBorder.bottomBorderName);
 				
-				if (!string.IsNullOrEmpty(borderStyle))
-				{
-					TableBorders tableBorders = new TableBorders();
-					DocxBorder.ApplyBorders(tableBorders, borderStyle, null, null, null, null);
-					tableProperties.Append(tableBorders);
+				TableBorders tableBorders = new TableBorders();
 					
+				DocxBorder.ApplyBorders(tableBorders, borderStyle, leftBorder, topBorder, 
+					rightBorder, bottomBorder, docxProperties.HasDefaultBorder);
+				
+				if (tableBorders.HasChildren)
+				{
+					tableProperties.Append(tableBorders);
 				}
 			}
 		}
 		
-		internal void Process(TableProperties tableProperties, IHtmlNode node)
+		internal void Process(TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
 		{
-			ApplyTableBorder(tableProperties, node);
+			DocxNode docxNode = new DocxNode(node);
+			
+			string borderStyle = docxNode.ExtractStyleValue(DocxBorder.borderName);
+			string leftBorder = docxNode.ExtractStyleValue(DocxBorder.leftBorderName);
+			string topBorder = docxNode.ExtractStyleValue(DocxBorder.topBorderName);
+			string rightBorder = docxNode.ExtractStyleValue(DocxBorder.rightBorderName);
+			string bottomBorder = docxNode.ExtractStyleValue(DocxBorder.bottomBorderName);
+			
+			TableCellProperties cellProperties = new TableCellProperties();
+			TableCellBorders cellBorders = new TableCellBorders();
+			
+			DocxBorder.ApplyBorders(cellBorders, borderStyle, leftBorder, topBorder, 
+					rightBorder, bottomBorder, docxProperties.HasDefaultBorder);
+			
+			if(cellBorders.HasChildren)
+			{
+				cellProperties.Append(cellBorders);
+			}
+			
+			if(cellProperties.HasChildren)
+			{
+				cell.Append(cellProperties);
+			}
 		}
 	}
 }

@@ -108,7 +108,7 @@
 				Assert.IsNotNull(doc.Document.Body);
 				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
 				
-				Table table = doc.Document.Body.ChildElements[0] as Table;
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
 				
 				Assert.IsNotNull(table);
 				Assert.AreEqual(3, table.ChildElements.Count);

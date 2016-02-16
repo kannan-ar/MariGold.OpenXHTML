@@ -8,11 +8,31 @@
 	
 	internal sealed class DocxTable : DocxElement
 	{
-		private void ProcessTd(IHtmlNode td, TableRow row, bool isHeader)
+		private const string tableName = "table";
+		private const string trName = "tr";
+		private const string tdName = "td";
+		private const string thName = "th";
+		private const string tableGridName = "TableGrid";
+		
+		private DocxTableProperties GetTableProperties(IHtmlNode node)
+		{
+			DocxNode docxNode = new DocxNode(node);
+			DocxTableProperties docxProperties = new DocxTableProperties();
+				
+			docxProperties.HasDefaultBorder = docxNode.ExtractAttributeValue(DocxBorder.borderName) == "1";
+			
+			return docxProperties;
+		}
+		
+		private void ProcessTd(IHtmlNode td, TableRow row, DocxTableProperties docxProperties)
 		{
 			if (td.HasChildren)
 			{
 				TableCell cell = new TableCell();
+				
+				DocxTableStyle style = new DocxTableStyle();
+				style.Process(cell, docxProperties, td);
+				
 				Paragraph para = null;
 				
 				foreach (IHtmlNode child in td.Children)
@@ -48,7 +68,7 @@
 			}
 		}
 		
-		private void ProcessTr(IHtmlNode tr, Table table)
+		private void ProcessTr(IHtmlNode tr, Table table, DocxTableProperties properties)
 		{
 			if (tr.HasChildren)
 			{
@@ -56,11 +76,11 @@
 				
 				foreach (IHtmlNode td in tr.Children)
 				{
-					bool isHeader = string.Compare(td.Tag, "th", StringComparison.InvariantCultureIgnoreCase) == 0;
+					properties.IsCellHeader = string.Compare(td.Tag, thName, StringComparison.InvariantCultureIgnoreCase) == 0;
 					
-					if (string.Compare(td.Tag, "td", StringComparison.InvariantCultureIgnoreCase) == 0 || isHeader)
+					if (string.Compare(td.Tag, tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || properties.IsCellHeader)
 					{
-						ProcessTd(td, row, isHeader);
+						ProcessTd(td, row, properties);
 					}
 				}
 				
@@ -68,16 +88,16 @@
 			}
 		}
 		
-		private void ApplyTableProperties(Table table, IHtmlNode node)
+		private void ApplyTableProperties(Table table, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			TableProperties tableProp = new TableProperties();
 			
-			TableStyle tableStyle = new TableStyle() { Val = "TableGrid" };
+			TableStyle tableStyle = new TableStyle() { Val = tableGridName };
 			
 			tableProp.Append(tableStyle);
 			
 			DocxTableStyle style = new DocxTableStyle();
-			style.Process(tableProp, node);
+			style.Process(tableProp, docxProperties, node);
 			
 			table.AppendChild(tableProp);
 			
@@ -103,7 +123,7 @@
 		
 		internal override bool CanConvert(IHtmlNode node)
 		{
-			return string.Compare(node.Tag, "table", StringComparison.InvariantCultureIgnoreCase) == 0;
+			return string.Compare(node.Tag, tableName, StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
@@ -118,14 +138,15 @@
 			if (node.HasChildren)
 			{
 				Table table = new Table();
+				DocxTableProperties docxProperties = GetTableProperties(node);
 				
-				ApplyTableProperties(table, node);
+				ApplyTableProperties(table, docxProperties, node);
 				
 				foreach (IHtmlNode tr in node.Children)
 				{
-					if (string.Compare(tr.Tag, "tr", StringComparison.InvariantCultureIgnoreCase) == 0)
+					if (string.Compare(tr.Tag, trName, StringComparison.InvariantCultureIgnoreCase) == 0)
 					{
-						ProcessTr(tr, table);
+						ProcessTr(tr, table, docxProperties);
 					}
 				}
 				

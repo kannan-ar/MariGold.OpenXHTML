@@ -10,7 +10,7 @@
 	using System.Linq;
 	
 	[TestFixture]
-	public class Tables
+	public class Table
 	{
 		[Test]
 		public void TableBorder()
@@ -24,7 +24,7 @@
 				Assert.IsNotNull(doc.Document.Body);
 				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
 				
-				Table table = doc.Document.Body.ChildElements[0] as Table;
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
 				
 				Assert.IsNotNull(table);
 				Assert.AreEqual(3, table.ChildElements.Count);
@@ -47,9 +47,9 @@
 				TableCell cell = row.ChildElements[0] as TableCell;
 				
 				Assert.IsNotNull(cell);
-				Assert.AreEqual(1, cell.ChildElements.Count);
+				Assert.AreEqual(2, cell.ChildElements.Count);
 				
-				Paragraph para = cell.ChildElements[0] as Paragraph;
+				Paragraph para = cell.ChildElements[1] as Paragraph;
 				
 				Assert.IsNotNull(para);
 				Assert.AreEqual(1, para.ChildElements.Count);
@@ -83,7 +83,7 @@
 				Assert.IsNotNull(doc.Document.Body);
 				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
 				
-				Table table = doc.Document.Body.ChildElements[0] as Table;
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
 				
 				Assert.IsNotNull(table);
 				Assert.AreEqual(3, table.ChildElements.Count);

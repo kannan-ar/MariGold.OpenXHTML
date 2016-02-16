@@ -282,7 +282,7 @@
 					
 				if (!string.IsNullOrEmpty(hex))
 				{
-					styleElement.Append(new Word.Shading(){ Fill = hex });
+					styleElement.Append(new Word.Shading(){ Fill = hex, Val = Word.ShadingPatternValues.Clear });
 				}
 				
 				return true;
