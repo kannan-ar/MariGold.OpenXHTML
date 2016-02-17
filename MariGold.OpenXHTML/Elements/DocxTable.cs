@@ -68,7 +68,7 @@
 			}
 		}
 		
-		private void ProcessTr(IHtmlNode tr, Table table, DocxTableProperties properties)
+		private void ProcessTr(IHtmlNode tr, Table table, DocxTableProperties docxProperties)
 		{
 			if (tr.HasChildren)
 			{
@@ -76,11 +76,11 @@
 				
 				foreach (IHtmlNode td in tr.Children)
 				{
-					properties.IsCellHeader = string.Compare(td.Tag, thName, StringComparison.InvariantCultureIgnoreCase) == 0;
+					docxProperties.IsCellHeader = string.Compare(td.Tag, thName, StringComparison.InvariantCultureIgnoreCase) == 0;
 					
-					if (string.Compare(td.Tag, tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || properties.IsCellHeader)
+					if (string.Compare(td.Tag, tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || docxProperties.IsCellHeader)
 					{
-						ProcessTd(td, row, properties);
+						ProcessTd(td, row, docxProperties);
 					}
 				}
 				

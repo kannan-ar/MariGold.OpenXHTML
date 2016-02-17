@@ -79,6 +79,7 @@
     <Compile Include="Styles\DocxBorder.cs" />
     <Compile Include="Styles\DocxColor.cs" />
     <Compile Include="Styles\DocxFont.cs" />
+    <Compile Include="Styles\DocxPadding.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />
     <Compile Include="Styles\DocxTableStyle.cs" />
     <Compile Include="WordDocument.cs" />
