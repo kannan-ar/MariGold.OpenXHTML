@@ -13,6 +13,8 @@
 		private const string tdName = "td";
 		private const string thName = "th";
 		private const string tableGridName = "TableGrid";
+		private const string cellSpacingName = "cellspacing";
+		private const string cellPaddingName = "cellpadding";
 		
 		private DocxTableProperties GetTableProperties(IHtmlNode node)
 		{
@@ -20,6 +22,18 @@
 			DocxTableProperties docxProperties = new DocxTableProperties();
 				
 			docxProperties.HasDefaultBorder = docxNode.ExtractAttributeValue(DocxBorder.borderName) == "1";
+			
+			Int16 value;
+			
+			if (Int16.TryParse(docxNode.ExtractAttributeValue(cellSpacingName), out value))
+			{
+				docxProperties.CellSpacing = value;
+			}
+			
+			if (Int16.TryParse(docxNode.ExtractAttributeValue(cellPaddingName), out value))
+			{
+				docxProperties.CellPadding = value;
+			}
 			
 			return docxProperties;
 		}
@@ -74,6 +88,9 @@
 			{
 				TableRow row = new TableRow();
 				
+				DocxTableStyle style = new DocxTableStyle();
+				style.Process(row, docxProperties, tr);
+			
 				foreach (IHtmlNode td in tr.Children)
 				{
 					docxProperties.IsCellHeader = string.Compare(td.Tag, thName, StringComparison.InvariantCultureIgnoreCase) == 0;
