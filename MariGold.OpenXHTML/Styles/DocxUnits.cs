@@ -5,9 +5,9 @@
 	
 	internal static class DocxUnits
 	{
-		internal static StringValue GetDxaFromPixel(Int16 pixel)
+		internal static Int16 GetDxaFromPixel(Int16 pixel)
 		{
-			return (pixel * 20).ToString();
+			return (Int16)(pixel * 20);
 		}
 	}
 }

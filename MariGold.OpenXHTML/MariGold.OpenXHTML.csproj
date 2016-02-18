@@ -80,6 +80,8 @@
     <Compile Include="Styles\DocxColor.cs" />
     <Compile Include="Styles\DocxFont.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />
+    <Compile Include="Styles\DocxTableCellStyle.cs" />
+    <Compile Include="Styles\DocxTableRowStyle.cs" />
     <Compile Include="Styles\DocxTableStyle.cs" />
     <Compile Include="Styles\DocxUnits.cs" />
     <Compile Include="WordDocument.cs" />

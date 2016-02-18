@@ -1,7 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
-	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using MariGold.HtmlParser;
 	
@@ -41,26 +40,26 @@
 		{
 			if (docxProperties.CellPadding != null)
 			{
-				TableCellMargin cellMargin = new TableCellMargin();
-				StringValue width = DocxUnits.GetDxaFromPixel(docxProperties.CellPadding.Value);
+				TableCellMarginDefault cellMargin = new TableCellMarginDefault();
+				Int16 width = DocxUnits.GetDxaFromPixel(docxProperties.CellPadding.Value);
 				
-				cellMargin.LeftMargin = new LeftMargin() {
+				cellMargin.TableCellLeftMargin = new TableCellLeftMargin() {
 					Width = width,
-					Type = TableWidthUnitValues.Dxa
+					Type = TableWidthValues.Dxa
 				};
 				
 				cellMargin.TopMargin = new TopMargin() {
-					Width = width,
+					Width = width.ToString(),
 					Type = TableWidthUnitValues.Dxa
 				};
 				
-				cellMargin.RightMargin = new RightMargin() {
+				cellMargin.TableCellRightMargin = new TableCellRightMargin() {
 					Width = width,
-					Type = TableWidthUnitValues.Dxa
+					Type = TableWidthValues.Dxa
 				};
 				
 				cellMargin.BottomMargin = new BottomMargin() {
-					Width = width,
+					Width = width.ToString(),
 					Type = TableWidthUnitValues.Dxa
 				};
 				
@@ -74,52 +73,7 @@
 			
 			ProcessTableBorder(docxNode, docxProperties, tableProperties);
 			
-			//	ProcessTableCellMargin(docxProperties, tableProperties);
-		}
-		
-		internal void Process(TableRow row, DocxTableProperties docxProperties, IHtmlNode node)
-		{
-			TableRowProperties trProperties = new TableRowProperties();
-			
-			if (docxProperties.CellSpacing != null)
-			{
-				trProperties.Append(new TableCellSpacing() {
-					Width = DocxUnits.GetDxaFromPixel(docxProperties.CellSpacing.Value),
-					Type = TableWidthUnitValues.Dxa
-				});
-			}
-			
-			if (trProperties.ChildElements.Count > 0)
-			{
-				row.Append(trProperties);
-			}
-		}
-		
-		internal void Process(TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
-		{
-			DocxNode docxNode = new DocxNode(node);
-			
-			string borderStyle = docxNode.ExtractStyleValue(DocxBorder.borderName);
-			string leftBorder = docxNode.ExtractStyleValue(DocxBorder.leftBorderName);
-			string topBorder = docxNode.ExtractStyleValue(DocxBorder.topBorderName);
-			string rightBorder = docxNode.ExtractStyleValue(DocxBorder.rightBorderName);
-			string bottomBorder = docxNode.ExtractStyleValue(DocxBorder.bottomBorderName);
-			
-			TableCellProperties cellProperties = new TableCellProperties();
-			TableCellBorders cellBorders = new TableCellBorders();
-			
-			DocxBorder.ApplyBorders(cellBorders, borderStyle, leftBorder, topBorder, 
-				rightBorder, bottomBorder, docxProperties.HasDefaultBorder);
-			
-			if (cellBorders.HasChildren)
-			{
-				cellProperties.Append(cellBorders);
-			}
-			
-			if (cellProperties.HasChildren)
-			{
-				cell.Append(cellProperties);
-			}
+			ProcessTableCellMargin(docxProperties, tableProperties);
 		}
 	}
 }

@@ -44,7 +44,7 @@
 			{
 				TableCell cell = new TableCell();
 				
-				DocxTableStyle style = new DocxTableStyle();
+				DocxTableCellStyle style = new DocxTableCellStyle();
 				style.Process(cell, docxProperties, td);
 				
 				Paragraph para = null;
@@ -88,8 +88,8 @@
 			{
 				TableRow row = new TableRow();
 				
-				DocxTableStyle style = new DocxTableStyle();
-				style.Process(row, docxProperties, tr);
+				DocxTableRowStyle style = new DocxTableRowStyle();
+				style.Process(row, docxProperties);
 			
 				foreach (IHtmlNode td in tr.Children)
 				{
