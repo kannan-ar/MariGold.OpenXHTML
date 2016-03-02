@@ -22,9 +22,6 @@
 		{
 			if (node != null && parent != null)
 			{
-				//Parent.Current = null;
-				//OpenXmlElement paragraph = CreateParagraph(node, parent);
-				
 				//Div creates it's own new paragraph. So old paragraph ends here and creats another one after this div 
 				//if there any text!
 				paragraph = null;
@@ -34,8 +31,6 @@
 				{
 					if (child.IsText)
 					{
-						//AppendRun(node, paragraph).AppendChild(new Text(child.InnerHtml));
-						
 						if (divParagraph == null)
 						{
 							divParagraph = parent.AppendChild(new Paragraph());

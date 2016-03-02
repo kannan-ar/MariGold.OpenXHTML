@@ -13,7 +13,6 @@
 		
 		private void ProcessLi(IHtmlNode li, OpenXmlElement parent)
 		{
-			//Paragraph paragraph = CreateParagraph(li, parent);
 			Paragraph paragraph = parent.AppendChild(new Paragraph());
 			ParagraphCreated(li, paragraph);
 			
@@ -28,7 +27,6 @@
 			{
 				if (child.IsText)
 				{
-					//AppendRun(li, paragraph).AppendChild(new Text(child.InnerHtml));
 					Run run = paragraph.AppendChild(new Run(new Text(child.InnerHtml)));
 					RunCreated(li, run);
 				}

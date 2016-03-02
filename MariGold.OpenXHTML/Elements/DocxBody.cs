@@ -17,8 +17,6 @@
 			{
 				if (node.IsText)
 				{
-					//AppendToParagraphWithRun(node, body, new Text(node.InnerHtml));
-					
 					if (paragraph == null)
 					{
 						paragraph = body.AppendChild(new Paragraph());

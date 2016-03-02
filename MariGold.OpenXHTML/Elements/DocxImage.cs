@@ -167,8 +167,6 @@
 				
 				if (drawing != null)
 				{
-					//AppendToParagraphWithRun(node, parent, drawing);
-					
 					if (paragraph == null)
 					{
 						paragraph = parent.AppendChild(new Paragraph());

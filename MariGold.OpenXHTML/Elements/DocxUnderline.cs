@@ -34,7 +34,6 @@
 						ParagraphCreated(node, paragraph);
 					}
 					
-					//Run run = CreateRun(child);
 					Run run = paragraph.AppendChild(new Run());
 					RunCreated(child, run);
 					
@@ -46,8 +45,6 @@
 					DocxFont.ApplyUnderline(run.RunProperties);
 					
 					run.AppendChild(new Text(child.InnerHtml));
-					
-					//AppendToParagraph(node, parent, run);
 				}
 				else
 				{

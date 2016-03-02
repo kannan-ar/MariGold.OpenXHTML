@@ -21,8 +21,6 @@
 		{
 			if (node != null && parent != null)
 			{
-				//AppendToParagraphWithRun(node, parent, new Break());
-				
 				if (paragraph == null)
 				{
 					paragraph = parent.AppendChild(new Paragraph());

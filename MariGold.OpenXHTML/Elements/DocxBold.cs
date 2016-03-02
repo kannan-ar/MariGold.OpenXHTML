@@ -37,12 +37,6 @@
 					Run run = paragraph.AppendChild(new Run());
 					RunCreated(child, run);
 					
-					/*
-					Run run = CreateRun(child);
-					
-					
-					*/
-					
 					//Need to analyze the child style properties. If there is a bold-weight:normal property, 
 					//apply bold should not happen
 					if (run.RunProperties == null)
@@ -54,7 +48,6 @@
 					
 					run.AppendChild(new Text(child.InnerHtml));
 					                
-					//AppendToParagraph(node, parent, run);
 					paragraph.Append(run);
 				}
 				else

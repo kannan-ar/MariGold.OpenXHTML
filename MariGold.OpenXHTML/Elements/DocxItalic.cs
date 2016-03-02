@@ -28,8 +28,6 @@
 			{
 				if (child.IsText)
 				{
-					//Run run = CreateRun(child);
-					
 					if (paragraph == null)
 					{
 						paragraph = parent.AppendChild(new Paragraph());
@@ -47,8 +45,6 @@
 					DocxFont.ApplyFontItalic(run.RunProperties);
 					
 					run.AppendChild(new Text(child.InnerHtml));
-					
-					//AppendToParagraph(node, parent, run);
 				}
 				else
 				{

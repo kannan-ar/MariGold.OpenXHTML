@@ -38,7 +38,6 @@
 				
 				var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
 				
-				//Run run = CreateRun(node);
 				Run run = new Run();
 				RunCreated(node, run);
 				
@@ -60,8 +59,6 @@
 				}
 				
 				hyperLink.Append(run);
-				
-				//AppendToParagraph(node, parent, hyperLink);
 				
 				if (paragraph == null)
 				{

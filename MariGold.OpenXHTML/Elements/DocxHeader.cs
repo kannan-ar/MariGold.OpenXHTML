@@ -91,9 +91,6 @@
 		{
 			if (node != null && parent != null)
 			{
-				//Parent.Current = null;
-				//OpenXmlElement paragraph = CreateParagraph(node, parent);
-			
 				paragraph = null;
 				Paragraph headerParagraph = null;
 				
@@ -107,7 +104,6 @@
 							ParagraphCreated(node, headerParagraph);
 						}
 						
-						//Run run = AppendRun(node, paragraph);
 						Run run = headerParagraph.AppendChild(new Run());
 						RunCreated(child, run);
 						ApplyStyle(node, run);

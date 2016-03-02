@@ -21,8 +21,6 @@
 		{
 			if (node != null && parent != null)
 			{
-				//Run	run = null;
-				
 				foreach (IHtmlNode child in node.Children)
 				{
 					if (child.IsText)
@@ -35,15 +33,6 @@
 						
 						Run run = paragraph.AppendChild(new Run(new Text(child.InnerHtml)));
 						RunCreated(child, run);
-						
-						/*
-						if (run == null)
-						{
-							run = AppendRun(node, parent);
-						}
-						
-						run.AppendChild(new Text(child.InnerHtml));
-						*/
 					}
 					else
 					{
