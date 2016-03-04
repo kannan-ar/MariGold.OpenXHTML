@@ -7,6 +7,18 @@
 	
 	internal sealed class DocxTable : DocxElement
 	{
+		private void SetThStyleToRun(IHtmlNode run)
+		{
+			DocxNode docxNode = new DocxNode(run);
+			
+			string value = docxNode.ExtractStyleValue(DocxFont.fontWeight);
+			
+			if (string.IsNullOrEmpty(value))
+			{
+				docxNode.SetStyleValue(DocxFont.fontWeight, DocxFont.bold);
+			}
+		}
+		
 		private void ProcessTd(IHtmlNode td, TableRow row, DocxTableProperties docxProperties)
 		{
 			if (td.HasChildren)
@@ -20,6 +32,12 @@
 				
 				foreach (IHtmlNode child in td.Children)
 				{
+					//If the cell is th header, apply font-weight:bold to the text
+					if (docxProperties.IsCellHeader)
+					{
+						SetThStyleToRun(child);
+					}
+					
 					if (child.IsText)
 					{
 						if (para == null)

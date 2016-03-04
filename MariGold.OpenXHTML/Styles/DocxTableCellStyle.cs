@@ -22,6 +22,16 @@
 			DocxBorder.ApplyBorders(cellBorders, borderStyle, leftBorder, topBorder, 
 				rightBorder, bottomBorder, docxProperties.HasDefaultBorder);
 			
+			Int32 colSpan;
+			
+			if (Int32.TryParse(docxNode.ExtractAttributeValue("colspan"), out colSpan))
+			{
+				if (colSpan > 1)
+				{
+					cellProperties.Append(new GridSpan() { Val = colSpan });
+				}
+			}
+			
 			if (cellBorders.HasChildren)
 			{
 				cellProperties.Append(cellBorders);

@@ -43,5 +43,27 @@
 			
 			return string.Empty;
 		}
+		
+		internal void SetStyleValue(string styleName, string value)
+		{
+			string key = string.Empty;
+			
+			foreach (KeyValuePair<string,string> style in node.Styles)
+			{
+				if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+				{
+					key = style.Key;
+				}
+			}
+			
+			if (!string.IsNullOrEmpty(key))
+			{
+				node.Styles[key] = value;
+			}
+			else
+			{
+				node.Styles[styleName] = value;
+			}
+		}
 	}
 }

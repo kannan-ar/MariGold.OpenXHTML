@@ -6,17 +6,17 @@
 	
 	internal static class DocxFont
 	{
-		private const string fontFamily = "font-family";
-		private const string fontWeight = "font-weight";
-		private const string fontStyle = "font-style";
-		private const string textDecoration = "text-decoration";
+		internal const string fontFamily = "font-family";
+		internal const string fontWeight = "font-weight";
+		internal const string fontStyle = "font-style";
+		internal const string textDecoration = "text-decoration";
 		
-		private const string bold = "bold";
-		private const string bolder = "bolder";
-		private const string italic = "italic";
-		private const string oblique = "oblique";
-		private const string underLine = "underline";
-		private const string lineThrough = "line-through";
+		internal const string bold = "bold";
+		internal const string bolder = "bolder";
+		internal const string italic = "italic";
+		internal const string oblique = "oblique";
+		internal const string underLine = "underline";
+		internal const string lineThrough = "line-through";
 		
 		internal static bool ApplyFontFamily(string styleName, string value, OpenXmlElement styleElement)
 		{
@@ -37,7 +37,7 @@
 				return false;
 			}
 			
-			if (string.Compare(bold, value, StringComparison.InvariantCultureIgnoreCase) == 0 &&
+			if (string.Compare(bold, value, StringComparison.InvariantCultureIgnoreCase) == 0 ||
 			    string.Compare(bolder, value, StringComparison.InvariantCultureIgnoreCase) == 0) 
 			{
 				styleElement.Append(new Bold());

@@ -12,8 +12,6 @@
 	[TestFixture]
 	public class Table
 	{
-		
-		
 		[Test]
 		public void TableBorder()
 		{
@@ -311,7 +309,149 @@
 				var errors = validator.Validate(doc.WordprocessingDocument);
 				Assert.AreEqual(0, errors.Count());
 			}
+		}
+		
+		[Test]
+		public void TableThCellStyles()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
 			
+				doc.Process(new HtmlParser("<table><tr><th>Id</th></tr><tr><td>1</td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(4, table.ChildElements.Count);
+				
+				TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+				Assert.IsNotNull(tableProperties);
+				
+				TableStyle tableStyle = tableProperties.ChildElements[0]as TableStyle;
+				Assert.IsNotNull(tableStyle);
+				Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+				
+				TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+				Assert.IsNotNull(tableGrid);
+				Assert.AreEqual(1, tableGrid.ChildElements.Count);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				Assert.IsNotNull(row);
+				Assert.AreEqual(1, row.ChildElements.Count);
+				
+				TableCell cell = row.ChildElements[0] as TableCell;
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(1, cell.ChildElements.Count);
+				
+				Paragraph para = cell.ChildElements[0] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Run run = para.ChildElements[0] as Run;
+				
+				Assert.IsNotNull(run);
+				Assert.AreEqual(2, run.ChildElements.Count);
+				Assert.IsNotNull(run.RunProperties);
+				Bold bold = run.RunProperties.ChildElements[0] as Bold;
+				Assert.IsNotNull(bold);
+				
+				Word.Text text = run.ChildElements[1] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual(0, text.ChildElements.Count);
+				Assert.AreEqual("Id", text.InnerText);
+				
+				row = table.ChildElements[3] as TableRow;
+				Assert.IsNotNull(row);
+				Assert.AreEqual(1, row.ChildElements.Count);
+				
+				cell = row.ChildElements[0] as TableCell;
+				cell.TestTableCell(1, "1");
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
+		[Test]
+		public void TableThColSpan()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table><tr><td>Id</td><td>Name</td></tr><tr><td colspan='2'>1</td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(4, table.ChildElements.Count);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				Assert.IsNotNull(row);
+				Assert.AreEqual(2, row.ChildElements.Count);
+				
+				TableCell cell = row.ChildElements[0] as TableCell;
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(1, cell.ChildElements.Count);
+				cell.TestTableCell(1, "Id");
+				
+				cell = row.ChildElements[1] as TableCell;
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(1, cell.ChildElements.Count);
+				cell.TestTableCell(1, "Name");
+				
+				row = table.ChildElements[3] as TableRow;
+				Assert.IsNotNull(row);
+				Assert.AreEqual(1, row.ChildElements.Count);
+				
+				cell = row.ChildElements[0] as TableCell;
+				Assert.IsNotNull(cell);
+				
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
+		[Test]
+		public void TableThColSpanAdv()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table border='1'><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr><tr><td colspan='2'>one</td><td>three</td><td colspan='2'>five</td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(4, table.ChildElements.Count);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				Assert.IsNotNull(row);
+				Assert.AreEqual(5, row.ChildElements.Count);
+				
+				row = table.ChildElements[3] as TableRow;
+				Assert.IsNotNull(row);
+				Assert.AreEqual(3, row.ChildElements.Count);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
 		}
 	}
 }

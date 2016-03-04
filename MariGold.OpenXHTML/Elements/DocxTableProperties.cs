@@ -4,6 +4,7 @@
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using System.Linq;
+	using System.Collections.Generic;
 	
 	internal sealed class DocxTableProperties
 	{
@@ -19,6 +20,7 @@
 		internal const string tableGridName = "TableGrid";
 		internal const string cellSpacingName = "cellspacing";
 		internal const string cellPaddingName = "cellpadding";
+		internal const string colspan = "colspan";
 		
 		internal bool HasDefaultBorder
 		{
@@ -72,6 +74,46 @@
 			}
 		}
 		
+		private Int32 GetTdCount(IHtmlNode table)
+		{
+			int count = 0;
+			DocxNode docxNode = new DocxNode(table);
+			
+			if (table != null && table.HasChildren)
+			{
+				foreach (IHtmlNode tr in table.Children)
+				{
+					if (string.Compare(tr.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
+					{
+						foreach (IHtmlNode td in tr.Children)
+						{
+							if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 ||
+							    string.Compare(td.Tag, DocxTableProperties.thName, StringComparison.InvariantCultureIgnoreCase) == 0)
+							{
+								string colSpan = docxNode.ExtractAttributeValue("colspan");
+								Int32 colspanValue;
+								
+								if (!string.IsNullOrEmpty(colspan) && Int32.TryParse(colspan, out colspanValue))
+								{
+									count += colspanValue;
+								}
+								else
+								{
+									++count;
+								}
+							}
+							
+						}
+						
+						//Counted first row's td count. Thus exiting
+						break;
+					}
+				}
+			}
+			
+			return count;
+		}
+		
 		internal void FetchTableProperties(IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
@@ -104,7 +146,7 @@
 			
 			table.AppendChild(tableProp);
 			
-			int count = node.Children.Count();
+			int count = GetTdCount(node);
 			
 			if (count > 0)
 			{
