@@ -453,5 +453,191 @@
 				Assert.AreEqual(0, errors.Count());
 			}
 		}
+		
+		[Test]
+		public void TableAttributeWidth()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table width='50%'><tr><td>test</td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(3, table.ChildElements.Count);
+				
+				TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+				Assert.IsNotNull(tableProperties);
+				Assert.AreEqual(2, tableProperties.ChildElements.Count);
+				
+				TableStyle tableStyle = tableProperties.ChildElements[0]as TableStyle;
+				Assert.IsNotNull(tableStyle);
+				Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+				
+				TableWidth tableWidth = tableProperties.ChildElements[1]as TableWidth;
+				Assert.IsNotNull(tableWidth);
+				Assert.AreEqual("2500", tableWidth.Width.Value);
+				Assert.AreEqual(TableWidthUnitValues.Pct, tableWidth.Type.Value);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				
+				Assert.IsNotNull(row);
+				Assert.AreEqual(1, row.ChildElements.Count);
+				
+				TableCell cell = row.ChildElements[0] as TableCell;
+				
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(1, cell.ChildElements.Count);
+				
+				Paragraph para = cell.ChildElements[0] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Run run = para.ChildElements[0] as Run;
+				
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				
+				Word.Text text = run.ChildElements[0] as Word.Text;
+				
+				Assert.IsNotNull(text);
+				Assert.AreEqual(0, text.ChildElements.Count);
+				Assert.AreEqual("test", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
+		[Test]
+		public void TableStyleWidth()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table style='width:50%'><tr><td>test</td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(3, table.ChildElements.Count);
+				
+				TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+				Assert.IsNotNull(tableProperties);
+				Assert.AreEqual(2, tableProperties.ChildElements.Count);
+				
+				TableStyle tableStyle = tableProperties.ChildElements[0]as TableStyle;
+				Assert.IsNotNull(tableStyle);
+				Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+				
+				TableWidth tableWidth = tableProperties.ChildElements[1]as TableWidth;
+				Assert.IsNotNull(tableWidth);
+				Assert.AreEqual("2500", tableWidth.Width.Value);
+				Assert.AreEqual(TableWidthUnitValues.Pct, tableWidth.Type.Value);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				
+				Assert.IsNotNull(row);
+				Assert.AreEqual(1, row.ChildElements.Count);
+				
+				TableCell cell = row.ChildElements[0] as TableCell;
+				
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(1, cell.ChildElements.Count);
+				
+				Paragraph para = cell.ChildElements[0] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Run run = para.ChildElements[0] as Run;
+				
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				
+				Word.Text text = run.ChildElements[0] as Word.Text;
+				
+				Assert.IsNotNull(text);
+				Assert.AreEqual(0, text.ChildElements.Count);
+				Assert.AreEqual("test", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
+		[Test]
+		public void TableAttributeStyleWidth()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table width='50%' style='width:150px'><tr><td>test</td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(3, table.ChildElements.Count);
+				
+				TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+				Assert.IsNotNull(tableProperties);
+				Assert.AreEqual(2, tableProperties.ChildElements.Count);
+				
+				TableStyle tableStyle = tableProperties.ChildElements[0]as TableStyle;
+				Assert.IsNotNull(tableStyle);
+				Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+				
+				TableWidth tableWidth = tableProperties.ChildElements[1]as TableWidth;
+				Assert.IsNotNull(tableWidth);
+				Assert.AreEqual("3000", tableWidth.Width.Value);
+				Assert.AreEqual(TableWidthUnitValues.Dxa, tableWidth.Type.Value);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				
+				Assert.IsNotNull(row);
+				Assert.AreEqual(1, row.ChildElements.Count);
+				
+				TableCell cell = row.ChildElements[0] as TableCell;
+				
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(1, cell.ChildElements.Count);
+				
+				Paragraph para = cell.ChildElements[0] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Run run = para.ChildElements[0] as Run;
+				
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				
+				Word.Text text = run.ChildElements[0] as Word.Text;
+				
+				Assert.IsNotNull(text);
+				Assert.AreEqual(0, text.ChildElements.Count);
+				Assert.AreEqual("test", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
 	}
 }

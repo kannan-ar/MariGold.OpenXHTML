@@ -67,6 +67,32 @@
 			}
 		}
 		
+		private void ProcessWidth(DocxNode docxNode, TableProperties tableProperties)
+		{
+			string width = docxNode.ExtractAttributeValue(DocxUnits.width);
+			string styleWidth = docxNode.ExtractStyleValue(DocxUnits.width);
+			
+			if (!string.IsNullOrEmpty(styleWidth))
+			{
+				width = styleWidth;
+			}
+			
+			if (!string.IsNullOrEmpty(width))
+			{
+				Int32 value;
+				TableWidthUnitValues unit;
+				
+				if (DocxUnits.TableUnitsFromStyle(width, out value, out unit))
+				{
+					TableWidth tableWidth = new TableWidth() {
+						Width = value.ToString(),
+						Type = unit
+					};
+					tableProperties.Append(tableWidth);
+				}
+			}
+		}
+		
 		internal void Process(TableProperties tableProperties, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
@@ -74,6 +100,8 @@
 			ProcessTableBorder(docxNode, docxProperties, tableProperties);
 			
 			ProcessTableCellMargin(docxProperties, tableProperties);
+			
+			ProcessWidth(docxNode, tableProperties);
 		}
 	}
 }
