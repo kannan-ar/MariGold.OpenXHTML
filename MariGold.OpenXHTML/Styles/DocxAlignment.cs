@@ -6,31 +6,24 @@
 	
 	internal static class DocxAlignment
 	{
-		private const string textAlign = "text-align";
+		internal const string textAlign = "text-align";
 		
-		internal static bool ApplyTextAlign(string styleName, string value, OpenXmlElement styleElement)
+		internal static void ApplyTextAlign(string style, OpenXmlElement styleElement)
 		{
-			if (string.Compare(textAlign, styleName, StringComparison.InvariantCultureIgnoreCase) != 0) 
-			{
-				return false;
-			}
-			
 			JustificationValues alignment;
 					
-			if (DocxAlignment.GetJustificationValue(value, out alignment)) 
+			if (DocxAlignment.GetJustificationValue(style, out alignment)) 
 			{
 				styleElement.Append(new Justification() { Val = alignment });
 			}
-			
-			return true;
 		}
 		
-		internal static bool GetJustificationValue(string value, out JustificationValues alignment)
+		internal static bool GetJustificationValue(string style, out JustificationValues alignment)
 		{
 			alignment = JustificationValues.Left;
 			bool assigned = false;
 
-			switch (value.ToLower()) 
+			switch (style.ToLower()) 
 			{
 				case "right":
 					assigned = true;

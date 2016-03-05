@@ -179,7 +179,7 @@
 			
 			if (!string.IsNullOrEmpty(leftBorderStyle))
 			{
-				ApplyBorder<TopBorder>(leftBorderStyle, element);
+				ApplyBorder<LeftBorder>(leftBorderStyle, element);
 			}
 			else if (hasBorder)
 			{

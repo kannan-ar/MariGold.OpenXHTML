@@ -3,49 +3,55 @@
 	using System;
 	using System.Collections.Generic;
 	using DocumentFormat.OpenXml.Wordprocessing;
+	using MariGold.HtmlParser;
 	
 	internal sealed class DocxParagraphStyle
 	{
-		private bool CheckAlignment(KeyValuePair<string,string> style, ParagraphProperties properties)
+		private void ProcessBorder(DocxNode docxNode, ParagraphProperties properties)
 		{
-			if (DocxAlignment.ApplyTextAlign(style.Key, style.Value, properties)) 
-			{
-				return true;
-			}
+			ParagraphBorders paragraphBorders = new ParagraphBorders();
 			
-			return false;
+			DocxBorder.ApplyBorders(paragraphBorders,
+				docxNode.ExtractStyleValue(DocxBorder.borderName),
+				docxNode.ExtractStyleValue(DocxBorder.leftBorderName),
+				docxNode.ExtractStyleValue(DocxBorder.topBorderName),
+				docxNode.ExtractStyleValue(DocxBorder.rightBorderName),
+				docxNode.ExtractStyleValue(DocxBorder.bottomBorderName),
+				false);
+			
+			if (paragraphBorders.HasChildren)
+			{
+				properties.Append(paragraphBorders);
+			}
 		}
 		
-		private bool CheckColor(KeyValuePair<string,string> style, ParagraphProperties properties)
-		{
-			if (DocxColor.ApplyBackGroundColor(style.Key, style.Value, properties)) 
-			{
-				return true;
-			}
-			
-			return false;
-		}
-		
-		internal void Process(Paragraph element, Dictionary<string, string> styles)
+		internal void Process(Paragraph element, IHtmlNode node)
 		{
 			ParagraphProperties properties = element.ParagraphProperties;
+			DocxNode docxNode = new DocxNode(node);
 			
-			if (element.ParagraphProperties == null) 
+			if (properties == null)
 			{
 				properties = new ParagraphProperties();
 			}
 			
-			foreach (KeyValuePair<string,string> style in styles) 
+			string textAlign = docxNode.ExtractStyleValue(DocxAlignment.textAlign);
+			
+			if (!string.IsNullOrEmpty(textAlign))
 			{
-				if (CheckAlignment(style, properties)) 
-				{
-					continue;
-				}
-				
-				CheckColor(style, properties);
+				DocxAlignment.ApplyTextAlign(textAlign, properties);
 			}
 			
-			if (element.ParagraphProperties == null && properties.HasChildren) 
+			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+			
+			if (!string.IsNullOrEmpty(backgroundColor))
+			{
+				DocxColor.ApplyBackGroundColor(backgroundColor, properties);
+			}
+			
+			ProcessBorder(docxNode, properties);
+			
+			if (element.ParagraphProperties == null && properties.HasChildren)
 			{
 				element.ParagraphProperties = properties;
 			}

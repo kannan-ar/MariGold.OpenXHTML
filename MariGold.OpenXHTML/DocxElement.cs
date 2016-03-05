@@ -13,13 +13,13 @@
 		protected void RunCreated(IHtmlNode node, Run run)
 		{
 			DocxRunStyle style = new DocxRunStyle();
-			style.Process(run, node.Styles);
+			style.Process(run, node);
 		}
 		
 		protected void ParagraphCreated(IHtmlNode node, Paragraph para)
 		{
 			DocxParagraphStyle style = new DocxParagraphStyle();
-			style.Process(para, node.Styles);
+			style.Process(para, node);
 		}
 		
 		protected void ProcessChild(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)

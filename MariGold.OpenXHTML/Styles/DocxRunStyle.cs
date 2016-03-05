@@ -2,66 +2,63 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
+	using MariGold.HtmlParser;
 	
 	internal sealed class DocxRunStyle
 	{
-		private bool CheckFonts(KeyValuePair<string,string> style, RunProperties properties)
+		private void CheckFonts(DocxNode docxNode, RunProperties properties)
 		{
-			if(DocxFont.ApplyFontFamily(style.Key,style.Value, properties))
+			string fontFamily = docxNode.ExtractStyleValue(DocxFont.fontFamily);
+			string fontWeight = docxNode.ExtractStyleValue(DocxFont.fontWeight);
+			string textDecoration=docxNode.ExtractStyleValue(DocxFont.textDecoration);
+			
+			if (!string.IsNullOrEmpty(fontFamily))
 			{
-				return true;
+				DocxFont.ApplyFontFamily(fontFamily, properties);
 			}
 			
-			if(DocxFont.ApplyFontWeight(style.Key,style.Value,properties))
+			if (!string.IsNullOrEmpty(fontWeight))
 			{
-				return true;
+				DocxFont.ApplyFontWeight(fontWeight, properties);
 			}
 				
-			if(DocxFont.ApplyTextDecoration(style.Key, style.Value, properties))
+			if (!string.IsNullOrEmpty(textDecoration))
 			{
-				return true;
+				DocxFont.ApplyTextDecoration(textDecoration, properties);
 			}
-			
-			return false;
 		}
 		
-		private bool CheckColor(KeyValuePair<string,string> style, RunProperties properties)
+		private void CheckColor(DocxNode docxNode, RunProperties properties)
 		{
-			if (DocxColor.ApplyBackGroundColor(style.Key,style.Value,properties)) 
+			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+			string color = docxNode.ExtractStyleValue(DocxColor.color);
+			
+			if (!string.IsNullOrEmpty(backgroundColor))
 			{
-				return true;
-			}
-				
-			if (DocxColor.ApplyColor(style.Key,style.Value,properties)) 
-			{
-				return true;
+				DocxColor.ApplyBackGroundColor(backgroundColor, properties);
 			}
 			
-			return false;
+			if (!string.IsNullOrEmpty(color))
+			{
+				DocxColor.ApplyColor(color, properties);
+			}
 		}
 		
-		internal void Process(Run element, Dictionary<string, string> styles)
+		internal void Process(Run element, IHtmlNode node)
 		{
 			RunProperties properties = element.RunProperties;
+			DocxNode docxNode = new DocxNode(node);
 			
-			if (properties == null) 
+			if (properties == null)
 			{
 				properties = new RunProperties();
 			}
 			
-			foreach (KeyValuePair<string,string> style in styles) 
-			{
-				if(CheckColor(style, properties))
-				{
-					continue;
-				}
-				
-				CheckFonts(style, properties);
-			}
+			CheckFonts(docxNode, properties);
+			CheckColor(docxNode, properties);
 			
-			if (element.RunProperties == null && properties.HasChildren) 
+			if (element.RunProperties == null && properties.HasChildren)
 			{
 				element.RunProperties = properties;
 			}

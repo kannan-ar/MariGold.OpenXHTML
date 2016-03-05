@@ -8,9 +8,10 @@
 	
 	internal static class DocxColor
 	{
-		private const string backGroundColor = "background-color";
-		private const string color = "color";
 		private static IDictionary<string,string> namedColors;
+		
+		internal const string backGroundColor = "background-color";
+		internal const string color = "color";
 		
 		static DocxColor()
 		{
@@ -274,38 +275,27 @@
 			return hex;
 		}
 		
-		internal static bool ApplyBackGroundColor(string styleName, string value, OpenXmlElement styleElement)
+		internal static void ApplyBackGroundColor(string style, OpenXmlElement styleElement)
 		{
-			if (string.Compare(backGroundColor, styleName, StringComparison.InvariantCultureIgnoreCase) == 0)
-			{
-				string hex = GetHexColor(value);
+			string hex = GetHexColor(style);
 					
-				if (!string.IsNullOrEmpty(hex))
-				{
-					styleElement.Append(new Word.Shading(){ Fill = hex, Val = Word.ShadingPatternValues.Clear });
-				}
-				
-				return true;
+			if (!string.IsNullOrEmpty(hex))
+			{
+				styleElement.Append(new Word.Shading() {
+					Fill = hex,
+					Val = Word.ShadingPatternValues.Clear
+				});
 			}
-			
-			return false;
 		}
 		
-		internal static bool ApplyColor(string styleName, string value, OpenXmlElement styleElement)
+		internal static void ApplyColor(string style, OpenXmlElement styleElement)
 		{
-			if (string.Compare(color, styleName, StringComparison.InvariantCultureIgnoreCase) == 0)
-			{
-				string hex = GetHexColor(value);
+			string hex = GetHexColor(style);
 					
-				if (!string.IsNullOrEmpty(hex))
-				{
-					styleElement.Append(new Word.Color(){ Val = hex });
-				}
-				
-				return true;
+			if (!string.IsNullOrEmpty(hex))
+			{
+				styleElement.Append(new Word.Color(){ Val = hex });
 			}
-			
-			return false;
 		}
 		
 		
