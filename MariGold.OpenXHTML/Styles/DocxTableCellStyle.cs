@@ -41,12 +41,37 @@
 			}
 		}
 		
+		private void ProcessWidth(DocxNode docxNode, TableCellProperties cellProperties)
+		{
+			string width = docxNode.ExtractStyleValue(DocxUnits.width);
+			
+			if (!string.IsNullOrEmpty(width))
+			{
+				Int32 value;
+				TableWidthUnitValues unit;
+				
+				if (DocxUnits.TableUnitsFromStyle(width, out value, out unit))
+				{
+					TableCellWidth cellWidth = new TableCellWidth() {
+						Width = value.ToString(),
+						Type = unit
+					};
+					
+					cellProperties.Append(cellWidth);
+				}
+
+			}
+		}
+		
 		internal void Process(TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
 			TableCellProperties cellProperties = new TableCellProperties();
 			
 			ProcessColSpan(docxNode, cellProperties);
+			
+			ProcessWidth(docxNode, cellProperties);
+			
 			//Processing border should be after colspan
 			ProcessBorders(docxNode, docxProperties, cellProperties);
 			

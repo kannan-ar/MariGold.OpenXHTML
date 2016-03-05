@@ -639,5 +639,103 @@
 				Assert.AreEqual(0, errors.Count());
 			}
 		}
+		
+		[Test]
+		public void TableCellWidth()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table style='width:500px'><tr><td style='width:250px'>1</td><td style='width:250px'>2</td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(3, table.ChildElements.Count);
+				
+				TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+				Assert.IsNotNull(tableProperties);
+				Assert.AreEqual(2, tableProperties.ChildElements.Count);
+				
+				TableStyle tableStyle = tableProperties.ChildElements[0]as TableStyle;
+				Assert.IsNotNull(tableStyle);
+				Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+				
+				TableWidth tableWidth = tableProperties.ChildElements[1]as TableWidth;
+				Assert.IsNotNull(tableWidth);
+				Assert.AreEqual("10000", tableWidth.Width.Value);
+				Assert.AreEqual(TableWidthUnitValues.Dxa, tableWidth.Type.Value);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				
+				Assert.IsNotNull(row);
+				Assert.AreEqual(2, row.ChildElements.Count);
+				
+				TableCell cell = row.ChildElements[0] as TableCell;
+				
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(2, cell.ChildElements.Count);
+				
+				TableCellProperties cellProperties = cell.ChildElements[0] as TableCellProperties;
+				Assert.IsNotNull(cellProperties);
+				TableCellWidth cellWidth = cellProperties.ChildElements[0] as TableCellWidth;
+				Assert.IsNotNull(cellWidth);
+				Assert.AreEqual("5000", cellWidth.Width.Value);
+				Assert.AreEqual(TableWidthUnitValues.Dxa, cellWidth.Type.Value);
+				
+				Paragraph para = cell.ChildElements[1] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Run run = para.ChildElements[0] as Run;
+				
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				
+				Word.Text text = run.ChildElements[0] as Word.Text;
+				
+				Assert.IsNotNull(text);
+				Assert.AreEqual(0, text.ChildElements.Count);
+				Assert.AreEqual("1", text.InnerText);
+				
+				cell = row.ChildElements[1] as TableCell;
+				
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(2, cell.ChildElements.Count);
+				
+				cellProperties = cell.ChildElements[0] as TableCellProperties;
+				Assert.IsNotNull(cellProperties);
+				cellWidth = cellProperties.ChildElements[0] as TableCellWidth;
+				Assert.IsNotNull(cellWidth);
+				Assert.AreEqual("5000", cellWidth.Width.Value);
+				Assert.AreEqual(TableWidthUnitValues.Dxa, cellWidth.Type.Value);
+				
+				para = cell.ChildElements[1] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				run = para.ChildElements[0] as Run;
+				
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				
+				text = run.ChildElements[0] as Word.Text;
+				
+				Assert.IsNotNull(text);
+				Assert.AreEqual(0, text.ChildElements.Count);
+				Assert.AreEqual("2", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
 	}
 }
