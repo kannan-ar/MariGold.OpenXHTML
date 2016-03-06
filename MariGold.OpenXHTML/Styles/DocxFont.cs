@@ -10,6 +10,7 @@
 		internal const string fontWeight = "font-weight";
 		internal const string fontStyle = "font-style";
 		internal const string textDecoration = "text-decoration";
+		internal const string fontSize = "font-size";
 		
 		internal const string bold = "bold";
 		internal const string bolder = "bolder";
@@ -26,7 +27,7 @@
 		internal static void ApplyFontWeight(string style, OpenXmlElement styleElement)
 		{
 			if (string.Compare(bold, style, StringComparison.InvariantCultureIgnoreCase) == 0 ||
-			    string.Compare(bolder, style, StringComparison.InvariantCultureIgnoreCase) == 0) 
+			    string.Compare(bolder, style, StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				styleElement.Append(new Bold());
 			}
@@ -35,7 +36,7 @@
 		internal static void ApplyFontItalic(string style, OpenXmlElement styleElement)
 		{
 			if (string.Compare(italic, style, StringComparison.InvariantCultureIgnoreCase) == 0 &&
-			    string.Compare(oblique, style, StringComparison.InvariantCultureIgnoreCase) == 0) 
+			    string.Compare(oblique, style, StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				styleElement.Append(new Italic());
 			}
@@ -43,11 +44,12 @@
 		
 		internal static void ApplyTextDecoration(string style, OpenXmlElement styleElement)
 		{
-			if (string.Compare(style, underLine, StringComparison.InvariantCultureIgnoreCase) == 0) 
+			if (string.Compare(style, underLine, StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				styleElement.Append(new Underline(){ Val = UnderlineValues.Single });
 			}
-			else if (string.Compare(style, lineThrough, StringComparison.InvariantCultureIgnoreCase) == 0) 
+			else
+			if (string.Compare(style, lineThrough, StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				styleElement.Append(new Strike());
 			}
@@ -68,11 +70,21 @@
 			styleElement.Append(new Bold());
 		}
 		
+		internal static void ApplyFontSize(string style, OpenXmlElement styleElement)
+		{
+			int fontSize = DocxUnits.HalfPointFromStyle(style);
+			
+			if (fontSize != 0)
+			{
+				styleElement.Append(new FontSize(){ Val = fontSize.ToString() });
+			}
+		}
+		
 		internal static void ApplyFont(int size, bool isBold, OpenXmlElement styleElement)
 		{
 			FontSize fontSize = new FontSize(){ Val = size.ToString() };
 			
-			if (isBold) 
+			if (isBold)
 			{
 				styleElement.Append(new Bold());
 			}

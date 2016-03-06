@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BasicDocument.cs" />
     <Compile Include="BasicStyles.cs" />
+    <Compile Include="Div.cs" />
     <Compile Include="P.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Table.cs" />
