@@ -13,6 +13,7 @@
 			string fontWeight = docxNode.ExtractStyleValue(DocxFont.fontWeight);
 			string textDecoration = docxNode.ExtractStyleValue(DocxFont.textDecoration);
 			string fontSize = docxNode.ExtractStyleValue(DocxFont.fontSize);
+			string fontStyle = docxNode.ExtractStyleValue(DocxFont.fontStyle);
 			
 			if (!string.IsNullOrEmpty(fontFamily))
 			{
@@ -32,6 +33,11 @@
 			if (!string.IsNullOrEmpty(fontSize))
 			{
 				DocxFont.ApplyFontSize(fontSize, properties);
+			}
+			
+			if (!string.IsNullOrEmpty(fontStyle))
+			{
+				DocxFont.ApplyFontStyle(fontStyle, properties);
 			}
 		}
 		

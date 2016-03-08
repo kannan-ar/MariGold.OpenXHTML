@@ -33,13 +33,14 @@
 			}
 		}
 		
-		internal static void ApplyFontItalic(string style, OpenXmlElement styleElement)
+		internal static void ApplyFontStyle(string style, OpenXmlElement styleElement)
 		{
-			if (string.Compare(italic, style, StringComparison.InvariantCultureIgnoreCase) == 0 &&
-			    string.Compare(oblique, style, StringComparison.InvariantCultureIgnoreCase) == 0)
+			if (string.Compare(italic, style, StringComparison.InvariantCultureIgnoreCase) == 0)
 			{
 				styleElement.Append(new Italic());
 			}
+			
+			
 		}
 		
 		internal static void ApplyTextDecoration(string style, OpenXmlElement styleElement)

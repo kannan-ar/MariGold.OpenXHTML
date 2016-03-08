@@ -148,6 +148,7 @@
 				var errors = validator.Validate(doc.WordprocessingDocument);
 				Assert.AreEqual(0, errors.Count());
 			}
+			
 		}
 	}
 }

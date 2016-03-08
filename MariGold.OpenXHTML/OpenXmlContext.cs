@@ -31,6 +31,7 @@
 				new DocxItalic(this),
 				new DocxBold(this),
 				new DocxHeader(this),
+				new DocxAddress(this),
 				new DocxTable(this)
 			};
 		}
