@@ -12,7 +12,7 @@
 		
 		internal const string width = "width";
 		
-		private static bool ConvertToPt(string style, out int value)
+		private static bool ConvertToPt(string style, out Int32 value)
 		{
 			value = 0;
 			
@@ -51,12 +51,12 @@
 			return false;
 		}
 		
-		private static int ConvertPercentageToPt(int value)
+		private static int ConvertPercentageToPt(Int32 value)
 		{
-			return (int)((double)value * .12);
+			return (Int32)((double)value * .12);
 		}
 		
-		private static bool ExtractNamedFontSize(string style, out int pt)
+		private static bool ExtractNamedFontSize(string style, out Int32 pt)
 		{
 			pt = 0;
 			
@@ -131,12 +131,12 @@
 			toPt.Add("in", 72);
 		}
 		
-		internal static Int16 GetDxaFromPixel(Int16 pixel)
+		internal static Int32 GetDxaFromPixel(Int32 pixel)
 		{
-			return (Int16)(pixel * 20);
+			return pixel * 20;
 		}
 		
-		internal static bool TableUnitsFromStyle(string style, out int value, out TableWidthUnitValues unit)
+		internal static bool TableUnitsFromStyle(string style, out Int32 value, out TableWidthUnitValues unit)
 		{
 			unit = TableWidthUnitValues.Nil;
 			
@@ -161,7 +161,7 @@
 			}
 		}
 		
-		internal static int HalfPointFromStyle(string style)
+		internal static Int32 HalfPointFromStyle(string style)
 		{
 			int pt = 0;
 			
@@ -185,6 +185,18 @@
 			}
 			
 			return pt;
+		}
+		
+		internal static Int32 GetDxaFromStyle(string style)
+		{
+			Int32 value;
+			
+			if (ConvertToPt(style, out value))
+			{
+				return value * 20;
+			}
+			
+			return 0;
 		}
 	}
 }

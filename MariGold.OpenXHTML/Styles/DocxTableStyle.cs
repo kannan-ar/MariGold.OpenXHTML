@@ -41,7 +41,7 @@
 			if (docxProperties.CellPadding != null)
 			{
 				TableCellMarginDefault cellMargin = new TableCellMarginDefault();
-				Int16 width = DocxUnits.GetDxaFromPixel(docxProperties.CellPadding.Value);
+				Int16 width = (Int16)DocxUnits.GetDxaFromPixel(docxProperties.CellPadding.Value);
 				
 				cellMargin.TableCellLeftMargin = new TableCellLeftMargin() {
 					Width = width,
