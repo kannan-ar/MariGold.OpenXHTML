@@ -11,8 +11,6 @@
 		{
 			string fontFamily = docxNode.ExtractStyleValue(DocxFont.fontFamily);
 			string fontWeight = docxNode.ExtractStyleValue(DocxFont.fontWeight);
-			string textDecoration = docxNode.ExtractStyleValue(DocxFont.textDecoration);
-			string fontSize = docxNode.ExtractStyleValue(DocxFont.fontSize);
 			string fontStyle = docxNode.ExtractStyleValue(DocxFont.fontStyle);
 			
 			if (!string.IsNullOrEmpty(fontFamily))
@@ -25,35 +23,25 @@
 				DocxFont.ApplyFontWeight(fontWeight, properties);
 			}
 				
-			if (!string.IsNullOrEmpty(textDecoration))
-			{
-				DocxFont.ApplyTextDecoration(textDecoration, properties);
-			}
-			
-			if (!string.IsNullOrEmpty(fontSize))
-			{
-				DocxFont.ApplyFontSize(fontSize, properties);
-			}
-			
 			if (!string.IsNullOrEmpty(fontStyle))
 			{
 				DocxFont.ApplyFontStyle(fontStyle, properties);
 			}
 		}
 		
-		private void CheckColor(DocxNode docxNode, RunProperties properties)
+		private void CheckFontStyle(DocxNode docxNode, RunProperties properties)
 		{
-			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
-			string color = docxNode.ExtractStyleValue(DocxColor.color);
+			string fontSize = docxNode.ExtractStyleValue(DocxFont.fontSize);
+			string textDecoration = docxNode.ExtractStyleValue(DocxFont.textDecoration);
 			
-			if (!string.IsNullOrEmpty(backgroundColor))
+			if (!string.IsNullOrEmpty(fontSize))
 			{
-				DocxColor.ApplyBackGroundColor(backgroundColor, properties);
+				DocxFont.ApplyFontSize(fontSize, properties);
 			}
 			
-			if (!string.IsNullOrEmpty(color))
+			if (!string.IsNullOrEmpty(textDecoration))
 			{
-				DocxColor.ApplyColor(color, properties);
+				DocxFont.ApplyTextDecoration(textDecoration, properties);
 			}
 		}
 		
@@ -67,8 +55,24 @@
 				properties = new RunProperties();
 			}
 			
+			//Order of assigning styles to run property is important. The order should not change.
 			CheckFonts(docxNode, properties);
-			CheckColor(docxNode, properties);
+			
+			string color = docxNode.ExtractStyleValue(DocxColor.color);
+			
+			if (!string.IsNullOrEmpty(color))
+			{
+				DocxColor.ApplyColor(color, properties);
+			}
+			
+			CheckFontStyle(docxNode, properties);
+			
+			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+			
+			if (!string.IsNullOrEmpty(backgroundColor))
+			{
+				DocxColor.ApplyBackGroundColor(backgroundColor, properties);
+			}
 			
 			if (element.RunProperties == null && properties.HasChildren)
 			{

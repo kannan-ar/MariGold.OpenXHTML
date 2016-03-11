@@ -39,8 +39,6 @@
 			{
 				styleElement.Append(new Italic());
 			}
-			
-			
 		}
 		
 		internal static void ApplyTextDecoration(string style, OpenXmlElement styleElement)

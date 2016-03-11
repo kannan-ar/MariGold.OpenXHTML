@@ -3,6 +3,10 @@
 	using System;
 	using NUnit.Framework;
 	using Word = DocumentFormat.OpenXml.Wordprocessing;
+	using System.Collections.Generic;
+	using DocumentFormat.OpenXml.Validation;
+	using System.Linq;
+	using System.Text;
 	
 	internal static class TestUtility
 	{
@@ -34,6 +38,21 @@
 			Assert.IsNotNull(text);
 			Assert.AreEqual(0, text.ChildElements.Count);
 			Assert.AreEqual(content, text.InnerText);
+		}
+		
+		internal static void PrintValidationErrors(this IEnumerable<ValidationErrorInfo> errors)
+		{
+			if (errors.Any())
+			{
+				StringBuilder sb = new StringBuilder();
+				
+				foreach (var error in errors)
+				{
+					sb.AppendLine(error.Description);
+				}
+				
+				Assert.Fail(sb.ToString());
+			}
 		}
 	}
 }

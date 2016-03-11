@@ -12,7 +12,6 @@
 		
 		private void ProcessBody(IHtmlNode node, ref Paragraph paragraph)
 		{
-			
 			while (node != null)
 			{
 				if (node.IsText)

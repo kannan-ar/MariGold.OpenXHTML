@@ -820,6 +820,116 @@
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("first line", text.InnerText);
 				
+				run = para.ChildElements[1] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(2, run.ChildElements.Count);
+				Break br = run.ChildElements[1] as Break;
+				Assert.IsNotNull(br);
+				
+				run = para.ChildElements[2] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(2, run.ChildElements.Count);
+				
+				Assert.IsNotNull(run.RunProperties);
+				Assert.AreEqual(1, run.RunProperties.ChildElements.Count);
+				italic = run.RunProperties.ChildElements[0] as Italic;
+				Assert.IsNotNull(italic);
+				
+				text = run.ChildElements[1] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual(0, text.ChildElements.Count);
+				Assert.AreEqual("second line", text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
+		[Test]
+		public void SimpleDL()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<dl><dt>Numbers</dt><dd>1</dd><dt>Text</dt><dd>One</dd></dl>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(6, doc.Document.Body.ChildElements.Count);
+				
+				Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+				Assert.AreEqual(1, para.ChildElements.Count);
+				ParagraphProperties properties = para.ChildElements[0]as ParagraphProperties;
+				Assert.IsNotNull(properties);
+				Assert.AreEqual(1, properties.ChildElements.Count);
+				SpacingBetweenLines spacing = properties.ChildElements[0] as SpacingBetweenLines;
+				Assert.IsNotNull(spacing);
+				Assert.AreEqual("240", spacing.Before.Value);
+				
+				para = doc.Document.Body.ChildElements[1] as Paragraph;
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				Run run = para.ChildElements[0] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				Word.Text text = run.ChildElements[0] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual("Numbers", text.InnerText);
+				
+				para = doc.Document.Body.ChildElements[2] as Paragraph;
+				Assert.AreEqual(2, para.ChildElements.Count);
+				properties = para.ChildElements[0]as ParagraphProperties;
+				Assert.IsNotNull(properties);
+				Assert.AreEqual(1, properties.ChildElements.Count);
+				Indentation ind = properties.ChildElements[0] as Indentation;
+				Assert.IsNotNull(ind);
+				Assert.AreEqual("800", ind.Left.Value);
+				Assert.IsNull(ind.Right);
+				
+				run = para.ChildElements[1] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				text = run.ChildElements[0] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual("1", text.InnerText);
+				
+				para = doc.Document.Body.ChildElements[3] as Paragraph;
+				Assert.AreEqual(1, para.ChildElements.Count);
+				
+				run = para.ChildElements[0] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				text = run.ChildElements[0] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual("Text", text.InnerText);
+				
+				para = doc.Document.Body.ChildElements[4] as Paragraph;
+				Assert.AreEqual(2, para.ChildElements.Count);
+				properties = para.ChildElements[0]as ParagraphProperties;
+				Assert.IsNotNull(properties);
+				Assert.AreEqual(1, properties.ChildElements.Count);
+				ind = properties.ChildElements[0] as Indentation;
+				Assert.IsNotNull(ind);
+				Assert.AreEqual("800", ind.Left.Value);
+				Assert.IsNull(ind.Right);
+				
+				run = para.ChildElements[1] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				text = run.ChildElements[0] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual("One", text.InnerText);
+				
+				para = doc.Document.Body.ChildElements[5] as Paragraph;
+				Assert.AreEqual(1, para.ChildElements.Count);
+				properties = para.ChildElements[0]as ParagraphProperties;
+				Assert.IsNotNull(properties);
+				spacing = properties.ChildElements[0] as SpacingBetweenLines;
+				Assert.IsNotNull(spacing);
+				Assert.IsNull(spacing.Before);
+				Assert.AreEqual("240", spacing.After.Value);
+				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);
 				Assert.AreEqual(0, errors.Count());

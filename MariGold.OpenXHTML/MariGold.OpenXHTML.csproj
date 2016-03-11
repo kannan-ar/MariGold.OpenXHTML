@@ -62,6 +62,7 @@
     <Compile Include="Elements\DocxBr.cs" />
     <Compile Include="Elements\DocxCenter.cs" />
     <Compile Include="Elements\DocxDiv.cs" />
+    <Compile Include="Elements\DocxDL.cs" />
     <Compile Include="Elements\DocxHeader.cs" />
     <Compile Include="Elements\DocxItalic.cs" />
     <Compile Include="Elements\DocxImage.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Styles\DocxBorder.cs" />
     <Compile Include="Styles\DocxColor.cs" />
     <Compile Include="Styles\DocxFont.cs" />
+    <Compile Include="Styles\DocxMargin.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />
     <Compile Include="Styles\DocxTableCellStyle.cs" />
     <Compile Include="Styles\DocxTableRowStyle.cs" />

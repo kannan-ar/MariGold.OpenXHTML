@@ -31,11 +31,13 @@
 					if (paragraph == null)
 					{
 						paragraph = parent.AppendChild(new Paragraph());
-						ParagraphCreated(node, paragraph);
+						IHtmlNode parentNode = node.Parent??node;
+						
+						ParagraphCreated(parentNode, paragraph);
 					}
 					
 					Run run = paragraph.AppendChild(new Run());
-					RunCreated(child, run);
+					RunCreated(node, run);
 					
 					if (run.RunProperties == null)
 					{

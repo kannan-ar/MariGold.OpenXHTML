@@ -10,7 +10,7 @@
 	using System.Linq;
 	
 	[TestFixture]
-	public class Div
+	public class TestDiv
 	{
 		[Test]
 		public void SingleDivPercentageFontSize()
@@ -126,11 +126,15 @@
 				
 				ParagraphProperties paragraphProperties = paragraph.ChildElements[0] as ParagraphProperties;
 				Assert.IsNotNull(paragraphProperties);
-				Assert.AreEqual(1, paragraphProperties.ChildElements.Count);
+				Assert.AreEqual(2, paragraphProperties.ChildElements.Count);
 				SpacingBetweenLines spacing = paragraphProperties.ChildElements[0] as SpacingBetweenLines;
 				Assert.IsNotNull(spacing);
 				Assert.AreEqual("100", spacing.Before.Value);
 				Assert.AreEqual("100", spacing.After.Value);
+				Indentation ind = paragraphProperties.ChildElements[1] as Indentation;
+				Assert.IsNotNull(ind);
+				Assert.AreEqual("100", ind.Left.Value);
+				Assert.AreEqual("100", ind.Right.Value);
 				
 				Run run = paragraph.ChildElements[1] as Run;
 				Assert.IsNotNull(run);

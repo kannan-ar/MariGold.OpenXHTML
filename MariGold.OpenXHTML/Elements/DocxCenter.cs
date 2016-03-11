@@ -31,7 +31,9 @@
 					if (paragraph == null)
 					{
 						paragraph = parent.AppendChild(new Paragraph());
-						ParagraphCreated(node, paragraph);
+						IHtmlNode parentNode = node.Parent??node;
+						
+						ParagraphCreated(parentNode, paragraph);
 					}
 					
 					if (paragraph.ParagraphProperties == null)
@@ -42,7 +44,7 @@
 					DocxAlignment.AlignCenter(paragraph.ParagraphProperties);
 					
 					Run run = paragraph.AppendChild(new Run());
-					RunCreated(child, run);
+					RunCreated(node, run);
 					
 					run.AppendChild(new Text(child.InnerHtml));
 				}

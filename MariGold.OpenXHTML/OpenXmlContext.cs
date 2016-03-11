@@ -17,8 +17,7 @@
 		
 		private void PrepareWordElements()
 		{
-			elements = new List<DocxElement>()
-			{
+			elements = new List<DocxElement>() {
 				new DocxDiv(this),
 				new DocxUL(this),
 				new DocxOL(this),
@@ -32,6 +31,7 @@
 				new DocxBold(this),
 				new DocxHeader(this),
 				new DocxAddress(this),
+				new DocxDL(this),
 				new DocxTable(this)
 			};
 		}
