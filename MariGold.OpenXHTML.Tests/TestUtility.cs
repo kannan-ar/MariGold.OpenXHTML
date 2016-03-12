@@ -7,6 +7,7 @@
 	using DocumentFormat.OpenXml.Validation;
 	using System.Linq;
 	using System.Text;
+	using System.IO;
 	
 	internal static class TestUtility
 	{
@@ -53,6 +54,22 @@
 				
 				Assert.Fail(sb.ToString());
 			}
+		}
+		
+		internal static string GetHtmlFromFile(string folderPath)
+		{
+			string html = string.Empty;
+			string path = Environment.CurrentDirectory;
+			int index = path.IndexOf("bin");
+
+			path = path.Remove(index);
+			
+			using (StreamReader sr = new StreamReader(path + folderPath))
+			{
+				html = sr.ReadToEnd();
+			}
+			
+			return html;
 		}
 	}
 }

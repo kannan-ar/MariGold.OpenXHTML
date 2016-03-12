@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BasicDocument.cs" />
     <Compile Include="BasicStyles.cs" />
+    <Compile Include="SimpleHtmlFromFile.cs" />
     <Compile Include="TestDiv.cs" />
     <Compile Include="TestP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="TestUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Html\emptybody.htm" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +64,9 @@
       <Project>{C6E09A05-5CEC-4980-A14D-D4747EAD7EE5}</Project>
       <Name>MariGold.OpenXHTML</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
