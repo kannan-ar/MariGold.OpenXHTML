@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Html\emptybody.htm" />
+    <None Include="Html\oneptag.htm" />
+    <None Include="Html\onesentanceinbody.htm" />
+    <None Include="Html\ptagwithstyle.htm" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
