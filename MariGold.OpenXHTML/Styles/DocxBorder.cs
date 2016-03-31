@@ -125,7 +125,7 @@
 			}
 		}
 		
-		private static void ApplyDefaultBorder<T>(OpenXmlCompositeElement element)
+		internal static void ApplyDefaultBorder<T>(OpenXmlCompositeElement element)
 			where T : BorderType, new()
 		{
 			T border = new T() { Val = BorderValues.Single, Color = "auto", Size = (UInt32Value)4U, Space = (UInt32Value)0U };

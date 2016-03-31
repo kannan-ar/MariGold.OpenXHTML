@@ -32,6 +32,7 @@
 				new DocxHeader(this),
 				new DocxAddress(this),
 				new DocxDL(this),
+				new DocxHr(this),
 				new DocxTable(this)
 			};
 		}

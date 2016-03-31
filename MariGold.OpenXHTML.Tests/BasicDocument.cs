@@ -932,6 +932,47 @@
 				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);
+				errors.PrintValidationErrors();
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
+		[Test]
+		public void OnlyHr()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<hr />"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+				Assert.AreEqual(2, para.ChildElements.Count);
+				ParagraphProperties properties = para.ChildElements[0]as ParagraphProperties;
+				Assert.IsNotNull(properties);
+				Assert.AreEqual(1, properties.ChildElements.Count);
+				
+				ParagraphBorders borders = properties.ChildElements[0] as ParagraphBorders;
+				Assert.IsNotNull(borders);
+				Assert.AreEqual(1, borders.ChildElements.Count);
+				
+				TopBorder topBorder = borders.ChildElements[0] as TopBorder;
+				Assert.IsNotNull(topBorder);
+				TestUtility.TestBorder<TopBorder>(topBorder, BorderValues.Single, "auto", 4U);
+				
+				Run run = para.ChildElements[1] as Run;
+				Assert.IsNotNull(run);
+				Assert.AreEqual(1, run.ChildElements.Count);
+				Word.Text text = run.ChildElements[0] as Word.Text;
+				Assert.IsNotNull(text);
+				Assert.AreEqual(string.Empty, text.InnerText);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				errors.PrintValidationErrors();
 				Assert.AreEqual(0, errors.Count());
 			}
 		}
