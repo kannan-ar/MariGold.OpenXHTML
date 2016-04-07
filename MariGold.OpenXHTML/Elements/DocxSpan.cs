@@ -23,7 +23,7 @@
 			{
 				foreach (IHtmlNode child in node.Children)
 				{
-					if (child.IsText)
+					if (child.IsText && !IsEmptyText(child.InnerHtml))
 					{
 						if (paragraph == null)
 						{
@@ -33,7 +33,7 @@
 							ParagraphCreated(parentNode, paragraph);
 						}
 						
-						Run run = paragraph.AppendChild(new Run(new Text(child.InnerHtml)));
+						Run run = paragraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
 						RunCreated(node, run);
 					}
 					else

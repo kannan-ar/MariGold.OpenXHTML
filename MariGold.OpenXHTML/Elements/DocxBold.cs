@@ -14,7 +14,8 @@
 		
 		internal override bool CanConvert(IHtmlNode node)
 		{
-			return string.Compare(node.Tag, "b", StringComparison.InvariantCultureIgnoreCase) == 0;
+			return string.Compare(node.Tag, "b", StringComparison.InvariantCultureIgnoreCase) == 0 ||
+				string.Compare(node.Tag, "strong", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
@@ -26,7 +27,7 @@
 			
 			foreach (IHtmlNode child in node.Children)
 			{
-				if (child.IsText)
+				if (child.IsText && !IsEmptyText(child.InnerHtml))
 				{
 					if (paragraph == null)
 					{
@@ -47,7 +48,7 @@
 					
 					DocxFont.ApplyBold(run.RunProperties);
 					
-					run.AppendChild(new Text(child.InnerHtml));
+					run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
 					                
 					paragraph.Append(run);
 				}

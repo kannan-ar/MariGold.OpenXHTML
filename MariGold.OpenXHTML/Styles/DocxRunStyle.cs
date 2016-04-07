@@ -1,7 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
-	using System.Collections.Generic;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using MariGold.HtmlParser;
 	

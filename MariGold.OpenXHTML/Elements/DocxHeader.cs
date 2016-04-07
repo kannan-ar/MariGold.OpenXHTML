@@ -96,7 +96,7 @@
 				
 				foreach (IHtmlNode child in node.Children)
 				{
-					if (child.IsText)
+					if (child.IsText && !IsEmptyText(child.InnerHtml))
 					{
 						if (headerParagraph == null)
 						{
@@ -108,7 +108,7 @@
 						RunCreated(child, run);
 						ApplyStyle(node, run);
 						
-						run.AppendChild(new Text(child.InnerHtml));
+						run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
 					}
 					else
 					{

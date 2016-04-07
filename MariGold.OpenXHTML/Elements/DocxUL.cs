@@ -25,9 +25,9 @@
 			
 			foreach (IHtmlNode child in li.Children)
 			{
-				if (child.IsText)
+				if (child.IsText && !IsEmptyText(child.InnerHtml))
 				{
-					Run run = paragraph.AppendChild(new Run(new Text(child.InnerHtml)));
+					Run run = paragraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
 					RunCreated(li, run);
 				}
 				else

@@ -4,7 +4,6 @@
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using System.Linq;
-	using System.Collections.Generic;
 	
 	internal sealed class DocxTableProperties
 	{

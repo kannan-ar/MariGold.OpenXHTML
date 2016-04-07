@@ -14,7 +14,7 @@
 		{
 			while (node != null)
 			{
-				if (node.IsText)
+				if (node.IsText && !IsEmptyText(node.InnerHtml))
 				{
 					if (paragraph == null)
 					{
@@ -22,7 +22,7 @@
 						ParagraphCreated(node, paragraph);
 					}
 					
-					Run run = paragraph.AppendChild(new Run(new Text(node.InnerHtml)));
+					Run run = paragraph.AppendChild(new Run(new Text(ClearHtml(node.InnerHtml))));
 					RunCreated(node, run);
 				}
 				else

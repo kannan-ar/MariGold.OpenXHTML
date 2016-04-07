@@ -38,7 +38,7 @@
 						SetThStyleToRun(child);
 					}
 					
-					if (child.IsText)
+					if (child.IsText && !IsEmptyText(child.InnerHtml))
 					{
 						if (para == null)
 						{
@@ -46,7 +46,7 @@
 							ParagraphCreated(td, para);
 						}
 						
-						Run run = para.AppendChild(new Run(new Text(child.InnerHtml)));
+						Run run = para.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
 						RunCreated(child, run);
 					}
 					else

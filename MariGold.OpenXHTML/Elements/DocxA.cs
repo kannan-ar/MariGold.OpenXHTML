@@ -52,9 +52,9 @@
 				
 				foreach (IHtmlNode child in node.Children)
 				{
-					if (child.IsText && !string.IsNullOrEmpty(child.InnerHtml))
+					if (child.IsText && !IsEmptyText(child.InnerHtml))
 					{
-						run.AppendChild(new Text(child.InnerHtml));
+						run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
 					}
 				}
 				

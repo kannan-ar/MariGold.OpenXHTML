@@ -44,7 +44,7 @@
 			{
 				SetDefaultStyle(child);
 				
-				if (child.IsText)
+				if (child.IsText && !IsEmptyText(child.InnerHtml))
 				{
 					if (addrParagraph == null)
 					{
@@ -52,7 +52,7 @@
 						ParagraphCreated(node, addrParagraph);
 					}
 						
-					Run run = addrParagraph.AppendChild(new Run(new Text(child.InnerHtml)));
+					Run run = addrParagraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
 					RunCreated(child, run);
 				}
 				else

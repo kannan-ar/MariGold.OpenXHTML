@@ -29,7 +29,7 @@
 				
 				foreach (IHtmlNode child in node.Children)
 				{
-					if (child.IsText)
+					if (child.IsText && !IsEmptyText(child.InnerHtml))
 					{
 						if (divParagraph == null)
 						{
@@ -37,7 +37,7 @@
 							ParagraphCreated(node, divParagraph);
 						}
 						
-						Run run = divParagraph.AppendChild(new Run(new Text(child.InnerHtml)));
+						Run run = divParagraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
 						RunCreated(child, run);
 					}
 					else

@@ -1,7 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
-	using System.Collections.Generic;
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
@@ -40,6 +39,35 @@
 			}
 			
 			this.context = context;
+		}
+		
+		internal string ClearHtml(string html)
+		{
+			if (string.IsNullOrEmpty(html))
+			{
+				return string.Empty;
+			}
+			
+			html = html.Replace("&nbsp;", " ");
+			html = html.Replace("&amp;", "&");
+			return html.Replace(Environment.NewLine, string.Empty);
+		}
+		
+		internal bool IsEmptyText(string html)
+		{
+			if (string.IsNullOrEmpty(html))
+			{
+				return true;
+			}
+			
+			html = html.Replace(Environment.NewLine, string.Empty);
+			
+			if (string.IsNullOrEmpty(html))
+			{
+				return true;
+			}
+			
+			return false;
 		}
 		
 		internal abstract bool CanConvert(IHtmlNode node);

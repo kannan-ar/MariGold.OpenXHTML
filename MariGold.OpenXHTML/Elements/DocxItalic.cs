@@ -27,7 +27,7 @@
 			
 			foreach (IHtmlNode child in node.Children)
 			{
-				if (child.IsText)
+				if (child.IsText && !IsEmptyText(child.InnerHtml))
 				{
 					if (paragraph == null)
 					{
@@ -47,7 +47,7 @@
 					
 					DocxFont.ApplyFontItalic(run.RunProperties);
 					
-					run.AppendChild(new Text(child.InnerHtml));
+					run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
 				}
 				else
 				{
