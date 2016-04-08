@@ -31,7 +31,7 @@
 					if (paragraph == null)
 					{
 						paragraph = parent.AppendChild(new Paragraph());
-						IHtmlNode parentNode = node.Parent??node;
+						IHtmlNode parentNode = node.Parent ?? node;
 						
 						ParagraphCreated(parentNode, paragraph);
 					}
@@ -46,7 +46,10 @@
 					Run run = paragraph.AppendChild(new Run());
 					RunCreated(node, run);
 					
-					run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
+					run.AppendChild(new Text() {
+						Text = ClearHtml(child.InnerHtml),
+						Space = SpaceProcessingModeValues.Preserve
+					});
 				}
 				else
 				{

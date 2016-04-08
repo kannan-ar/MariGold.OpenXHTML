@@ -46,7 +46,11 @@
 							ParagraphCreated(td, para);
 						}
 						
-						Run run = para.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
+						Run run = para.AppendChild(new Run(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						}));
+						
 						RunCreated(child, run);
 					}
 					else

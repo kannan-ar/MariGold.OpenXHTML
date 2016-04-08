@@ -54,7 +54,10 @@
 				{
 					if (child.IsText && !IsEmptyText(child.InnerHtml))
 					{
-						run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
+						run.AppendChild(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						});
 					}
 				}
 				

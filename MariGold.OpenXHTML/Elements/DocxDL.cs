@@ -24,7 +24,11 @@
 			{
 				if (child.IsText && !IsEmptyText(child.InnerHtml))
 				{
-					Run run = paragraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
+					Run run = paragraph.AppendChild(new Run(new Text() {
+						Text = ClearHtml(child.InnerHtml),
+						Space = SpaceProcessingModeValues.Preserve
+					}));
+					
 					RunCreated(node, run);
 				}
 				else

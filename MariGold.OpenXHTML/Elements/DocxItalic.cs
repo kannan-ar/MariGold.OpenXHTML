@@ -8,14 +8,14 @@
 	internal sealed class DocxItalic : DocxElement
 	{
 		internal DocxItalic(IOpenXmlContext context)
-			:base(context)
+			: base(context)
 		{
 		}
 		
 		internal override bool CanConvert(IHtmlNode node)
 		{
 			return string.Compare(node.Tag, "i", StringComparison.InvariantCultureIgnoreCase) == 0 ||
-				string.Compare(node.Tag, "em", StringComparison.InvariantCultureIgnoreCase) == 0;
+			string.Compare(node.Tag, "em", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
@@ -32,7 +32,7 @@
 					if (paragraph == null)
 					{
 						paragraph = parent.AppendChild(new Paragraph());
-						IHtmlNode parentNode = node.Parent??node;
+						IHtmlNode parentNode = node.Parent ?? node;
 						
 						ParagraphCreated(parentNode, paragraph);
 					}
@@ -47,7 +47,10 @@
 					
 					DocxFont.ApplyFontItalic(run.RunProperties);
 					
-					run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
+					run.AppendChild(new Text() {
+						Text = ClearHtml(child.InnerHtml),
+						Space = SpaceProcessingModeValues.Preserve
+					});
 				}
 				else
 				{

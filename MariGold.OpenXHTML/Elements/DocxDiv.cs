@@ -37,7 +37,11 @@
 							ParagraphCreated(node, divParagraph);
 						}
 						
-						Run run = divParagraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
+						Run run = divParagraph.AppendChild(new Run(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						}));
+						
 						RunCreated(child, run);
 					}
 					else

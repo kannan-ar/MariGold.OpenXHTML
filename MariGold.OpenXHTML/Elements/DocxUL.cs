@@ -27,7 +27,11 @@
 			{
 				if (child.IsText && !IsEmptyText(child.InnerHtml))
 				{
-					Run run = paragraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
+					Run run = paragraph.AppendChild(new Run(new Text() {
+						Text = ClearHtml(child.InnerHtml),
+						Space = SpaceProcessingModeValues.Preserve
+					}));
+					
 					RunCreated(li, run);
 				}
 				else
@@ -67,12 +71,19 @@
 				LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
 
 				PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
-				Indentation indentation = new Indentation() { Start = "720", Hanging = "360" };
+				Indentation indentation = new Indentation() {
+					Start = "720",
+					Hanging = "360"
+				};
 
 				previousParagraphProperties.Append(indentation);
 
 				NumberingSymbolRunProperties numberingSymbolRunProperties = new NumberingSymbolRunProperties();
-				RunFonts runFonts = new RunFonts() { Hint = FontTypeHintValues.Default, Ascii = "Symbol", HighAnsi = "Symbol" };
+				RunFonts runFonts = new RunFonts() {
+					Hint = FontTypeHintValues.Default,
+					Ascii = "Symbol",
+					HighAnsi = "Symbol"
+				};
 
 				numberingSymbolRunProperties.Append(runFonts);
 

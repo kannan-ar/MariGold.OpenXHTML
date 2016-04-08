@@ -22,7 +22,10 @@
 						ParagraphCreated(node, paragraph);
 					}
 					
-					Run run = paragraph.AppendChild(new Run(new Text(ClearHtml(node.InnerHtml))));
+					Run run = paragraph.AppendChild(new Run(new Text() {
+						Text=ClearHtml(node.InnerHtml),
+						Space = SpaceProcessingModeValues.Preserve
+					}));
 					RunCreated(node, run);
 				}
 				else

@@ -108,7 +108,10 @@
 						RunCreated(child, run);
 						ApplyStyle(node, run);
 						
-						run.AppendChild(new Text(ClearHtml(child.InnerHtml)));
+						run.AppendChild(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						});
 					}
 					else
 					{

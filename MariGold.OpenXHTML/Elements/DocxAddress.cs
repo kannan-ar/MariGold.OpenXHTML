@@ -52,7 +52,10 @@
 						ParagraphCreated(node, addrParagraph);
 					}
 						
-					Run run = addrParagraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
+					Run run = addrParagraph.AppendChild(new Run(new Text() {
+						Text = ClearHtml(child.InnerHtml),
+						Space = SpaceProcessingModeValues.Preserve
+					}));
 					RunCreated(child, run);
 				}
 				else

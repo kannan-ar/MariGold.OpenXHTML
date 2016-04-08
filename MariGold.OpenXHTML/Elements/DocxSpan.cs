@@ -28,12 +28,16 @@
 						if (paragraph == null)
 						{
 							paragraph = parent.AppendChild(new Paragraph());
-							IHtmlNode parentNode = node.Parent??node;
+							IHtmlNode parentNode = node.Parent ?? node;
 							
 							ParagraphCreated(parentNode, paragraph);
 						}
 						
-						Run run = paragraph.AppendChild(new Run(new Text(ClearHtml(child.InnerHtml))));
+						Run run = paragraph.AppendChild(new Run(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						}));
+						
 						RunCreated(node, run);
 					}
 					else
