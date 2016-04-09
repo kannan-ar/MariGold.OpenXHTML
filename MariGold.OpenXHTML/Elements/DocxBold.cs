@@ -7,6 +7,18 @@
 	
 	internal sealed class DocxBold : DocxElement
 	{
+		private void SetStyle(IHtmlNode node)
+		{
+			DocxNode docxNode = new DocxNode(node);
+			
+			string value = docxNode.ExtractStyleValue(DocxFont.fontWeight);
+			
+			if (string.IsNullOrEmpty(value))
+			{
+				docxNode.SetStyleValue(DocxFont.fontWeight, DocxFont.bold);
+			}
+		}
+		
 		public DocxBold(IOpenXmlContext context)
 			: base(context)
 		{
@@ -55,6 +67,7 @@
 				}
 				else
 				{
+					SetStyle(child);
 					ProcessChild(child, parent, ref paragraph);
 				}
 			}

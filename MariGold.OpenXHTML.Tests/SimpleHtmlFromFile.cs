@@ -22,20 +22,7 @@
 				doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\emptybody.htm")));
 				
 				Assert.IsNotNull(doc.Document.Body);
-				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
-				
-				Paragraph para = doc.Document.Body.ChildElements[0]as Paragraph;
-				Assert.IsNotNull(para);
-				Assert.AreEqual(1, para.ChildElements.Count);
-				
-				Run run = para.ChildElements[0] as Run;
-				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				
-				Word.Text text = run.ChildElements[0]as Word.Text;
-				Assert.IsNotNull(text);
-				Assert.AreEqual(0, text.ChildElements.Count);
-				Assert.AreEqual(string.Empty, text.InnerText.Trim());
+				Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
 				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);
@@ -86,7 +73,9 @@
 				doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\oneptag.htm")));
 				
 				Assert.IsNotNull(doc.Document.Body);
-				Assert.AreEqual(3, doc.Document.Body.ChildElements.Count);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				
 				
 				Paragraph para = doc.Document.Body.ChildElements[0]as Paragraph;
 				Assert.IsNotNull(para);
@@ -99,33 +88,7 @@
 				Word.Text text = run.ChildElements[0]as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
-				Assert.AreEqual(string.Empty, text.InnerText.Trim());
-				
-				para = doc.Document.Body.ChildElements[1]as Paragraph;
-				Assert.IsNotNull(para);
-				Assert.AreEqual(1, para.ChildElements.Count);
-				
-				run = para.ChildElements[0] as Run;
-				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				
-				text = run.ChildElements[0]as Word.Text;
-				Assert.IsNotNull(text);
-				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("Test", text.InnerText.Trim());
-				
-				para = doc.Document.Body.ChildElements[2]as Paragraph;
-				Assert.IsNotNull(para);
-				Assert.AreEqual(1, para.ChildElements.Count);
-				
-				run = para.ChildElements[0] as Run;
-				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				
-				text = run.ChildElements[0]as Word.Text;
-				Assert.IsNotNull(text);
-				Assert.AreEqual(0, text.ChildElements.Count);
-				Assert.AreEqual(string.Empty, text.InnerText.Trim());
 				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);
@@ -144,26 +107,13 @@
 				doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\ptagwithstyle.htm")));
 				
 				Assert.IsNotNull(doc.Document.Body);
-				Assert.AreEqual(3, doc.Document.Body.ChildElements.Count);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
 				
 				Paragraph para = doc.Document.Body.ChildElements[0]as Paragraph;
 				Assert.IsNotNull(para);
 				Assert.AreEqual(1, para.ChildElements.Count);
 				
 				Run run = para.ChildElements[0] as Run;
-				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				
-				Word.Text text = run.ChildElements[0]as Word.Text;
-				Assert.IsNotNull(text);
-				Assert.AreEqual(0, text.ChildElements.Count);
-				Assert.AreEqual(string.Empty, text.InnerText.Trim());
-				
-				para = doc.Document.Body.ChildElements[1]as Paragraph;
-				Assert.IsNotNull(para);
-				Assert.AreEqual(1, para.ChildElements.Count);
-				
-				run = para.ChildElements[0] as Run;
 				Assert.IsNotNull(run);
 				Assert.AreEqual(2, run.ChildElements.Count);
 				
@@ -182,23 +132,11 @@
 				Assert.IsNotNull(fontSize);
 				Assert.AreEqual("24", fontSize.Val.Value);
 				
-				text = run.ChildElements[1]as Word.Text;
+				Word.Text text = run.ChildElements[1]as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("Test", text.InnerText.Trim());
-				
-				para = doc.Document.Body.ChildElements[2]as Paragraph;
-				Assert.IsNotNull(para);
-				Assert.AreEqual(1, para.ChildElements.Count);
-				
-				run = para.ChildElements[0] as Run;
-				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				
-				text = run.ChildElements[0]as Word.Text;
-				Assert.IsNotNull(text);
-				Assert.AreEqual(0, text.ChildElements.Count);
-				Assert.AreEqual(string.Empty, text.InnerText.Trim());
+			
 				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);

@@ -23,21 +23,7 @@
 				doc.Process(new HtmlParser(" "));
 				
 				Assert.IsNotNull(doc.Document.Body);
-				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
-				
-				OpenXmlElement para = doc.Document.Body.ChildElements[0];
-				
-				Assert.IsTrue(para is Paragraph);
-				Assert.AreEqual(1, para.ChildElements.Count);
-				
-				OpenXmlElement run = para.ChildElements[0];
-				Assert.IsTrue(run is Run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				
-				OpenXmlElement text = run.ChildElements[0] as DocumentFormat.OpenXml.Wordprocessing.Text;
-				Assert.IsNotNull(text);
-				Assert.AreEqual(0, text.ChildElements.Count);
-				Assert.AreEqual(" ", text.InnerText);
+				Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
 				
 				OpenXmlValidator validator = new OpenXmlValidator();
 				var errors = validator.Validate(doc.WordprocessingDocument);

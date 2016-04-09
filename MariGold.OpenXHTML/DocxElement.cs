@@ -62,7 +62,7 @@
 			
 			html = html.Replace(Environment.NewLine, string.Empty);
 			
-			if (string.IsNullOrEmpty(html))
+			if (string.IsNullOrEmpty(html.Trim()))
 			{
 				return true;
 			}
