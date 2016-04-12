@@ -59,6 +59,10 @@
 							Space = SpaceProcessingModeValues.Preserve
 						});
 					}
+					else
+					{
+						ProcessTextElement(child, hyperLink);
+					}
 				}
 				
 				hyperLink.Append(run);

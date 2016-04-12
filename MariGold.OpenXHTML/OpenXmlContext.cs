@@ -12,6 +12,7 @@
 		private WordprocessingDocument document;
 		private MainDocumentPart mainPart;
 		private List<DocxElement> elements;
+		private List<ITextElement> textElements;
 		private Dictionary<NumberFormatValues,AbstractNum> abstractNumList;
 		private Dictionary<NumberFormatValues,NumberingInstance> numberingInstanceList;
 		
@@ -34,6 +35,10 @@
 				new DocxDL(this),
 				new DocxHr(this),
 				new DocxTable(this)
+			};
+			
+			textElements = new List<ITextElement>() {
+				new DocxBold(this)
 			};
 		}
 		
@@ -123,6 +128,19 @@
 			foreach (DocxElement element in elements)
 			{
 				if (element.CanConvert(node))
+				{
+					return element;
+				}
+			}
+			
+			return null;
+		}
+		
+		public ITextElement ConvertTextElement(IHtmlNode node)
+		{
+			foreach (ITextElement element in textElements) 
+			{
+				if(element.CanConvert(node))
 				{
 					return element;
 				}

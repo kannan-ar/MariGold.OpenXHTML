@@ -76,6 +76,7 @@
     <Compile Include="HtmlParser.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="IOpenXmlContext.cs" />
+    <Compile Include="ITextElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OpenXmlContext.cs" />
     <Compile Include="Styles\DocxAlignment.cs" />

@@ -31,6 +31,16 @@
 			}
 		}
 		
+		protected void ProcessTextElement(IHtmlNode node, OpenXmlElement parent)
+		{
+			ITextElement element = context.ConvertTextElement(node);
+			
+			if (element != null)
+			{
+				element.Process(node, parent);
+			}
+		}
+		
 		internal DocxElement(IOpenXmlContext context)
 		{
 			if (context == null)
