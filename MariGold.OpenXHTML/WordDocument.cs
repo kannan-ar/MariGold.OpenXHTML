@@ -14,6 +14,8 @@
 	{
 		private readonly IOpenXmlContext context;
 		
+		public string ImagePath{ get; set; }
+		
 		public WordprocessingDocument WordprocessingDocument
 		{
 			get
@@ -65,6 +67,8 @@
 				throw new ArgumentNullException("parser");
 			}
 		
+			context.ImagePath = ImagePath;
+			
 			IHtmlNode node = parser.FindBodyOrFirstElement();
 			
 			if (node != null)

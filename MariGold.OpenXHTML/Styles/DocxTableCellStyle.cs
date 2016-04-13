@@ -63,17 +63,35 @@
 			}
 		}
 		
+		private void ProcessVerticalAlignment(DocxNode docxNode, TableCellProperties cellProperties)
+		{
+			string alignment = docxNode.ExtractStyleValue(DocxAlignment.verticalAlign);
+			
+			if (!string.IsNullOrEmpty(alignment))
+			{
+				TableVerticalAlignmentValues value;
+				
+				if (DocxAlignment.GetCellVerticalAlignment(alignment, out value))
+				{
+					cellProperties.Append(new TableCellVerticalAlignment(){ Val = value });
+				}
+			}
+		}
+		
 		internal void Process(TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
 			TableCellProperties cellProperties = new TableCellProperties();
 			
-			ProcessColSpan(docxNode, cellProperties);
 			
+			ProcessColSpan(docxNode, cellProperties);
 			ProcessWidth(docxNode, cellProperties);
 			
 			//Processing border should be after colspan
 			ProcessBorders(docxNode, docxProperties, cellProperties);
+			
+			
+			ProcessVerticalAlignment(docxNode, cellProperties);
 			
 			if (cellProperties.HasChildren)
 			{

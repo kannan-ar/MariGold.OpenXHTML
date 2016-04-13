@@ -42,7 +42,7 @@
 					{
 						if (para == null)
 						{
-							para = new Paragraph();
+							para = cell.AppendChild(new Paragraph());
 							ParagraphCreated(td, para);
 						}
 						
@@ -55,20 +55,20 @@
 					}
 					else
 					{
-						if (para != null)
+						/*if (para != null)
 						{
 							cell.Append(para);
-						}
+						}*/
 						
 						ProcessChild(child, cell, ref para);
 					}
 				}
-				
+				/*
 				if (para != null)
 				{
 					cell.Append(para);
 				}
-				
+				*/
 				row.Append(cell);
 			}
 		}

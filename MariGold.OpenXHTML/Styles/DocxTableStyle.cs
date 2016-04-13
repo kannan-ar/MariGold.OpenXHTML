@@ -96,12 +96,11 @@
 		internal void Process(TableProperties tableProperties, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
+			ProcessWidth(docxNode, tableProperties);
 			
 			ProcessTableBorder(docxNode, docxProperties, tableProperties);
-			
 			ProcessTableCellMargin(docxProperties, tableProperties);
 			
-			ProcessWidth(docxNode, tableProperties);
 		}
 	}
 }

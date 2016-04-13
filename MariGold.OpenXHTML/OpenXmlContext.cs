@@ -15,6 +15,7 @@
 		private List<ITextElement> textElements;
 		private Dictionary<NumberFormatValues,AbstractNum> abstractNumList;
 		private Dictionary<NumberFormatValues,NumberingInstance> numberingInstanceList;
+		private string imagePath;
 		
 		private void PrepareWordElements()
 		{
@@ -74,6 +75,19 @@
 			mainPart.Document = new Document();
 			
 			PrepareWordElements();
+		}
+		
+		public string ImagePath
+		{ 
+			get
+			{
+				return imagePath;
+			}
+			
+			set
+			{
+				imagePath = value;
+			}
 		}
 		
 		public WordprocessingDocument WordprocessingDocument
@@ -138,9 +152,9 @@
 		
 		public ITextElement ConvertTextElement(IHtmlNode node)
 		{
-			foreach (ITextElement element in textElements) 
+			foreach (ITextElement element in textElements)
 			{
-				if(element.CanConvert(node))
+				if (element.CanConvert(node))
 				{
 					return element;
 				}

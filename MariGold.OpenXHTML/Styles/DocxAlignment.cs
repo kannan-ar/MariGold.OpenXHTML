@@ -7,12 +7,13 @@
 	internal static class DocxAlignment
 	{
 		internal const string textAlign = "text-align";
+		internal const string verticalAlign = "vertical-align";
 		
 		internal static void ApplyTextAlign(string style, OpenXmlElement styleElement)
 		{
 			JustificationValues alignment;
 					
-			if (DocxAlignment.GetJustificationValue(style, out alignment)) 
+			if (DocxAlignment.GetJustificationValue(style, out alignment))
 			{
 				styleElement.Append(new Justification() { Val = alignment });
 			}
@@ -23,7 +24,7 @@
 			alignment = JustificationValues.Left;
 			bool assigned = false;
 
-			switch (style.ToLower()) 
+			switch (style.ToLower())
 			{
 				case "right":
 					assigned = true;
@@ -38,6 +39,32 @@
 				case "center":
 					assigned = true;
 					alignment = JustificationValues.Center;
+					break;
+			}
+
+			return assigned;
+		}
+		
+		internal static bool GetCellVerticalAlignment(string style, out TableVerticalAlignmentValues alignment)
+		{
+			alignment = TableVerticalAlignmentValues.Top;
+			bool assigned = false;
+
+			switch (style.ToLower())
+			{
+				case "top":
+					assigned = true;
+					alignment = TableVerticalAlignmentValues.Top;
+					break;
+
+				case "middle":
+					assigned = true;
+					alignment = TableVerticalAlignmentValues.Center;
+					break;
+
+				case "bottom":
+					assigned = true;
+					alignment = TableVerticalAlignmentValues.Bottom;
 					break;
 			}
 

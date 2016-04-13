@@ -737,5 +737,21 @@
 			}
 		}
 		
+		[Test]
+		public void TableAllProperties()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table border='1' style='width:500px' cellpadding='2'><tr><td>1</td><td>2</td></tr><tr><td colspan='2'>1</td></tr></table>"));
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				errors.PrintValidationErrors();
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
 	}
 }
