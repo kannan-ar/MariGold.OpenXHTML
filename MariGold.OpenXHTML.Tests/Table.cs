@@ -753,5 +753,54 @@
 			}
 		}
 		
+		[Test]
+		public void EmptyCell()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table><tr><td></td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(3, table.ChildElements.Count);
+				
+				TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+				Assert.IsNotNull(tableProperties);
+				Assert.AreEqual(1, tableProperties.ChildElements.Count);
+				
+				TableStyle tableStyle = tableProperties.ChildElements[0]as TableStyle;
+				Assert.IsNotNull(tableStyle);
+				Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+				
+				TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+				Assert.IsNotNull(tableGrid);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				
+				Assert.IsNotNull(row);
+				Assert.AreEqual(1, row.ChildElements.Count);
+				
+				TableCell cell = row.ChildElements[0] as TableCell;
+				
+				Assert.IsNotNull(cell);
+				Assert.AreEqual(1, cell.ChildElements.Count);
+				
+				Paragraph para = cell.ChildElements[0] as Paragraph;
+				
+				Assert.IsNotNull(para);
+				Assert.AreEqual(0, para.ChildElements.Count);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
+		
 	}
 }

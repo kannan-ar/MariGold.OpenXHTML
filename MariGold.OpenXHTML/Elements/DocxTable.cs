@@ -4,6 +4,7 @@
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
+	using System.Linq;
 	
 	internal sealed class DocxTable : DocxElement
 	{
@@ -21,13 +22,13 @@
 		
 		private void ProcessTd(IHtmlNode td, TableRow row, DocxTableProperties docxProperties)
 		{
+			TableCell cell = new TableCell();
+				
+			DocxTableCellStyle style = new DocxTableCellStyle();
+			style.Process(cell, docxProperties, td);
+				
 			if (td.HasChildren)
 			{
-				TableCell cell = new TableCell();
-				
-				DocxTableCellStyle style = new DocxTableCellStyle();
-				style.Process(cell, docxProperties, td);
-				
 				Paragraph para = null;
 				
 				foreach (IHtmlNode child in td.Children)
@@ -55,22 +56,18 @@
 					}
 					else
 					{
-						/*if (para != null)
-						{
-							cell.Append(para);
-						}*/
-						
 						ProcessChild(child, cell, ref para);
 					}
 				}
-				/*
-				if (para != null)
-				{
-					cell.Append(para);
-				}
-				*/
-				row.Append(cell);
 			}
+			
+			//Cell must contain atleast one paragraph. Adding an empty paragraph if there is not html content
+			if (!cell.Descendants<Paragraph>().Any())
+			{
+				cell.AppendChild(new Paragraph());
+			}
+			
+			row.Append(cell);
 		}
 		
 		private void ProcessTr(IHtmlNode tr, Table table, DocxTableProperties docxProperties)
