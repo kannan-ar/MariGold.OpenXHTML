@@ -30,7 +30,12 @@
 			
 			string link = docxNode.ExtractAttributeValue(href);
 			
-			if (!string.IsNullOrEmpty(link))
+			if (Uri.IsWellFormedUriString(link, UriKind.Relative) && !string.IsNullOrEmpty(context.BaseURL))
+			{
+				link = string.Concat(context.BaseURL, link);
+			}
+			
+			if (Uri.IsWellFormedUriString(link, UriKind.Absolute))
 			{
 				Uri uri = new Uri(link);
 				

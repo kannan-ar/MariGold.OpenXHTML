@@ -8,6 +8,7 @@
 	internal interface IOpenXmlContext
 	{
 		string ImagePath{ get; set; }
+		string BaseURL{ get; set; }
 		WordprocessingDocument WordprocessingDocument{ get; }
 		MainDocumentPart MainDocumentPart{ get; }
 		Document Document{ get; }

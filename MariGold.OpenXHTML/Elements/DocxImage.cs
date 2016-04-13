@@ -16,8 +16,7 @@
 	{
 		private ImagePartType GetImagePartType(string src)
 		{
-			//Default type is assigned as png since ImagePartType does not have None value. Bad Design!!!
-			ImagePartType type = ImagePartType.Png;
+			ImagePartType type;
 
 			string ext = Path.GetExtension(src);
 
@@ -26,96 +25,12 @@
 				ext = ext.ToLower().Replace(".", string.Empty);
 			}
 
-			switch (ext)
-			{
-				case "png":
-					type = ImagePartType.Png;
-					break;
-
-				case "gif":
-					type = ImagePartType.Gif;
-					break;
-
-				case "bmp":
-					type = ImagePartType.Bmp;
-					break;
-
-				case "tiff":
-					type = ImagePartType.Tiff;
-					break;
-
-				case "jpeg":
-					type = ImagePartType.Jpeg;
-					break;
-			}
-
+			Enum.TryParse<ImagePartType>(ext, out type);
+			
 			return type;
 		}
 		
-		private Drawing CreateDrawingFromStream(Stream stream, string src, long cx, long cy)
-		{
-			ImagePart imagePart = context.MainDocumentPart.AddImagePart(GetImagePartType(src));
-					
-			imagePart.FeedData(stream);
-					
-			var image = new Drawing(
-				              new DW.Inline(
-					              new DW.Extent() { Cx = cx, Cy = cy },
-					              new DW.EffectExtent() {
-						LeftEdge = 0L,
-						TopEdge = 0L,
-						RightEdge = 0L,
-						BottomEdge = 0L
-					},
-					              new DW.DocProperties() {
-						Id = (UInt32Value)1U,
-						Name = "Picture 1"
-					},
-					              new DW.NonVisualGraphicFrameDrawingProperties(
-						              new A.GraphicFrameLocks() { NoChangeAspect = true }),
-					              new A.Graphic(
-						              new A.GraphicData(
-							              new PIC.Picture(
-								              new PIC.NonVisualPictureProperties(
-									              new PIC.NonVisualDrawingProperties() {
-										Id = (UInt32Value)0U,
-										Name = Path.GetFileName(src)
-									},
-									              new PIC.NonVisualPictureDrawingProperties()),
-								              new PIC.BlipFill(
-									              new A.Blip(
-										              new A.BlipExtensionList(
-											              new A.BlipExtension() {
-												Uri =
-                                                                            "{28A0092B-C50C-407E-A947-70E740481C1C}"
-											})
-									              ) {
-										Embed = context.MainDocumentPart.GetIdOfPart(imagePart),
-										CompressionState =
-                                                                    A.BlipCompressionValues.Print
-									},
-									              new A.Stretch(
-										              new A.FillRectangle())),
-								              new PIC.ShapeProperties(
-									              new A.Transform2D(
-										              new A.Offset() { X = 0L, Y = 0L },
-										              new A.Extents() { Cx = cx, Cy = cy }),
-									              new A.PresetGeometry(
-										              new A.AdjustValueList()
-									              ) { Preset = A.ShapeTypeValues.Rectangle }))
-						              ) { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
-				              ) {
-					DistanceFromTop = (UInt32Value)0U,
-					DistanceFromBottom = (UInt32Value)0U,
-					DistanceFromLeft = (UInt32Value)0U,
-					DistanceFromRight = (UInt32Value)0U,
-					EditId = "50D07946"
-				});
-					
-			return image;
-		}
-		
-		private Drawing PrepareImage(string src)
+		private Drawing CreateDrawingFromAbsoluteUri(string src)
 		{
 			long cx;
 			long cy;
@@ -124,21 +39,90 @@
 			client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0");
 			client.UseDefaultCredentials = true;
 			
+			using (Stream stream = client.OpenRead(new Uri(src)))
+			{
+				using (Bitmap bitmap = new Bitmap(stream))
+				{
+					cx = (long)bitmap.Width * (long)((float)914400 / bitmap.HorizontalResolution);
+					cy = (long)bitmap.Height * (long)((float)914400 / bitmap.VerticalResolution);
+				}
+			}
+				
+			using (Stream stream = client.OpenRead(new Uri(src)))
+			{
+				
+				ImagePart imagePart = context.MainDocumentPart.AddImagePart(GetImagePartType(src));
+					
+				imagePart.FeedData(stream);
+					
+				var image = new Drawing(
+					            new DW.Inline(
+						            new DW.Extent() { Cx = cx, Cy = cy },
+						            new DW.EffectExtent() {
+							LeftEdge = 0L,
+							TopEdge = 0L,
+							RightEdge = 0L,
+							BottomEdge = 0L
+						},
+						            new DW.DocProperties() {
+							Id = (UInt32Value)1U,
+							Name = "Picture 1"
+						},
+						            new DW.NonVisualGraphicFrameDrawingProperties(
+							            new A.GraphicFrameLocks() { NoChangeAspect = true }),
+						            new A.Graphic(
+							            new A.GraphicData(
+								            new PIC.Picture(
+									            new PIC.NonVisualPictureProperties(
+										            new PIC.NonVisualDrawingProperties() {
+											Id = (UInt32Value)0U,
+											Name = Path.GetFileName(src)
+										},
+										            new PIC.NonVisualPictureDrawingProperties()),
+									            new PIC.BlipFill(
+										            new A.Blip(
+											            new A.BlipExtensionList(
+												            new A.BlipExtension() {
+													Uri =
+                                                                            "{28A0092B-C50C-407E-A947-70E740481C1C}"
+												})
+										            ) {
+											Embed = context.MainDocumentPart.GetIdOfPart(imagePart),
+											CompressionState =
+                                                                    A.BlipCompressionValues.Print
+										},
+										            new A.Stretch(
+											            new A.FillRectangle())),
+									            new PIC.ShapeProperties(
+										            new A.Transform2D(
+											            new A.Offset() { X = 0L, Y = 0L },
+											            new A.Extents() { Cx = cx, Cy = cy }),
+										            new A.PresetGeometry(
+											            new A.AdjustValueList()
+										            ) { Preset = A.ShapeTypeValues.Rectangle }))
+							            ) { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+					            ) {
+						DistanceFromTop = (UInt32Value)0U,
+						DistanceFromBottom = (UInt32Value)0U,
+						DistanceFromLeft = (UInt32Value)0U,
+						DistanceFromRight = (UInt32Value)0U,
+						EditId = "50D07946"
+					});
+					
+				return image;
+			}
+		}
+		
+		private Drawing PrepareImage(string src)
+		{
+			if (Uri.IsWellFormedUriString(src, UriKind.Relative) && !string.IsNullOrEmpty(context.ImagePath))
+			{
+				src = string.Concat(context.ImagePath, src);
+			}
+			
 			if (Uri.IsWellFormedUriString(src, UriKind.Absolute))
 			{
-				using (Stream stream = client.OpenRead(new Uri(src)))
-				{
-					using (Bitmap bitmap = new Bitmap(stream))
-					{
-						cx = (long)bitmap.Width * (long)((float)914400 / bitmap.HorizontalResolution);
-						cy = (long)bitmap.Height * (long)((float)914400 / bitmap.VerticalResolution);
-					}
-				}
-				
-				using (Stream stream = client.OpenRead(new Uri(src)))
-				{
-					return CreateDrawingFromStream(stream, src, cx, cy);
-				}
+				return CreateDrawingFromAbsoluteUri(src);
 			}
 			
 			return null;

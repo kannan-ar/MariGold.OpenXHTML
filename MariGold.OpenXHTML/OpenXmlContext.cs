@@ -16,6 +16,7 @@
 		private Dictionary<NumberFormatValues,AbstractNum> abstractNumList;
 		private Dictionary<NumberFormatValues,NumberingInstance> numberingInstanceList;
 		private string imagePath;
+		private string baseUrl;
 		
 		private void PrepareWordElements()
 		{
@@ -87,6 +88,19 @@
 			set
 			{
 				imagePath = value;
+			}
+		}
+		
+		public string BaseURL
+		{ 
+			get
+			{
+				return baseUrl;
+			}
+			
+			set
+			{
+				baseUrl = value;
 			}
 		}
 		

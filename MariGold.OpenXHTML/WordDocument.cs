@@ -14,7 +14,31 @@
 	{
 		private readonly IOpenXmlContext context;
 		
-		public string ImagePath{ get; set; }
+		public string ImagePath
+		{ 
+			get
+			{
+				return context.ImagePath;
+			}
+			
+			set
+			{
+				context.ImagePath = value;
+			}
+		}
+		
+		public string BaseURL
+		{
+			get
+			{
+				return context.BaseURL;
+			}
+			
+			set
+			{
+				context.BaseURL = value;
+			}
+		}
 		
 		public WordprocessingDocument WordprocessingDocument
 		{
@@ -67,8 +91,6 @@
 				throw new ArgumentNullException("parser");
 			}
 		
-			context.ImagePath = ImagePath;
-			
 			IHtmlNode node = parser.FindBodyOrFirstElement();
 			
 			if (node != null)
