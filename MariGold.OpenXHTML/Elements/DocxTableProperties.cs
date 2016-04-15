@@ -3,6 +3,7 @@
 	using System;
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml.Wordprocessing;
+	using System.Collections.Generic;
 	using System.Linq;
 	
 	internal sealed class DocxTableProperties
@@ -11,6 +12,8 @@
 		private bool isCellHeader;
 		private Int16? cellPadding;
 		private Int16? cellSpacing;
+		private Dictionary<int, int> rowSpanInfo;
+		private Dictionary<int,IHtmlNode> rowSpanNode;
 		
 		internal const string tableName = "table";
 		internal const string trName = "tr";
@@ -20,6 +23,7 @@
 		internal const string cellSpacingName = "cellspacing";
 		internal const string cellPaddingName = "cellpadding";
 		internal const string colspan = "colspan";
+		internal const string rowSpan = "rowspan";
 		
 		internal bool HasDefaultBorder
 		{
@@ -73,6 +77,27 @@
 			}
 		}
 		
+		internal Dictionary<int, int> RowSpanInfo
+		{
+			get
+			{
+				return rowSpanInfo;
+			}
+		}
+		
+		internal Dictionary<int,IHtmlNode> RowSpanNode
+		{
+			get
+			{
+				if (rowSpanNode == null)
+				{
+					rowSpanNode = new Dictionary<int,IHtmlNode>();
+				}
+				
+				return rowSpanNode;
+			}
+		}
+		
 		private Int32 GetTdCount(IHtmlNode table)
 		{
 			int count = 0;
@@ -101,7 +126,6 @@
 									++count;
 								}
 							}
-							
 						}
 						
 						//Counted first row's td count. Thus exiting
@@ -147,12 +171,15 @@
 			
 			int count = GetTdCount(node);
 			
+			rowSpanInfo = new Dictionary<int, int>();
+			
 			if (count > 0)
 			{
 				TableGrid tg = new TableGrid();
 				
 				for (int i = 0; i < count; i++)
 				{
+					rowSpanInfo.Add(i, 0);
 					tg.AppendChild(new GridColumn());
 				}
 				

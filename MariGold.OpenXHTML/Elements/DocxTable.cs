@@ -20,13 +20,13 @@
 			}
 		}
 		
-		private void ProcessTd(IHtmlNode td, TableRow row, DocxTableProperties docxProperties)
+		private void ProcessTd(int colIndex, IHtmlNode td, TableRow row, DocxTableProperties docxProperties)
 		{
 			TableCell cell = new TableCell();
 				
 			DocxTableCellStyle style = new DocxTableCellStyle();
-			style.Process(cell, docxProperties, td);
-				
+			style.Process(colIndex, cell, docxProperties, td);
+			
 			if (td.HasChildren)
 			{
 				Paragraph para = null;
@@ -70,6 +70,36 @@
 			row.Append(cell);
 		}
 		
+		private void ProcessVerticalSpan(ref int colIndex, TableRow row, DocxTableProperties docxProperties)
+		{
+			int rowSpan;
+			
+			docxProperties.RowSpanInfo.TryGetValue(colIndex, out rowSpan);
+			
+			while (rowSpan > 0)
+			{
+				TableCell cell = new TableCell();
+				
+				DocxTableCellStyle style = new DocxTableCellStyle();
+				style.Process(colIndex, cell, docxProperties, docxProperties.RowSpanNode[colIndex]);
+			
+				if (cell.TableCellProperties == null)
+				{
+					cell.TableCellProperties = new TableCellProperties();
+				}
+				
+				cell.TableCellProperties.Append(new VerticalMerge());
+				
+				cell.AppendChild(new Paragraph()).Append(new Run(new Text()));
+			
+				row.Append(cell);
+				
+				docxProperties.RowSpanInfo[colIndex] = --rowSpan;
+				++colIndex;
+				docxProperties.RowSpanInfo.TryGetValue(colIndex, out rowSpan);
+			}
+		}
+		
 		private void ProcessTr(IHtmlNode tr, Table table, DocxTableProperties docxProperties)
 		{
 			if (tr.HasChildren)
@@ -79,14 +109,23 @@
 				DocxTableRowStyle style = new DocxTableRowStyle();
 				style.Process(row, docxProperties);
 			
+				int colIndex = 0;
+				
 				foreach (IHtmlNode td in tr.Children)
 				{
+					ProcessVerticalSpan(ref colIndex, row, docxProperties);
+					
 					docxProperties.IsCellHeader = string.Compare(td.Tag, DocxTableProperties.thName, StringComparison.InvariantCultureIgnoreCase) == 0;
 					
 					if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || docxProperties.IsCellHeader)
 					{
-						ProcessTd(td, row, docxProperties);
+						ProcessTd(colIndex++, td, row, docxProperties);
 					}
+				}
+				
+				if (colIndex < docxProperties.RowSpanInfo.Count)
+				{
+					ProcessVerticalSpan(ref colIndex, row, docxProperties);
 				}
 				
 				table.Append(row);

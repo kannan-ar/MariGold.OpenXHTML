@@ -78,18 +78,34 @@
 			}
 		}
 		
-		internal void Process(TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
+		private void ProcessVerticalSpan(
+			int colIndex, 
+			DocxNode docxNode, 
+			DocxTableProperties docxProperties, 
+			TableCellProperties cellProperties, 
+			IHtmlNode node)
+		{
+			string rowSpan = docxNode.ExtractAttributeValue(DocxTableProperties.rowSpan);
+			Int32 rowSpanValue;
+			if (Int32.TryParse(rowSpan, out rowSpanValue))
+			{
+				docxProperties.RowSpanNode[colIndex] = node;
+				docxProperties.RowSpanInfo[colIndex] = rowSpanValue - 1;
+				cellProperties.Append(new VerticalMerge() { Val = MergedCellValues.Restart });
+			}
+		}
+		
+		internal void Process(int colIndex, TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
 			TableCellProperties cellProperties = new TableCellProperties();
 			
-			
 			ProcessColSpan(docxNode, cellProperties);
 			ProcessWidth(docxNode, cellProperties);
 			
+			ProcessVerticalSpan(colIndex, docxNode, docxProperties, cellProperties, node);
 			//Processing border should be after colspan
 			ProcessBorders(docxNode, docxProperties, cellProperties);
-			
 			
 			ProcessVerticalAlignment(docxNode, cellProperties);
 			

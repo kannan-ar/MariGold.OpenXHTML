@@ -802,5 +802,44 @@
 			}
 		}
 		
+		[Test]
+		public void RowSpan()
+		{
+			using (MemoryStream mem = new MemoryStream())
+			{
+				WordDocument doc = new WordDocument(mem);
+			
+				doc.Process(new HtmlParser("<table><tr><td rowspan='2'></td><td></td></tr><tr><td></td></tr></table>"));
+				
+				Assert.IsNotNull(doc.Document.Body);
+				Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+				
+				Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+				
+				Assert.IsNotNull(table);
+				Assert.AreEqual(4, table.ChildElements.Count);
+				
+				TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+				Assert.IsNotNull(tableProperties);
+				Assert.AreEqual(1, tableProperties.ChildElements.Count);
+				
+				TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+				Assert.IsNotNull(tableGrid);
+				
+				TableRow row = table.ChildElements[2] as TableRow;
+				
+				Assert.IsNotNull(row);
+				Assert.AreEqual(2, row.ChildElements.Count);
+				
+				row = table.ChildElements[3] as TableRow;
+				
+				Assert.IsNotNull(row);
+				Assert.AreEqual(2, row.ChildElements.Count);
+				
+				OpenXmlValidator validator = new OpenXmlValidator();
+				var errors = validator.Validate(doc.WordprocessingDocument);
+				Assert.AreEqual(0, errors.Count());
+			}
+		}
 	}
 }
