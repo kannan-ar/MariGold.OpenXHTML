@@ -23,9 +23,21 @@
 		private void ProcessTd(int colIndex, IHtmlNode td, TableRow row, DocxTableProperties docxProperties)
 		{
 			TableCell cell = new TableCell();
-				
+			bool hasRowSpan = false;
+			
+			DocxNode docxNode = new DocxNode(td);
+			string rowSpan = docxNode.ExtractAttributeValue(DocxTableProperties.rowSpan);
+			Int32 rowSpanValue;
+			if (Int32.TryParse(rowSpan, out rowSpanValue))
+			{
+				docxProperties.RowSpanInfo[colIndex] = rowSpanValue - 1;
+				hasRowSpan = true;
+			}
+			
 			DocxTableCellStyle style = new DocxTableCellStyle();
-			style.Process(colIndex, cell, docxProperties, td);
+			style.HasRowSpan = hasRowSpan;
+			style.Process(cell, docxProperties, td);
+			
 			
 			if (td.HasChildren)
 			{
@@ -80,17 +92,10 @@
 			{
 				TableCell cell = new TableCell();
 				
-				DocxTableCellStyle style = new DocxTableCellStyle();
-				style.Process(colIndex, cell, docxProperties, docxProperties.RowSpanNode[colIndex]);
-			
-				if (cell.TableCellProperties == null)
-				{
-					cell.TableCellProperties = new TableCellProperties();
-				}
-				
+				cell.TableCellProperties = new TableCellProperties();
 				cell.TableCellProperties.Append(new VerticalMerge());
 				
-				cell.AppendChild(new Paragraph()).Append(new Run(new Text()));
+				cell.AppendChild(new Paragraph());
 			
 				row.Append(cell);
 				

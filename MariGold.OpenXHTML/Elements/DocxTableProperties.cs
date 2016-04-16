@@ -13,7 +13,6 @@
 		private Int16? cellPadding;
 		private Int16? cellSpacing;
 		private Dictionary<int, int> rowSpanInfo;
-		private Dictionary<int,IHtmlNode> rowSpanNode;
 		
 		internal const string tableName = "table";
 		internal const string trName = "tr";
@@ -82,19 +81,6 @@
 			get
 			{
 				return rowSpanInfo;
-			}
-		}
-		
-		internal Dictionary<int,IHtmlNode> RowSpanNode
-		{
-			get
-			{
-				if (rowSpanNode == null)
-				{
-					rowSpanNode = new Dictionary<int,IHtmlNode>();
-				}
-				
-				return rowSpanNode;
 			}
 		}
 		

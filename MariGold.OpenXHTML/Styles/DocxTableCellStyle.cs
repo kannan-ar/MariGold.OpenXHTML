@@ -59,7 +59,6 @@
 					
 					cellProperties.Append(cellWidth);
 				}
-
 			}
 		}
 		
@@ -78,24 +77,9 @@
 			}
 		}
 		
-		private void ProcessVerticalSpan(
-			int colIndex, 
-			DocxNode docxNode, 
-			DocxTableProperties docxProperties, 
-			TableCellProperties cellProperties, 
-			IHtmlNode node)
-		{
-			string rowSpan = docxNode.ExtractAttributeValue(DocxTableProperties.rowSpan);
-			Int32 rowSpanValue;
-			if (Int32.TryParse(rowSpan, out rowSpanValue))
-			{
-				docxProperties.RowSpanNode[colIndex] = node;
-				docxProperties.RowSpanInfo[colIndex] = rowSpanValue - 1;
-				cellProperties.Append(new VerticalMerge() { Val = MergedCellValues.Restart });
-			}
-		}
+		internal bool HasRowSpan{ get; set; }
 		
-		internal void Process(int colIndex, TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
+		internal void Process(TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
 		{
 			DocxNode docxNode = new DocxNode(node);
 			TableCellProperties cellProperties = new TableCellProperties();
@@ -103,9 +87,20 @@
 			ProcessColSpan(docxNode, cellProperties);
 			ProcessWidth(docxNode, cellProperties);
 			
-			ProcessVerticalSpan(colIndex, docxNode, docxProperties, cellProperties, node);
+			if (HasRowSpan)
+			{
+				cellProperties.Append(new VerticalMerge() { Val = MergedCellValues.Restart });
+			}
+			
 			//Processing border should be after colspan
 			ProcessBorders(docxNode, docxProperties, cellProperties);
+			
+			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+			
+			if (!string.IsNullOrEmpty(backgroundColor))
+			{
+				DocxColor.ApplyBackGroundColor(backgroundColor, cellProperties);
+			}
 			
 			ProcessVerticalAlignment(docxNode, cellProperties);
 			
