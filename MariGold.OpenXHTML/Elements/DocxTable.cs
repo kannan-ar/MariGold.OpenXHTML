@@ -51,20 +51,23 @@
 						SetThStyleToRun(child);
 					}
 					
-					if (child.IsText && !IsEmptyText(child.InnerHtml))
+					if (child.IsText)
 					{
-						if (para == null)
+						if (!IsEmptyText(child.InnerHtml))
 						{
-							para = cell.AppendChild(new Paragraph());
-							ParagraphCreated(td, para);
+							if (para == null)
+							{
+								para = cell.AppendChild(new Paragraph());
+								ParagraphCreated(td, para);
+							}
+						
+							Run run = para.AppendChild(new Run(new Text() {
+								Text = ClearHtml(child.InnerHtml),
+								Space = SpaceProcessingModeValues.Preserve
+							}));
+						
+							RunCreated(child, run);
 						}
-						
-						Run run = para.AppendChild(new Run(new Text() {
-							Text = ClearHtml(child.InnerHtml),
-							Space = SpaceProcessingModeValues.Preserve
-						}));
-						
-						RunCreated(child, run);
 					}
 					else
 					{

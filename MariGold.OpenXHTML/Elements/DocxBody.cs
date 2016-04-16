@@ -14,19 +14,22 @@
 		{
 			while (node != null)
 			{
-				if (node.IsText && !IsEmptyText(node.InnerHtml))
+				if (node.IsText)
 				{
-					if (paragraph == null)
+					if (!IsEmptyText(node.InnerHtml))
 					{
-						paragraph = body.AppendChild(new Paragraph());
-						ParagraphCreated(node, paragraph);
-					}
+						if (paragraph == null)
+						{
+							paragraph = body.AppendChild(new Paragraph());
+							ParagraphCreated(node, paragraph);
+						}
 					
-					Run run = paragraph.AppendChild(new Run(new Text() {
-						Text=ClearHtml(node.InnerHtml),
-						Space = SpaceProcessingModeValues.Preserve
-					}));
-					RunCreated(node, run);
+						Run run = paragraph.AppendChild(new Run(new Text() {
+							Text = ClearHtml(node.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						}));
+						RunCreated(node, run);
+					}
 				}
 				else
 				{

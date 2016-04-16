@@ -20,26 +20,27 @@
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
-			if (node != null && parent != null)
+			if (node == null || parent == null)
 			{
-				paragraph = null;
-				
-				Paragraph hrParagraph = parent.AppendChild(new Paragraph());
-				ParagraphCreated(node, hrParagraph);
-				
-				if (hrParagraph.ParagraphProperties == null)
-				{
-					hrParagraph.ParagraphProperties = new ParagraphProperties();
-				}
-				
-				ParagraphBorders paragraphBorders = new ParagraphBorders();
-				DocxBorder.ApplyDefaultBorder<TopBorder>(paragraphBorders);
-				hrParagraph.ParagraphProperties.Append(paragraphBorders);
-				
-				Run run = hrParagraph.AppendChild(new Run(new Text()));
-				RunCreated(node, run);
-				
+				return;
 			}
+			
+			paragraph = null;
+				
+			Paragraph hrParagraph = parent.AppendChild(new Paragraph());
+			ParagraphCreated(node, hrParagraph);
+				
+			if (hrParagraph.ParagraphProperties == null)
+			{
+				hrParagraph.ParagraphProperties = new ParagraphProperties();
+			}
+				
+			ParagraphBorders paragraphBorders = new ParagraphBorders();
+			DocxBorder.ApplyDefaultBorder<TopBorder>(paragraphBorders);
+			hrParagraph.ParagraphProperties.Append(paragraphBorders);
+				
+			Run run = hrParagraph.AppendChild(new Run(new Text()));
+			RunCreated(node, run);
 		}
 	}
 }

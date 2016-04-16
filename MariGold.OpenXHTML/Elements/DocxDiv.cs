@@ -20,16 +20,21 @@
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
-			if (node != null && parent != null)
+			if (node == null || parent == null)
 			{
-				//Div creates it's own new paragraph. So old paragraph ends here and creats another one after this div 
-				//if there any text!
-				paragraph = null;
-				Paragraph divParagraph = null;
+				return;
+			}
+			
+			//Div creates it's own new paragraph. So old paragraph ends here and creats another one after this div 
+			//if there any text!
+			paragraph = null;
+			Paragraph divParagraph = null;
 				
-				foreach (IHtmlNode child in node.Children)
+			foreach (IHtmlNode child in node.Children)
+			{
+				if (child.IsText)
 				{
-					if (child.IsText && !IsEmptyText(child.InnerHtml))
+					if (!IsEmptyText(child.InnerHtml))
 					{
 						if (divParagraph == null)
 						{
@@ -44,12 +49,12 @@
 						
 						RunCreated(child, run);
 					}
-					else
-					{
-						//ProcessChild forwards the incomming parent to the child element. So any div element inside this div
-						//creates a new paragraph on the parent element.
-						ProcessChild(child, parent, ref divParagraph);
-					}
+				}
+				else
+				{
+					//ProcessChild forwards the incomming parent to the child element. So any div element inside this div
+					//creates a new paragraph on the parent element.
+					ProcessChild(child, parent, ref divParagraph);
 				}
 			}
 		}

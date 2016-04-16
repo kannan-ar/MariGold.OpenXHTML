@@ -89,14 +89,19 @@
 		
 		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
 		{
-			if (node != null && parent != null)
+			if (node == null || parent == null)
 			{
-				paragraph = null;
-				Paragraph headerParagraph = null;
+				return;
+			}
+			
+			paragraph = null;
+			Paragraph headerParagraph = null;
 				
-				foreach (IHtmlNode child in node.Children)
+			foreach (IHtmlNode child in node.Children)
+			{
+				if (child.IsText)
 				{
-					if (child.IsText && !IsEmptyText(child.InnerHtml))
+					if (!IsEmptyText(child.InnerHtml))
 					{
 						if (headerParagraph == null)
 						{
@@ -113,10 +118,10 @@
 							Space = SpaceProcessingModeValues.Preserve
 						});
 					}
-					else
-					{
-						ProcessChild(child, parent, ref headerParagraph);
-					}
+				}
+				else
+				{
+					ProcessChild(child, parent, ref headerParagraph);
 				}
 			}
 		}

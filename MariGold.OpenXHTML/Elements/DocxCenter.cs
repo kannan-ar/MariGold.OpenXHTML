@@ -26,30 +26,33 @@
 			
 			foreach (IHtmlNode child in node.Children)
 			{
-				if (child.IsText && !IsEmptyText(child.InnerHtml))
+				if (child.IsText)
 				{
-					if (paragraph == null)
+					if (!IsEmptyText(child.InnerHtml))
 					{
-						paragraph = parent.AppendChild(new Paragraph());
-						IHtmlNode parentNode = node.Parent ?? node;
+						if (paragraph == null)
+						{
+							paragraph = parent.AppendChild(new Paragraph());
+							IHtmlNode parentNode = node.Parent ?? node;
 						
-						ParagraphCreated(parentNode, paragraph);
-					}
+							ParagraphCreated(parentNode, paragraph);
+						}
 					
-					if (paragraph.ParagraphProperties == null)
-					{
-						paragraph.ParagraphProperties = new ParagraphProperties();
-					}
+						if (paragraph.ParagraphProperties == null)
+						{
+							paragraph.ParagraphProperties = new ParagraphProperties();
+						}
 
-					DocxAlignment.AlignCenter(paragraph.ParagraphProperties);
+						DocxAlignment.AlignCenter(paragraph.ParagraphProperties);
 					
-					Run run = paragraph.AppendChild(new Run());
-					RunCreated(node, run);
+						Run run = paragraph.AppendChild(new Run());
+						RunCreated(node, run);
 					
-					run.AppendChild(new Text() {
-						Text = ClearHtml(child.InnerHtml),
-						Space = SpaceProcessingModeValues.Preserve
-					});
+						run.AppendChild(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						});
+					}
 				}
 				else
 				{

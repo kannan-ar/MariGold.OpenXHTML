@@ -44,19 +44,22 @@
 			{
 				SetDefaultStyle(child);
 				
-				if (child.IsText && !IsEmptyText(child.InnerHtml))
+				if (child.IsText)
 				{
-					if (addrParagraph == null)
+					if (!IsEmptyText(child.InnerHtml))
 					{
-						addrParagraph = parent.AppendChild(new Paragraph());
-						ParagraphCreated(node, addrParagraph);
-					}
+						if (addrParagraph == null)
+						{
+							addrParagraph = parent.AppendChild(new Paragraph());
+							ParagraphCreated(node, addrParagraph);
+						}
 						
-					Run run = addrParagraph.AppendChild(new Run(new Text() {
-						Text = ClearHtml(child.InnerHtml),
-						Space = SpaceProcessingModeValues.Preserve
-					}));
-					RunCreated(child, run);
+						Run run = addrParagraph.AppendChild(new Run(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						}));
+						RunCreated(child, run);
+					}
 				}
 				else
 				{

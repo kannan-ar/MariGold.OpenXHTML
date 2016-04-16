@@ -57,12 +57,15 @@
 				
 				foreach (IHtmlNode child in node.Children)
 				{
-					if (child.IsText && !IsEmptyText(child.InnerHtml))
+					if (child.IsText)
 					{
-						run.AppendChild(new Text() {
-							Text = ClearHtml(child.InnerHtml),
-							Space = SpaceProcessingModeValues.Preserve
-						});
+						if (!IsEmptyText(child.InnerHtml))
+						{
+							run.AppendChild(new Text() {
+								Text = ClearHtml(child.InnerHtml),
+								Space = SpaceProcessingModeValues.Preserve
+							});
+						}
 					}
 					else
 					{

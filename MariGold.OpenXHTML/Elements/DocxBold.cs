@@ -58,17 +58,20 @@
 			
 			foreach (IHtmlNode child in node.Children)
 			{
-				if (child.IsText && !IsEmptyText(child.InnerHtml))
+				if (child.IsText)
 				{
-					if (paragraph == null)
+					if (!IsEmptyText(child.InnerHtml))
 					{
-						paragraph = parent.AppendChild(new Paragraph());
-						IHtmlNode parentNode = node.Parent ?? node;
-						ParagraphCreated(parentNode, paragraph);
-					}
+						if (paragraph == null)
+						{
+							paragraph = parent.AppendChild(new Paragraph());
+							IHtmlNode parentNode = node.Parent ?? node;
+							ParagraphCreated(parentNode, paragraph);
+						}
 					
-					Run run = paragraph.AppendChild(new Run());
-					ProcessRun(run, child);
+						Run run = paragraph.AppendChild(new Run());
+						ProcessRun(run, child);
+					}
 				}
 				else
 				{

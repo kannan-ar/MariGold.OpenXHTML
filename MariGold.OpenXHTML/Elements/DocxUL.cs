@@ -25,14 +25,17 @@
 			
 			foreach (IHtmlNode child in li.Children)
 			{
-				if (child.IsText && !IsEmptyText(child.InnerHtml))
+				if (child.IsText)
 				{
-					Run run = paragraph.AppendChild(new Run(new Text() {
-						Text = ClearHtml(child.InnerHtml),
-						Space = SpaceProcessingModeValues.Preserve
-					}));
+					if (!IsEmptyText(child.InnerHtml))
+					{
+						Run run = paragraph.AppendChild(new Run(new Text() {
+							Text = ClearHtml(child.InnerHtml),
+							Space = SpaceProcessingModeValues.Preserve
+						}));
 					
-					RunCreated(li, run);
+						RunCreated(li, run);
+					}
 				}
 				else
 				{
