@@ -58,7 +58,7 @@
 							if (para == null)
 							{
 								para = cell.AppendChild(new Paragraph());
-								ParagraphCreated(td, para);
+								ParagraphCreated(DocxTableCellStyle.GetHtmlNodeForTableCellContent(td), para);
 							}
 						
 							Run run = para.AppendChild(new Run(new Text() {

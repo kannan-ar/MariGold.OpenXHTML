@@ -109,5 +109,24 @@
 				cell.Append(cellProperties);
 			}
 		}
+		
+		internal static IHtmlNode GetHtmlNodeForTableCellContent(IHtmlNode node)
+		{
+			IHtmlNode clone = node.Clone();
+			
+			clone.Styles.Remove(DocxBorder.borderName);
+			clone.Styles.Remove(DocxBorder.leftBorderName);
+			clone.Styles.Remove(DocxBorder.rightBorderName);
+			clone.Styles.Remove(DocxBorder.topBorderName);
+			clone.Styles.Remove(DocxBorder.bottomBorderName);
+			
+			clone.Styles.Remove(DocxMargin.margin);
+			clone.Styles.Remove(DocxMargin.marginLeft);
+			clone.Styles.Remove(DocxMargin.marginRight);
+			clone.Styles.Remove(DocxMargin.marginTop);
+			clone.Styles.Remove(DocxMargin.marginBottom);
+			
+			return clone;
+		}
 	}
 }

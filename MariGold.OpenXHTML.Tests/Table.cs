@@ -946,9 +946,15 @@
 				
 				Paragraph para = cell.ChildElements[1] as Paragraph;
 				Assert.IsNotNull(para);
-				Assert.AreEqual(1, para.ChildElements.Count);
+				Assert.AreEqual(2, para.ChildElements.Count);
 				
-				Run run = para.ChildElements[0]as Run;
+				ParagraphProperties properties = para.ChildElements[0]as ParagraphProperties;
+				Assert.IsNotNull(properties);
+				Assert.AreEqual(1, properties.ChildElements.Count);
+				Word.Shading shading = properties.ChildElements[0] as Word.Shading;
+				Assert.AreEqual("FF0000", shading.Fill.Value);
+				
+				Run run = para.ChildElements[1]as Run;
 				Assert.IsNotNull(run);
 				Assert.AreEqual(1, run.ChildElements.Count);
 				

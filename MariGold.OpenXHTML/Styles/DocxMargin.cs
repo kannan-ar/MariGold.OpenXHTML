@@ -6,14 +6,14 @@
 	
 	internal sealed class DocxMargin
 	{
-		private const string margin = "margin";
-		private const string marginTop = "margin-top";
-		private const string marginBottom = "margin-bottom";
-		private const string marginLeft = "margin-left";
-		private const string marginRight = "margin-right";
-		private const string lineHeight = "line-height";
-		
 		private readonly DocxNode node;
+		
+		internal const string margin = "margin";
+		internal const string marginTop = "margin-top";
+		internal const string marginBottom = "margin-bottom";
+		internal const string marginLeft = "margin-left";
+		internal const string marginRight = "margin-right";
+		internal const string lineHeight = "line-height";
 		
 		internal DocxMargin(IHtmlNode node)
 		{
