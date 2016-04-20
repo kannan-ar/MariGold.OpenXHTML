@@ -75,12 +75,14 @@
 					}
 				}
 			}
-			
-			//Cell must contain atleast one paragraph. Adding an empty paragraph if there is not html content
-			if (!cell.Descendants<Paragraph>().Any())
-			{
-				cell.AppendChild(new Paragraph());
-			}
+
+            //The last element of the table cell must be a paragraph.
+            var lastElement = cell.Elements().LastOrDefault();
+
+            if (lastElement == null || !(lastElement is Paragraph))
+            {
+                cell.AppendChild(new Paragraph());
+            }
 			
 			row.Append(cell);
 		}

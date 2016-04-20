@@ -961,7 +961,48 @@
 				Word.Text text = run.ChildElements[0]as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
 			}
 		}
+
+        [Test]
+        public void TableInsideAnotherTable()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<table><tr><td><table><tr><td>test</td></tr></table></td></tr></table>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+
+                Assert.IsNotNull(table);
+                Assert.AreEqual(3, table.ChildElements.Count);
+
+                TableRow row = table.ChildElements[2] as TableRow;
+
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                TableCell cell = row.ChildElements[0] as TableCell;
+                Assert.IsNotNull(cell);
+                Assert.AreEqual(2, cell.ChildElements.Count);
+
+                table = cell.ChildElements[0] as Word.Table;
+                Assert.IsNotNull(table);
+                Paragraph para = cell.ChildElements[1] as Paragraph;
+                Assert.IsNotNull(para);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }
