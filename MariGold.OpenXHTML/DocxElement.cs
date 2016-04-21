@@ -60,7 +60,20 @@
 			
 			html = html.Replace("&nbsp;", " ");
 			html = html.Replace("&amp;", "&");
-			return html.Replace(Environment.NewLine, string.Empty);
+
+            //If the text starts with a new line and the few space charactors, it may be the result of html formatting.
+            //Thus exclude from the actual text.
+            if (html.StartsWith(Environment.NewLine))
+            {
+                html = html.Replace(Environment.NewLine, string.Empty);
+                html = html.TrimStart(new char[] { ' ' });
+            }
+            else
+            {
+                html = html.Replace(Environment.NewLine, string.Empty);
+            }
+
+            return html;
 		}
 		
 		internal bool IsEmptyText(string html)
