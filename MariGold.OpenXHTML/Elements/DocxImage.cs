@@ -137,10 +137,10 @@
 		{
 			return string.Compare(node.Tag, "img", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
-		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
+
+        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
 		{
-			DocxNode docxNode = new DocxNode(node);
+            DocxNode docxNode = new DocxNode(properties.CurrentNode);
 			
 			string src = docxNode.ExtractAttributeValue("src");
 			
@@ -152,12 +152,12 @@
 				{
 					if (paragraph == null)
 					{
-						paragraph = parent.AppendChild(new Paragraph());
-						ParagraphCreated(node, paragraph);
+                        paragraph = properties.Parent.AppendChild(new Paragraph());
+                        ParagraphCreated(properties.CurrentNode, paragraph);
 					}
 					
 					Run run = paragraph.AppendChild(new Run(drawing));
-					RunCreated(node, run);
+                    RunCreated(properties.CurrentNode, run);
 				}
 			}
 		}

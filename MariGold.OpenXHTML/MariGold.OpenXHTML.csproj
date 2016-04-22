@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocxNode.cs" />
+    <Compile Include="DocxProperties.cs" />
     <Compile Include="Elements\DocxA.cs" />
     <Compile Include="Elements\DocxAddress.cs" />
     <Compile Include="Elements\DocxBold.cs" />
@@ -96,10 +97,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Elements" />
-    <Folder Include="Styles" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -17,18 +17,18 @@
 		{
 			return string.Compare(node.Tag, "hr", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
-		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
+
+        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
 		{
-			if (node == null || parent == null)
+            if (properties.CurrentNode == null || properties.Parent == null)
 			{
 				return;
 			}
 			
 			paragraph = null;
-				
-			Paragraph hrParagraph = parent.AppendChild(new Paragraph());
-			ParagraphCreated(node, hrParagraph);
+
+            Paragraph hrParagraph = properties.Parent.AppendChild(new Paragraph());
+            ParagraphCreated(properties.CurrentNode, hrParagraph);
 				
 			if (hrParagraph.ParagraphProperties == null)
 			{
@@ -40,7 +40,7 @@
 			hrParagraph.ParagraphProperties.Append(paragraphBorders);
 				
 			Run run = hrParagraph.AppendChild(new Run(new Text()));
-			RunCreated(node, run);
+            RunCreated(properties.CurrentNode, run);
 		}
 	}
 }

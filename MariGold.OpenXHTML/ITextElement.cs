@@ -7,6 +7,6 @@
 	internal interface ITextElement
 	{
 		bool CanConvert(IHtmlNode node);
-		void Process(IHtmlNode node, OpenXmlElement parent);
+        void Process(DocxProperties properties);
 	}
 }

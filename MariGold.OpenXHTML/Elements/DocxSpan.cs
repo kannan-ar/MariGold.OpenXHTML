@@ -1,56 +1,55 @@
 ﻿namespace MariGold.OpenXHTML
 {
-	using System;
-	using MariGold.HtmlParser;
-	using DocumentFormat.OpenXml;
-	using DocumentFormat.OpenXml.Wordprocessing;
-	
-	internal sealed class DocxSpan : DocxElement
-	{
-		public DocxSpan(IOpenXmlContext context)
-			: base(context)
-		{
-		}
-		
-		internal override bool CanConvert(IHtmlNode node)
-		{
-			return string.Compare(node.Tag, "span", StringComparison.InvariantCultureIgnoreCase) == 0;
-		}
-		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
-		{
-			if (node == null || parent == null)
-			{
-				return;
-			}
-			
-			foreach (IHtmlNode child in node.Children)
-			{
-				if (child.IsText)
-				{
-					if (!IsEmptyText(child.InnerHtml))
-					{
-						if (paragraph == null)
-						{
-							paragraph = parent.AppendChild(new Paragraph());
-							IHtmlNode parentNode = node.Parent ?? node;
-							
-							ParagraphCreated(parentNode, paragraph);
-						}
-						
-						Run run = paragraph.AppendChild(new Run(new Text() {
-							Text = ClearHtml(child.InnerHtml),
-							Space = SpaceProcessingModeValues.Preserve
-						}));
-						
-						RunCreated(node, run);
-					}
-				}
-				else
-				{
-					ProcessChild(child, parent, ref paragraph);
-				}
-			}
-		}
-	}
+    using System;
+    using MariGold.HtmlParser;
+    using DocumentFormat.OpenXml;
+    using DocumentFormat.OpenXml.Wordprocessing;
+
+    internal sealed class DocxSpan : DocxElement
+    {
+        public DocxSpan(IOpenXmlContext context)
+            : base(context)
+        {
+        }
+
+        internal override bool CanConvert(IHtmlNode node)
+        {
+            return string.Compare(node.Tag, "span", StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+
+        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        {
+            if (properties.CurrentNode == null || properties.Parent == null)
+            {
+                return;
+            }
+
+            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            {
+                if (child.IsText)
+                {
+                    if (!IsEmptyText(child.InnerHtml))
+                    {
+                        if (paragraph == null)
+                        {
+                            paragraph = properties.Parent.AppendChild(new Paragraph());
+                            ParagraphCreated(properties.ParagraphNode, paragraph);
+                        }
+
+                        Run run = paragraph.AppendChild(new Run(new Text()
+                        {
+                            Text = ClearHtml(child.InnerHtml),
+                            Space = SpaceProcessingModeValues.Preserve
+                        }));
+
+                        RunCreated(properties.CurrentNode, run);
+                    }
+                }
+                else
+                {
+                    ProcessChild(new DocxProperties(child, properties.ParagraphNode, properties.Parent), ref paragraph);
+                }
+            }
+        }
+    }
 }

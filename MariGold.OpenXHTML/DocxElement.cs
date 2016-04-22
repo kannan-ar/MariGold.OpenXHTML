@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
+    using System.Text.RegularExpressions;
 	using MariGold.HtmlParser;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
@@ -20,24 +21,24 @@
 			DocxParagraphStyle style = new DocxParagraphStyle();
 			style.Process(para, node);
 		}
-		
-		protected void ProcessChild(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
+
+        protected void ProcessChild(DocxProperties properties, ref Paragraph paragraph)
 		{
-			DocxElement element = context.Convert(node);
+            DocxElement element = context.Convert(properties.CurrentNode);
 					
 			if (element != null)
 			{
-				element.Process(node, parent, ref paragraph);
+                element.Process(properties, ref paragraph);
 			}
 		}
-		
-		protected void ProcessTextElement(IHtmlNode node, OpenXmlElement parent)
+
+        protected void ProcessTextElement(DocxProperties properties)
 		{
-			ITextElement element = context.ConvertTextElement(node);
+            ITextElement element = context.ConvertTextElement(properties.CurrentNode);
 			
 			if (element != null)
 			{
-				element.Process(node, parent);
+                element.Process(properties);
 			}
 		}
 		
@@ -61,17 +62,17 @@
 			html = html.Replace("&nbsp;", " ");
 			html = html.Replace("&amp;", "&");
 
-            //If the text starts with a new line and the few space charactors, it may be the result of html formatting.
-            //Thus exclude from the actual text.
-            if (html.StartsWith(Environment.NewLine))
+            Regex regex = new Regex(Environment.NewLine + "\\s+");
+            Match match = regex.Match(html);
+
+            while (match.Success)
             {
-                html = html.Replace(Environment.NewLine, string.Empty);
-                html = html.TrimStart(new char[] { ' ' });
+                //match.Length - 1 for leave a single space. Otherwise the sentences will collide.
+                html = html.Remove(match.Index, match.Length - 1);
+                match = regex.Match(html);
             }
-            else
-            {
-                html = html.Replace(Environment.NewLine, string.Empty);
-            }
+
+            html = html.Replace(Environment.NewLine, string.Empty);
 
             return html;
 		}
@@ -95,6 +96,6 @@
 		
 		internal abstract bool CanConvert(IHtmlNode node);
 		
-		internal abstract void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph);
+		internal abstract void Process(DocxProperties properties, ref Paragraph paragraph);
 	}
 }

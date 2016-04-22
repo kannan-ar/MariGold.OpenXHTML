@@ -18,15 +18,15 @@
 		{
 			return string.Compare(node.Tag, "a", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
-		
-		internal override void Process(IHtmlNode node, OpenXmlElement parent, ref Paragraph paragraph)
+
+        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
 		{
-			if (node == null)
+			if (properties.CurrentNode == null)
 			{
 				return;
 			}
-			
-			DocxNode docxNode = new DocxNode(node);
+
+            DocxNode docxNode = new DocxNode(properties.CurrentNode);
 			
 			string link = docxNode.ExtractAttributeValue(href);
 			
@@ -44,7 +44,7 @@
 				var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
 				
 				Run run = new Run();
-				RunCreated(node, run);
+                RunCreated(properties.CurrentNode, run);
 				
 				if (run.RunProperties == null)
 				{
@@ -54,8 +54,8 @@
 				{
 					run.RunProperties.Append(new RunStyle() { Val = "Hyperlink" });
 				}
-				
-				foreach (IHtmlNode child in node.Children)
+
+                foreach (IHtmlNode child in properties.CurrentNode.Children)
 				{
 					if (child.IsText)
 					{
@@ -69,7 +69,7 @@
 					}
 					else
 					{
-						ProcessTextElement(child, hyperLink);
+                        ProcessTextElement(new DocxProperties(child, hyperLink));
 					}
 				}
 				
@@ -77,8 +77,8 @@
 				
 				if (paragraph == null)
 				{
-					paragraph = parent.AppendChild(new Paragraph());
-					ParagraphCreated(node, paragraph);
+                    paragraph = properties.Parent.AppendChild(new Paragraph());
+					ParagraphCreated(properties.ParagraphNode, paragraph);
 				}
 				
 				paragraph.Append(hyperLink);
