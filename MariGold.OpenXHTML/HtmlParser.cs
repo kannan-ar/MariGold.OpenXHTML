@@ -9,7 +9,9 @@
 	public sealed class HtmlParser : IParser
 	{
 		private readonly string html;
-		
+
+        private string uriSchema;
+
 		private IHtmlNode FindBody(IHtmlNode node)
 		{
 			if (string.Compare(node.Tag, "body", StringComparison.InvariantCultureIgnoreCase) == 0)
@@ -35,10 +37,24 @@
 			this.html = html;
 		}
 		
+        public string UriSchema
+        {
+            get
+            {
+                return uriSchema;
+            }
+
+            set
+            {
+                uriSchema = value;
+            }
+        }
+
 		public IHtmlNode FindBodyOrFirstElement()
 		{
 			MariGold.HtmlParser.HtmlParser parser = new HtmlTextParser(html);
-			
+
+            parser.UriSchema = uriSchema;
 			parser.Parse();
 			parser.ParseCSS();
 			

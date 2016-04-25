@@ -8,6 +8,7 @@
 	/// </summary>
 	public interface IParser
 	{
+        string UriSchema { get; set; }
 		IHtmlNode FindBodyOrFirstElement();
 	}
 }

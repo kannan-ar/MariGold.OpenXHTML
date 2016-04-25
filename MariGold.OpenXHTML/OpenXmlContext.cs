@@ -17,7 +17,7 @@
 		private Dictionary<NumberFormatValues,NumberingInstance> numberingInstanceList;
 		private string imagePath;
 		private string baseUrl;
-		
+
 		private void PrepareWordElements()
 		{
 			elements = new List<DocxElement>() {

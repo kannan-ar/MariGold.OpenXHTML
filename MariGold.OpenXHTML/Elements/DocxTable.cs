@@ -115,6 +115,7 @@
             if (tr.HasChildren)
             {
                 TableRow row = new TableRow();
+                DocxNode trNode = new DocxNode(tr);
 
                 DocxTableRowStyle style = new DocxTableRowStyle();
                 style.Process(row, tableProperties);
@@ -129,6 +130,7 @@
 
                     if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || tableProperties.IsCellHeader)
                     {
+                        trNode.CopyStyles(td, DocxColor.backGroundColor);
                         ProcessTd(colIndex++, td, row, tableProperties);
                     }
                 }
