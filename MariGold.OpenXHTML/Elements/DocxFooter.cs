@@ -5,7 +5,7 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
-    internal sealed class DocxHeader : DocxElement
+    internal sealed class DocxFooter : DocxElement
     {
         private Paragraph CreateParagraph(DocxProperties properties)
         {
@@ -14,11 +14,11 @@
             return para;
         }
 
-        internal DocxHeader(IOpenXmlContext context) : base(context) { }
+        internal DocxFooter(IOpenXmlContext context) : base(context) { }
 
         internal override bool CanConvert(IHtmlNode node)
         {
-            return string.Compare(node.Tag, "header", StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Compare(node.Tag, "footer", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
         internal override void Process(DocxProperties properties, ref Paragraph paragraph)
@@ -29,7 +29,7 @@
             }
 
             paragraph = null;
-            Paragraph headerParagraph = null;
+            Paragraph footerParagraph = null;
 
             foreach (IHtmlNode child in properties.CurrentNode.Children)
             {
@@ -37,12 +37,12 @@
                 {
                     if (!IsEmptyText(child.InnerHtml))
                     {
-                        if (headerParagraph == null)
+                        if (footerParagraph == null)
                         {
-                            headerParagraph = CreateParagraph(properties);
+                            footerParagraph = CreateParagraph(properties);
                         }
 
-                        Run run = headerParagraph.AppendChild(new Run(new Text()
+                        Run run = footerParagraph.AppendChild(new Run(new Text()
                         {
                             Text = ClearHtml(child.InnerHtml),
                             Space = SpaceProcessingModeValues.Preserve
@@ -53,7 +53,7 @@
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref headerParagraph);
+                    ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref footerParagraph);
                 }
             }
         }

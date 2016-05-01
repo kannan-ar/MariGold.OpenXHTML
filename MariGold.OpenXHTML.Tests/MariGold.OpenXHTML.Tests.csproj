@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BasicDocument.cs" />
     <Compile Include="BasicStyles.cs" />
+    <Compile Include="BlockElements.cs" />
     <Compile Include="SimpleHtmlFromFile.cs" />
     <Compile Include="TestDiv.cs" />
     <Compile Include="TestP.cs" />

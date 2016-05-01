@@ -64,7 +64,9 @@
     <Compile Include="Elements\DocxCenter.cs" />
     <Compile Include="Elements\DocxDiv.cs" />
     <Compile Include="Elements\DocxDL.cs" />
+    <Compile Include="Elements\DocxFooter.cs" />
     <Compile Include="Elements\DocxHeader.cs" />
+    <Compile Include="Elements\DocxHeading.cs" />
     <Compile Include="Elements\DocxHr.cs" />
     <Compile Include="Elements\DocxItalic.cs" />
     <Compile Include="Elements\DocxImage.cs" />
