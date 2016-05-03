@@ -95,30 +95,29 @@
                 var relationship = context.MainDocumentPart.AddHyperlinkRelationship(uri, uri.IsAbsoluteUri);
 
                 var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
-
-                Run run = new Run();
-                RunCreated(properties.CurrentNode, run);
-
-                if (run.RunProperties == null)
-                {
-                    run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
-                }
-                else
-                {
-                    run.RunProperties.Append(new RunStyle() { Val = "Hyperlink" });
-                }
-
+               
                 foreach (IHtmlNode child in properties.CurrentNode.Children)
                 {
                     if (child.IsText)
                     {
                         if (!IsEmptyText(child.InnerHtml))
                         {
-                            run.AppendChild(new Text()
+                            Run run = hyperLink.AppendChild<Run>(new Run(new Text()
+                             {
+                                 Text = ClearHtml(child.InnerHtml),
+                                 Space = SpaceProcessingModeValues.Preserve
+                             }));
+
+                            RunCreated(properties.CurrentNode, run);
+
+                            if (run.RunProperties == null)
                             {
-                                Text = ClearHtml(child.InnerHtml),
-                                Space = SpaceProcessingModeValues.Preserve
-                            });
+                                run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
+                            }
+                            else
+                            {
+                                run.RunProperties.Append(new RunStyle() { Val = "Hyperlink" });
+                            }
                         }
                     }
                     else
@@ -126,8 +125,6 @@
                         ProcessTextElement(new DocxProperties(child, hyperLink));
                     }
                 }
-
-                hyperLink.Append(run);
 
                 CreateParagraph(properties, ref paragraph);
 

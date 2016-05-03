@@ -42,7 +42,8 @@
 			};
 			
 			textElements = new List<ITextElement>() {
-				new DocxBold(this)
+				new DocxBold(this),
+                new DocxSpan(this)
 			};
 		}
 		
