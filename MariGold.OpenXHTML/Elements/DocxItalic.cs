@@ -5,7 +5,7 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
-    internal sealed class DocxItalic : DocxElement
+    internal sealed class DocxItalic : DocxElement, ITextElement
     {
         internal DocxItalic(IOpenXmlContext context)
             : base(context)
@@ -57,6 +57,32 @@
                 else
                 {
                     ProcessChild(new DocxProperties(child, properties.ParagraphNode, properties.Parent), ref paragraph);
+                }
+            }
+        }
+
+        bool ITextElement.CanConvert(IHtmlNode node)
+        {
+            return CanConvert(node);
+        }
+
+        void ITextElement.Process(DocxProperties properties)
+        {
+            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            {
+                if (child.IsText && !IsEmptyText(child.InnerHtml))
+                {
+                    Run run = properties.Parent.AppendChild(new Run(new Text()
+                    {
+                        Text = ClearHtml(child.InnerHtml),
+                        Space = SpaceProcessingModeValues.Preserve
+                    }));
+
+                    RunCreated(child, run);
+                }
+                else
+                {
+                    ProcessTextElement(new DocxProperties(child, properties.Parent));
                 }
             }
         }

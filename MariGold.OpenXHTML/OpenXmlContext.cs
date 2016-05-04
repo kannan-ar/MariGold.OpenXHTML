@@ -43,7 +43,10 @@
 			
 			textElements = new List<ITextElement>() {
 				new DocxBold(this),
-                new DocxSpan(this)
+                new DocxSpan(this),
+                new DocxBr(this),
+                new DocxCenter(this),
+                new DocxItalic(this)
 			};
 		}
 		

@@ -5,7 +5,7 @@
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
-	internal sealed class DocxBr : DocxElement
+	internal sealed class DocxBr : DocxElement, ITextElement
 	{
 		internal DocxBr(IOpenXmlContext context)
 			: base(context)
@@ -31,5 +31,15 @@
                 RunCreated(properties.CurrentNode, run);
 			}
 		}
+
+        bool ITextElement.CanConvert(IHtmlNode node)
+        {
+            return CanConvert(node);
+        }
+
+        void ITextElement.Process(DocxProperties properties)
+        {
+            properties.Parent.AppendChild(new Run(new Break()));
+        }
 	}
 }
