@@ -56,6 +56,15 @@
 			}
 		}
 		
+        internal static string GetPath(string folderPath)
+        {
+            string html = string.Empty;
+            string path = Environment.CurrentDirectory;
+            int index = path.IndexOf("bin");
+
+            return path.Remove(index) + folderPath;
+        }
+
 		internal static string GetHtmlFromFile(string folderPath)
 		{
 			string html = string.Empty;

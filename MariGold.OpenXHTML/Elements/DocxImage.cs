@@ -12,7 +12,7 @@
 	using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 	using System.Drawing;
 
-	internal sealed class DocxImage : DocxElement
+	internal sealed class DocxImage : DocxElement, ITextElement
 	{
 		private ImagePartType GetImagePartType(string src)
 		{
@@ -105,8 +105,7 @@
 						DistanceFromTop = (UInt32Value)0U,
 						DistanceFromBottom = (UInt32Value)0U,
 						DistanceFromLeft = (UInt32Value)0U,
-						DistanceFromRight = (UInt32Value)0U,
-						EditId = "50D07946"
+						DistanceFromRight = (UInt32Value)0U
 					});
 					
 				return image;
@@ -161,5 +160,28 @@
 				}
 			}
 		}
+
+        bool ITextElement.CanConvert(IHtmlNode node)
+        {
+            return CanConvert(node);
+        }
+
+        void ITextElement.Process(DocxProperties properties)
+        {
+            DocxNode docxNode = new DocxNode(properties.CurrentNode);
+			
+			string src = docxNode.ExtractAttributeValue("src");
+
+            if (!string.IsNullOrEmpty(src))
+            {
+                Drawing drawing = PrepareImage(src);
+
+                if (drawing != null)
+                {
+                    Run run = properties.Parent.AppendChild(new Run(drawing));
+                    RunCreated(properties.CurrentNode, run);
+                }
+            }
+        }
 	}
 }
