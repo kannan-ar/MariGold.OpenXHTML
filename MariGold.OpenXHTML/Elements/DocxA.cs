@@ -18,24 +18,30 @@
             }
         }
 
-        private void ProcessNonLinkText(DocxProperties properties, Run run)
+        private void ProcessNonLinkText(DocxProperties properties, ref Paragraph paragraph)
         {
             foreach (IHtmlNode child in properties.CurrentNode.Children)
             {
                 if (child.IsText)
                 {
+                    if (paragraph == null)
+                    {
+                        paragraph = properties.Parent.AppendChild(new Paragraph());
+                        ParagraphCreated(properties.ParagraphNode, paragraph);
+                    }
+
                     if (!IsEmptyText(child.InnerHtml))
                     {
-                        run.AppendChild(new Text()
+                        paragraph.AppendChild<Run>(new Run(new Text()
                         {
                             Text = ClearHtml(child.InnerHtml),
                             Space = SpaceProcessingModeValues.Preserve
-                        });
+                        }));
                     }
                 }
                 else
                 {
-                    ProcessTextElement(new DocxProperties(child, properties.ParagraphNode, properties.Parent));
+                    ProcessChild(new DocxProperties(child, properties.ParagraphNode, properties.Parent), ref paragraph);
                 }
             }
         }
@@ -95,7 +101,7 @@
                 var relationship = context.MainDocumentPart.AddHyperlinkRelationship(uri, uri.IsAbsoluteUri);
 
                 var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
-               
+
                 foreach (IHtmlNode child in properties.CurrentNode.Children)
                 {
                     if (child.IsText)
@@ -132,10 +138,7 @@
             }
             else
             {
-                CreateParagraph(properties, ref paragraph);
-                Run run = paragraph.AppendChild(new Run());
-                RunCreated(properties.CurrentNode, run);
-                ProcessNonLinkText(properties, run);
+                ProcessNonLinkText(properties, ref paragraph);
             }
         }
     }

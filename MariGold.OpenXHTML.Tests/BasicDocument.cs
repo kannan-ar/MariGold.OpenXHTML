@@ -1347,5 +1347,53 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void TwoATagWithSpan()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<a href='http://google.com'><span>one</span></a><a href='#'><span>two</span></a>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(2, para.ChildElements.Count);
+
+                Hyperlink link = para.ChildElements[0] as Hyperlink;
+
+                Assert.IsNotNull(link);
+                Assert.AreEqual(1, link.ChildElements.Count);
+
+                Run run = link.ChildElements[0] as Run;
+
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                Word.Text text = run.ChildElements[0] as Word.Text;
+
+                Assert.IsNotNull(text);
+                Assert.AreEqual("one", text.InnerText);
+
+                run = para.ChildElements[1] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                text = run.ChildElements[0] as Word.Text;
+
+                Assert.IsNotNull(text);
+                Assert.AreEqual("two", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }
