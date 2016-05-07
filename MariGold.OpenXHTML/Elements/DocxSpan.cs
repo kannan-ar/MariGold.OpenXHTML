@@ -59,23 +59,7 @@
 
         void ITextElement.Process(DocxProperties properties)
         {
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
-            {
-                if (child.IsText && !IsEmptyText(child.InnerHtml))
-                {
-                    Run run = properties.Parent.AppendChild(new Run(new Text()
-                    {
-                        Text = ClearHtml(child.InnerHtml),
-                        Space = SpaceProcessingModeValues.Preserve
-                    }));
-
-                    RunCreated(child, run);
-                }
-                else
-                {
-                    ProcessTextElement(new DocxProperties(child, properties.Parent));
-                }
-            }
+            ProcessTextChild(properties);
         }
     }
 }

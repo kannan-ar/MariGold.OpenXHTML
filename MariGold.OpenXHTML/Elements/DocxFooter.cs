@@ -5,7 +5,7 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
-    internal sealed class DocxFooter : DocxElement
+    internal sealed class DocxFooter : DocxElement, ITextElement
     {
         private Paragraph CreateParagraph(DocxProperties properties)
         {
@@ -56,6 +56,16 @@
                     ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref footerParagraph);
                 }
             }
+        }
+
+        bool ITextElement.CanConvert(IHtmlNode node)
+        {
+            return CanConvert(node);
+        }
+
+        void ITextElement.Process(DocxProperties properties)
+        {
+            ProcessTextChild(properties);
         }
     }
 }

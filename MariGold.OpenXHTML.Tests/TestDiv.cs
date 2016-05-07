@@ -200,5 +200,36 @@
 				Assert.AreEqual(0, errors.Count());
 			}
 		}
+
+        [Test]
+        public void DivInATag()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<a href='http://google.com'><div>test</div></a>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Hyperlink hyperLink = para.ChildElements[0] as Hyperlink;
+                Assert.IsNotNull(hyperLink);
+                Assert.AreEqual(1, hyperLink.ChildElements.Count);
+
+                Run run = hyperLink.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                Word.Text text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("test", text.InnerText);
+            }
+        }
 	}
 }

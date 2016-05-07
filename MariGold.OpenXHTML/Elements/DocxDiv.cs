@@ -5,7 +5,7 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
-    internal sealed class DocxDiv : DocxElement
+    internal sealed class DocxDiv : DocxElement, ITextElement
     {
         private Paragraph CreateParagraph(DocxProperties properties)
         {
@@ -64,6 +64,16 @@
                     ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref divParagraph);
                 }
             }
+        }
+
+        bool ITextElement.CanConvert(IHtmlNode node)
+        {
+            return CanConvert(node);
+        }
+
+        void ITextElement.Process(DocxProperties properties)
+        {
+            ProcessTextChild(properties);
         }
     }
 }

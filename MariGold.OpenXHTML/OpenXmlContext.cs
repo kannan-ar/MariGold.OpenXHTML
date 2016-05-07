@@ -47,7 +47,11 @@
                 new DocxBr(this),
                 new DocxCenter(this),
                 new DocxItalic(this),
-                new DocxImage(this)
+                new DocxUnderline(this),
+                new DocxImage(this),
+                new DocxDiv(this),
+                new DocxHeader(this),
+                new DocxFooter(this)
 			};
 		}
 		
