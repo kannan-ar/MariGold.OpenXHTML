@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1024]MariGold.OpenXHTML.Tests.BasicDocument.ATag</TopNode>
-  <SelectedNode>[0-1049]MariGold.OpenXHTML.Tests.SimpleHtmlFromFile.BootstrapCDN</SelectedNode>
+  <TopNode>[0-1003]MariGold.OpenXHTML.Tests.BasicDocument.EmptyBody</TopNode>
+  <SelectedNode>[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit" Expanded="true" />
@@ -12,5 +12,6 @@
     <Node UniqueName="[0-1001]MariGold.OpenXHTML.Tests.BasicDocument" Expanded="true" />
     <Node UniqueName="[0-1040]MariGold.OpenXHTML.Tests.BlockElements" Expanded="true" />
     <Node UniqueName="[0-1043]MariGold.OpenXHTML.Tests.SimpleHtmlFromFile" Expanded="true" />
+    <Node UniqueName="[0-1084]MariGold.OpenXHTML.Tests.TestFonts" Expanded="true" />
   </Nodes>
 </VisualState>

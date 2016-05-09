@@ -125,5 +125,51 @@
 				Assert.AreEqual(0, errors.Count());
 			}
 		}
+
+        [Test]
+        public void ATagWithFont()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<a href='http://google.com' style='font-family:arial'>test</a>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                OpenXmlElement para = doc.Document.Body.ChildElements[0];
+
+                Assert.IsTrue(para is Paragraph);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Hyperlink link = para.ChildElements[0] as Hyperlink;
+                Assert.IsNotNull(link);
+
+                Run run = link.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                Assert.IsNotNull(run.RunProperties);
+                Assert.AreEqual(2, run.RunProperties.ChildElements.Count);
+
+                RunStyle runStyle = run.RunProperties.ChildElements[0] as RunStyle;
+                Assert.IsNotNull(runStyle);
+
+                RunFonts fonts = run.RunProperties.ChildElements[1] as RunFonts;
+                Assert.IsNotNull(fonts);
+                Assert.AreEqual("arial", fonts.Ascii.Value);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }
