@@ -9,6 +9,7 @@
 	{
 		string ImagePath{ get; set; }
 		string BaseURL{ get; set; }
+        string UriSchema { get; set; }
 		WordprocessingDocument WordprocessingDocument{ get; }
 		MainDocumentPart MainDocumentPart{ get; }
 		Document Document{ get; }

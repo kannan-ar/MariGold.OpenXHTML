@@ -11,6 +11,7 @@
 		private readonly string html;
 
         private string uriSchema;
+        private string baseUrl;
 
 		private IHtmlNode FindBody(IHtmlNode node)
 		{
@@ -50,11 +51,26 @@
             }
         }
 
+        public string BaseURL
+        {
+            get
+            {
+                return baseUrl;
+            }
+
+            set
+            {
+                baseUrl = value;
+            }
+        }
+
 		public IHtmlNode FindBodyOrFirstElement()
 		{
 			MariGold.HtmlParser.HtmlParser parser = new HtmlTextParser(html);
 
             parser.UriSchema = uriSchema;
+            parser.BaseURL = baseUrl;
+
 			parser.Parse();
 			parser.ParseCSS();
 			

@@ -40,6 +40,19 @@
             }
         }
 
+        public string UriSchema
+        {
+            get
+            {
+                return context.UriSchema;
+            }
+
+            set
+            {
+                context.UriSchema = value;
+            }
+        }
+
         public WordprocessingDocument WordprocessingDocument
         {
             get
@@ -91,6 +104,8 @@
                 throw new ArgumentNullException("parser");
             }
 
+            parser.BaseURL = context.BaseURL;
+            parser.UriSchema = context.UriSchema;
             IHtmlNode node = parser.FindBodyOrFirstElement();
 
             if (node != null)

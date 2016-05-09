@@ -17,6 +17,7 @@
 		private Dictionary<NumberFormatValues,NumberingInstance> numberingInstanceList;
 		private string imagePath;
 		private string baseUrl;
+        private string uriSchema;
 
 		private void PrepareWordElements()
 		{
@@ -114,7 +115,20 @@
 				baseUrl = value;
 			}
 		}
-		
+
+        public string UriSchema
+        {
+            get
+            {
+                return uriSchema;
+            }
+
+            set
+            {
+                uriSchema = value;
+            }
+        }
+
 		public WordprocessingDocument WordprocessingDocument
 		{
 			get

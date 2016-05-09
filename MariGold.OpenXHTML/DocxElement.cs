@@ -61,6 +61,21 @@
             }
         }
 
+        protected string CleanUrl(string url)
+        {
+            if (url.StartsWith("//") && !string.IsNullOrEmpty(context.UriSchema))
+            {
+                url = string.Concat(context.UriSchema, ":" + url);
+            }
+
+            if (Uri.IsWellFormedUriString(url, UriKind.Relative) && !string.IsNullOrEmpty(context.BaseURL))
+            {
+                url = string.Concat(context.BaseURL, url);
+            }
+
+            return url;
+        }
+
 		internal DocxElement(IOpenXmlContext context)
 		{
 			if (context == null)

@@ -113,7 +113,7 @@
 				Assert.AreEqual(1, run.RunProperties.ChildElements.Count);
 				RunFonts fonts = run.RunProperties.ChildElements[0] as RunFonts;
 				Assert.IsNotNull(fonts);
-				Assert.AreEqual("Arial, Georgia, Serif", fonts.Ascii.Value);
+				Assert.AreEqual("Arial,Georgia,Serif", fonts.Ascii.Value);
 				
 				Word.Text text = run.ChildElements[1] as Word.Text;
 				Assert.IsNotNull(text);

@@ -121,7 +121,7 @@
 
                 RunFonts fonts = properties.ChildElements[0] as RunFonts;
                 Assert.IsNotNull(fonts);
-                Assert.AreEqual("Arial, Verdana", fonts.Ascii.Value);
+                Assert.AreEqual("Arial,Verdana", fonts.Ascii.Value);
 
                 Bold bold = properties.ChildElements[1] as Bold;
                 Assert.IsNotNull(bold);
@@ -171,6 +171,38 @@
 
                 Drawing image = run.ChildElements[0] as Drawing;
                 Assert.IsNotNull(image);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void BootstrapCDN()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+                doc.BaseURL = "https://maxcdn.bootstrapcdn.com";
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\relativestylesheet.htm")));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(2, para.ChildElements.Count);
+
+                Run run = para.ChildElements[1] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("test", text.InnerText.Trim());
 
                 OpenXmlValidator validator = new OpenXmlValidator();
                 var errors = validator.Validate(doc.WordprocessingDocument);
