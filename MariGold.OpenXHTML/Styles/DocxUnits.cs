@@ -198,5 +198,10 @@
 			
 			return -1;
 		}
+
+        internal static Int32 GetDxaFromNumber(Int32 number)
+        {
+            return number * DocxFont.defaultFontSizeInPixel * 20;
+        }
 	}
 }
