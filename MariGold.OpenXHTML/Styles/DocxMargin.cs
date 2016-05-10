@@ -92,20 +92,38 @@
 				
 				if (!string.IsNullOrEmpty(topMargin))
 				{
-					spacing.Before = DocxUnits.GetDxaFromStyle(topMargin).ToString();
+                    int dxa = DocxUnits.GetDxaFromStyle(topMargin);
+
+                    if (dxa != -1)
+                    {
+                        spacing.Before = dxa.ToString();
+                    }
 				}
 				
 				if (!string.IsNullOrEmpty(bottomMargin))
 				{
-					spacing.After = DocxUnits.GetDxaFromStyle(bottomMargin).ToString();
+                    int dxa = DocxUnits.GetDxaFromStyle(bottomMargin);
+
+                    if (dxa != -1)
+                    {
+                        spacing.After = dxa.ToString();
+                    }
 				}
 				
-				if (!string.IsNullOrEmpty(line))
+				if (!string.IsNullOrEmpty(line) && !line.CompareStringInvariantCultureIgnoreCase(DocxFont.normal))
 				{
-					spacing.Line = DocxUnits.GetDxaFromStyle(line).ToString();
+                    int dxa = DocxUnits.GetDxaFromStyle(line);
+
+                    if (dxa != -1)
+                    {
+                        spacing.Line = dxa.ToString();
+                    }
 				}
-				
-				properties.Append(spacing);
+
+                if (spacing.HasAttributes)
+                {
+                    properties.Append(spacing);
+                }
 			}
 			
 			if (!string.IsNullOrEmpty(leftMargin) || !string.IsNullOrEmpty(rightMargin))
@@ -114,15 +132,28 @@
 				
 				if (!string.IsNullOrEmpty(leftMargin))
 				{
-					ind.Left = DocxUnits.GetDxaFromStyle(leftMargin).ToString();
+                    int dxa = DocxUnits.GetDxaFromStyle(leftMargin);
+
+                    if (dxa != -1)
+                    {
+                        ind.Left = dxa.ToString();
+                    }
 				}
 				
 				if (!string.IsNullOrEmpty(rightMargin))
 				{
-					ind.Right = DocxUnits.GetDxaFromStyle(rightMargin).ToString();
+                    int dxa = DocxUnits.GetDxaFromStyle(rightMargin);
+
+                    if (dxa != -1)
+                    {
+                        ind.Right = dxa.ToString();
+                    }
 				}
-				
-				properties.Append(ind);
+
+                if (ind.HasAttributes)
+                {
+                    properties.Append(ind);
+                }
 			}
 		}
 		
@@ -130,7 +161,7 @@
 		{
 			Int32 dxa = DocxUnits.GetDxaFromStyle(style);
 			
-			if (dxa != 0)
+			if (dxa != -1)
 			{
 				SpacingBetweenLines spacing = new SpacingBetweenLines();
 				
@@ -143,7 +174,7 @@
 		{
 			Int32 dxa = DocxUnits.GetDxaFromStyle(style);
 			
-			if (dxa != 0)
+			if (dxa != -1)
 			{
 				SpacingBetweenLines spacing = new SpacingBetweenLines();
 				

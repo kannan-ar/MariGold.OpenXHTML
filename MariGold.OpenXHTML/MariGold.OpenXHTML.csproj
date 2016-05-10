@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DocxCompare.cs" />
     <Compile Include="DocxNode.cs" />
     <Compile Include="DocxProperties.cs" />
     <Compile Include="Elements\DocxA.cs" />

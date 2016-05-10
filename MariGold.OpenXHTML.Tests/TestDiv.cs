@@ -231,5 +231,63 @@
                 Assert.AreEqual("test", text.InnerText);
             }
         }
+
+        [Test]
+        public void ParagraphNormalLineHeight()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style='line-height:normal'>test</div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph paragraph = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(paragraph);
+                Assert.AreEqual(1, paragraph.ChildElements.Count);
+
+                Run run = paragraph.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+                Word.Text text = run.ChildElements[0] as Word.Text;
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void InvalidMargin()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style='margin:hdh'>test</div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph paragraph = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(paragraph);
+                Assert.AreEqual(1, paragraph.ChildElements.Count);
+
+                Run run = paragraph.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+                Word.Text text = run.ChildElements[0] as Word.Text;
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }

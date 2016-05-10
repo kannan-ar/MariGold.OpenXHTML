@@ -23,7 +23,7 @@
         {
             RunCreated(child, run);
 
-            //Need to analyze the child style properties. If there is a bold-weight:normal property, 
+            //Need to analyze the child style properties. If there is a font-weight:normal property, 
             //apply bold should not happen
             if (run.RunProperties == null)
             {

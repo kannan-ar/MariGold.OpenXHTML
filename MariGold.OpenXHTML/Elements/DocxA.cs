@@ -113,15 +113,6 @@
 
                             run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
                             RunCreated(properties.CurrentNode, run);
-
-                            /*if (run.RunProperties == null)
-                            {
-                                run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
-                            }
-                            else
-                            {
-                                run.RunProperties.Append(new RunStyle() { Val = "Hyperlink" });
-                            }*/
                         }
                     }
                     else

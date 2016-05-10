@@ -21,6 +21,7 @@
         internal const string oblique = "oblique";
         internal const string underLine = "underline";
         internal const string lineThrough = "line-through";
+        internal const string normal = "normal";
 
         private static string CleanFonts(string fonts)
         {
