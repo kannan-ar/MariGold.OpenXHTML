@@ -4,7 +4,7 @@
 
     internal static class DocxCompare
     {
-        public static bool CompareStringInvariantCultureIgnoreCase(this string source, string value)
+        internal static bool CompareStringInvariantCultureIgnoreCase(this string source, string value)
         {
             if(string.IsNullOrEmpty(source) || string.IsNullOrEmpty(value))
             {
