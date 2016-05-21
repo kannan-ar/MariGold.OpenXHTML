@@ -148,7 +148,8 @@
 
         internal override void Process(DocxProperties properties, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || !CanConvert(properties.CurrentNode))
+            if (properties.CurrentNode == null || !CanConvert(properties.CurrentNode) 
+                || IsHidden(properties.CurrentNode))
             {
                 return;
             }

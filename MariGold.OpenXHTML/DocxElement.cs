@@ -76,6 +76,18 @@
             return url;
         }
 
+        protected bool IsHidden(IHtmlNode node)
+        {
+            if (node == null)
+            {
+                return false;
+            }
+
+            DocxNode docxNode = new DocxNode(node);
+            string display = docxNode.ExtractStyleValue("display");
+            return display.CompareStringInvariantCultureIgnoreCase("none");
+        }
+
 		internal DocxElement(IOpenXmlContext context)
 		{
 			if (context == null)

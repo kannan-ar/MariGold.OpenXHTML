@@ -19,7 +19,8 @@
 
         internal override void Process(DocxProperties properties, ref Paragraph paragraph)
 		{
-            if (properties.CurrentNode != null && properties.Parent != null)
+            if (properties.CurrentNode != null && properties.Parent != null 
+                || IsHidden(properties.CurrentNode))
 			{
 				if (paragraph == null)
 				{
@@ -39,6 +40,11 @@
 
         void ITextElement.Process(DocxProperties properties)
         {
+            if (IsHidden(properties.CurrentNode))
+            {
+                return;
+            }
+
             properties.Parent.AppendChild(new Run(new Break()));
         }
 	}

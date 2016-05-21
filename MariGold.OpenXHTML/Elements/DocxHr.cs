@@ -20,7 +20,8 @@
 
         internal override void Process(DocxProperties properties, ref Paragraph paragraph)
 		{
-            if (properties.CurrentNode == null || properties.Parent == null)
+            if (properties.CurrentNode == null || properties.Parent == null 
+                || IsHidden(properties.CurrentNode))
 			{
 				return;
 			}

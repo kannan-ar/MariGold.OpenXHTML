@@ -1437,5 +1437,24 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void DisplayNone()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style='display:none'>test</div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }

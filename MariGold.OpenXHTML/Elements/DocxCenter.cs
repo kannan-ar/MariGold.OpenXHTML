@@ -19,7 +19,7 @@
 
         internal override void Process(DocxProperties properties, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null)
+            if (properties.CurrentNode == null || IsHidden(properties.CurrentNode))
             {
                 return;
             }
@@ -67,6 +67,11 @@
 
         void ITextElement.Process(DocxProperties properties)
         {
+            if (IsHidden(properties.CurrentNode))
+            {
+                return;
+            }
+
             foreach (IHtmlNode child in properties.CurrentNode.Children)
             {
                 if (child.IsText && !IsEmptyText(child.InnerHtml))
