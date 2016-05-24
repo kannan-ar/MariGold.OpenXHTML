@@ -122,7 +122,9 @@
         {
             if (Uri.IsWellFormedUriString(src, UriKind.Relative) && !string.IsNullOrEmpty(context.ImagePath))
             {
-                src = string.Concat(context.ImagePath, src);
+                src = string.Concat(context.ImagePath,
+                    (!context.ImagePath.EndsWith("/") && !src.StartsWith("/")) ? "/" : string.Empty,
+                    src);
             }
 
             if (Uri.IsWellFormedUriString(src, UriKind.Absolute))
