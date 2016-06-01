@@ -193,6 +193,11 @@
 			
 			if (ConvertToPt(style, out value))
 			{
+                if(style.Contains("%"))
+                {
+                    value = ConvertPercentageToPt(value);
+                }
+
 				return value * 20;
 			}
 			

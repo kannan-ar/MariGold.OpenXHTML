@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit</TopNode>
+  <TopNode>[0-1014]MariGold.OpenXHTML.Tests.BasicDocument.DivInsideAnotherDiv</TopNode>
   <SelectedNode>[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
@@ -10,5 +10,6 @@
     <Node UniqueName="[0-1095]MariGold.OpenXHTML" Expanded="true" />
     <Node UniqueName="[0-1096]MariGold.OpenXHTML.Tests" Expanded="true" />
     <Node UniqueName="[0-1001]MariGold.OpenXHTML.Tests.BasicDocument" Expanded="true" />
+    <Node UniqueName="[0-1044]MariGold.OpenXHTML.Tests.SimpleHtmlFromFile" Expanded="true" />
   </Nodes>
 </VisualState>
