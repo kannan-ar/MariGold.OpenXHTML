@@ -38,11 +38,17 @@
 			ProcessBorder(docxNode, properties);
 			
 			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+            string backGround = DocxColor.ExtractBackGround(docxNode.ExtractStyleValue(DocxColor.backGround));
+
 			if (!string.IsNullOrEmpty(backgroundColor))
 			{
 				DocxColor.ApplyBackGroundColor(backgroundColor, properties);
 			}
-			
+			else if(!string.IsNullOrEmpty(backGround))
+            {
+                DocxColor.ApplyBackGroundColor(backGround, properties);
+            }
+
 			DocxMargin margin = new DocxMargin(docxNode);
 			margin.ProcessParagraphMargin(properties);
 			
