@@ -285,6 +285,7 @@
                 styleElement.Append(new Word.Shading()
                 {
                     Fill = hex,
+                    Color = hex,
                     Val = Word.ShadingPatternValues.Clear
                 });
             }
