@@ -33,9 +33,13 @@
 				
 				Run run = paragraph.ChildElements[1] as Run;
 				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				
-				Word.Text text = run.ChildElements[0] as Word.Text;
+				Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties runProperties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(runProperties);
+                Assert.AreEqual("000000", runProperties.Shading.Fill.Value);
+
+				Word.Text text = run.ChildElements[1] as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("test", text.InnerText);
@@ -354,8 +358,13 @@
 				
 				Run run = paragraph.ChildElements[1] as Run;
 				Assert.IsNotNull(run);
-				Assert.AreEqual(1, run.ChildElements.Count);
-				Word.Text text = run.ChildElements[0]as Word.Text;
+				Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties runProperties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(runProperties);
+                Assert.AreEqual("cccccc", runProperties.Shading.Fill.Value);
+
+				Word.Text text = run.ChildElements[1]as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual(0, text.ChildElements.Count);
 				Assert.AreEqual("test", text.InnerText);
