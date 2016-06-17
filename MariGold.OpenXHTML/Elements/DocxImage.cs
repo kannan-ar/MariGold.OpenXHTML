@@ -120,6 +120,11 @@
 
         private Drawing PrepareImage(string src)
         {
+            if (src.StartsWith("//") && !string.IsNullOrEmpty(context.UriSchema))
+            {
+                src = string.Concat(context.UriSchema, ":" + src);
+            }
+
             if (Uri.IsWellFormedUriString(src, UriKind.Relative) && !string.IsNullOrEmpty(context.ImagePath))
             {
                 src = string.Concat(context.ImagePath,

@@ -43,7 +43,22 @@
 				DocxFont.ApplyTextDecoration(textDecoration, properties);
 			}
 		}
-		
+
+        private void ProcessBackGround(DocxNode docxNode, RunProperties properties)
+        {
+            string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+            string backGround = DocxColor.ExtractBackGround(docxNode.ExtractStyleValue(DocxColor.backGround));
+
+            if (!string.IsNullOrEmpty(backgroundColor))
+            {
+                DocxColor.ApplyBackGroundColor(backgroundColor, properties);
+            }
+            else if (!string.IsNullOrEmpty(backGround))
+            {
+                DocxColor.ApplyBackGroundColor(backGround, properties);
+            }
+        }
+
 		internal void Process(Run element, IHtmlNode node)
 		{
 			RunProperties properties = element.RunProperties;
@@ -65,13 +80,8 @@
 			}
 			
 			CheckFontStyle(docxNode, properties);
-			
-			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
-			
-			if (!string.IsNullOrEmpty(backgroundColor))
-			{
-				DocxColor.ApplyBackGroundColor(backgroundColor, properties);
-			}
+
+            ProcessBackGround(docxNode, properties);
 			
 			if (element.RunProperties == null && properties.HasChildren)
 			{

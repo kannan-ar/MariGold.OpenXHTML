@@ -32,11 +32,13 @@
 
                     if (!IsEmptyText(child.InnerHtml))
                     {
-                        paragraph.AppendChild<Run>(new Run(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        }));
+                        Run run = paragraph.AppendChild<Run>(new Run(new Text()
+                         {
+                             Text = ClearHtml(child.InnerHtml),
+                             Space = SpaceProcessingModeValues.Preserve
+                         }));
+
+                        RunCreated(properties.CurrentNode, run);
                     }
                 }
                 else
