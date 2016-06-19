@@ -92,7 +92,7 @@
 
                 if (!string.IsNullOrEmpty(topMargin))
                 {
-                    int dxa = DocxUnits.GetDxaFromStyle(topMargin);
+                    decimal dxa = DocxUnits.GetDxaFromStyle(topMargin);
 
                     if (dxa != -1)
                     {
@@ -102,11 +102,11 @@
 
                 if (!string.IsNullOrEmpty(bottomMargin))
                 {
-                    int dxa = DocxUnits.GetDxaFromStyle(bottomMargin);
+                    decimal dxa = DocxUnits.GetDxaFromStyle(bottomMargin);
 
                     if (dxa != -1)
                     {
-                        spacing.After = dxa.ToString();
+                        spacing.After = dxa.ToString("N0");
                     }
                 }
 
@@ -125,7 +125,7 @@
                     }
                     else
                     {
-                        int dxa = DocxUnits.GetDxaFromStyle(line);
+                        decimal dxa = DocxUnits.GetDxaFromStyle(line);
 
                         if (dxa != -1)
                         {
@@ -146,7 +146,7 @@
 
                 if (!string.IsNullOrEmpty(leftMargin))
                 {
-                    int dxa = DocxUnits.GetDxaFromStyle(leftMargin);
+                    decimal dxa = DocxUnits.GetDxaFromStyle(leftMargin);
 
                     if (dxa != -1)
                     {
@@ -156,7 +156,7 @@
 
                 if (!string.IsNullOrEmpty(rightMargin))
                 {
-                    int dxa = DocxUnits.GetDxaFromStyle(rightMargin);
+                    decimal dxa = DocxUnits.GetDxaFromStyle(rightMargin);
 
                     if (dxa != -1)
                     {
@@ -173,7 +173,7 @@
 
         internal static void SetTopMargin(string style, ParagraphProperties properties)
         {
-            Int32 dxa = DocxUnits.GetDxaFromStyle(style);
+            decimal dxa = DocxUnits.GetDxaFromStyle(style);
 
             if (dxa != -1)
             {
@@ -186,7 +186,7 @@
 
         internal static void SetBottomMargin(string style, ParagraphProperties properties)
         {
-            Int32 dxa = DocxUnits.GetDxaFromStyle(style);
+            decimal dxa = DocxUnits.GetDxaFromStyle(style);
 
             if (dxa != -1)
             {

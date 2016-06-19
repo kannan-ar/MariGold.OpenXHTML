@@ -326,5 +326,33 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void PercentageEm()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style='margin-bottom:.35em'>test</div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph paragraph = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                ParagraphProperties paragraphProperties = paragraph.ChildElements[0] as ParagraphProperties;
+                Assert.IsNotNull(paragraphProperties);
+                Assert.AreEqual(1, paragraphProperties.ChildElements.Count);
+                SpacingBetweenLines spacing = paragraphProperties.ChildElements[0] as SpacingBetweenLines;
+                Assert.IsNotNull(spacing);
+                Assert.AreEqual("84", spacing.After.Value);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }

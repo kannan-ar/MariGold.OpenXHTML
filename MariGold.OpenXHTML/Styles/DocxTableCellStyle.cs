@@ -47,7 +47,7 @@
 			
 			if (!string.IsNullOrEmpty(width))
 			{
-				Int32 value;
+				decimal value;
 				TableWidthUnitValues unit;
 				
 				if (DocxUnits.TableUnitsFromStyle(width, out value, out unit))

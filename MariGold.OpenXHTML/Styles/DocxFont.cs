@@ -110,11 +110,11 @@
 
         internal static void ApplyFontSize(string style, OpenXmlElement styleElement)
         {
-            int fontSize = DocxUnits.HalfPointFromStyle(style);
+            decimal fontSize = DocxUnits.HalfPointFromStyle(style);
 
             if (fontSize != 0)
             {
-                styleElement.Append(new FontSize() { Val = fontSize.ToString() });
+                styleElement.Append(new FontSize() { Val = fontSize.ToString("N0") });
             }
         }
 

@@ -8,11 +8,11 @@
 	internal static class DocxUnits
 	{
 		private static Regex digit;
-		private static Dictionary<string,double> toPt;
+		private static Dictionary<string,decimal> toPt;
 		
 		internal const string width = "width";
 		
-		private static bool ConvertToPt(string style, out Int32 value)
+		private static bool ConvertToPt(string style, out decimal value)
 		{
 			value = 0;
 			
@@ -28,7 +28,7 @@
 				return false;
 			}
 			
-			if (!Int32.TryParse(match.Value, out value))
+			if (!decimal.TryParse(match.Value, out value))
 			{
 				return false;
 			}
@@ -43,7 +43,7 @@
 			{
 				if (style.IndexOf(item.Key, StringComparison.InvariantCultureIgnoreCase) >= 0)
 				{
-					value = (int)((double)value * item.Value);
+					value = value * item.Value;
 					return true;
 				}
 			}
@@ -51,12 +51,12 @@
 			return false;
 		}
 		
-		private static int ConvertPercentageToPt(Int32 value)
+		private static decimal ConvertPercentageToPt(decimal value)
 		{
-			return (Int32)((double)value * .12);
+			return value * .12m;
 		}
 		
-		private static bool ExtractNamedFontSize(string style, out Int32 pt)
+		private static bool ExtractNamedFontSize(string style, out decimal pt)
 		{
 			pt = 0;
 			
@@ -121,13 +121,13 @@
 		
 		static DocxUnits()
 		{
-			digit = new Regex("\\d+");
+            digit = new Regex("(\\.)?\\d+");
 			
-			toPt = new Dictionary<string, double>();
+			toPt = new Dictionary<string, decimal>();
 			toPt.Add("px", 1);
 			toPt.Add("pt", 1);
 			toPt.Add("em", 12); 
-			toPt.Add("cm", 28.34);
+			toPt.Add("cm", 28.34m);
 			toPt.Add("in", 72);
 		}
 		
@@ -136,7 +136,7 @@
 			return pixel * 20;
 		}
 		
-		internal static bool TableUnitsFromStyle(string style, out Int32 value, out TableWidthUnitValues unit)
+		internal static bool TableUnitsFromStyle(string style, out decimal value, out TableWidthUnitValues unit)
 		{
 			unit = TableWidthUnitValues.Nil;
 			
@@ -161,9 +161,9 @@
 			}
 		}
 		
-		internal static Int32 HalfPointFromStyle(string style)
+		internal static decimal HalfPointFromStyle(string style)
 		{
-			int pt = 0;
+			decimal pt = 0;
 			
 			if (ExtractNamedFontSize(style, out pt))
 			{
@@ -187,9 +187,9 @@
 			return pt;
 		}
 		
-		internal static Int32 GetDxaFromStyle(string style)
+		internal static decimal GetDxaFromStyle(string style)
 		{
-			Int32 value;
+			decimal value;
 			
 			if (ConvertToPt(style, out value))
 			{
