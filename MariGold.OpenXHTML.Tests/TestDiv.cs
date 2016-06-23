@@ -354,5 +354,34 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void ChildBackgroundTransparent()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style='background:#000'><div style='background-color:transparent'>test</div></div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph paragraph = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(paragraph);
+
+                Assert.AreEqual(2, paragraph.ChildElements.Count);
+
+                ParagraphProperties properties = paragraph.ChildElements[0] as ParagraphProperties;
+                Assert.IsNotNull(properties);
+                Assert.IsNotNull(properties.Shading);
+                Assert.AreEqual("000000", properties.Shading.Fill.Value);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }

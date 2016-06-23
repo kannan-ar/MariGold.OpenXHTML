@@ -61,7 +61,7 @@
                 {
                     //ProcessChild forwards the incomming parent to the child element. So any div element inside this div
                     //creates a new paragraph on the parent element.
-                    ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref divParagraph);
+                    ProcessChild(new DocxProperties(DocxStyle.AdjustCSS(child, properties.CurrentNode), properties.CurrentNode, properties.Parent), ref divParagraph);
                 }
             }
         }

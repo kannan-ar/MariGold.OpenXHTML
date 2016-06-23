@@ -36,8 +36,8 @@
 			
 			//Order of assigning styles to paragraph property is important. The order should not change.
 			ProcessBorder(docxNode, properties);
-			
-			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+
+            string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
             string backGround = DocxColor.ExtractBackGround(docxNode.ExtractStyleValue(DocxColor.backGround));
 
 			if (!string.IsNullOrEmpty(backgroundColor))

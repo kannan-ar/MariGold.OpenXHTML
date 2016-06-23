@@ -94,8 +94,8 @@
 			
 			//Processing border should be after colspan
 			ProcessBorders(docxNode, docxProperties, cellProperties);
-			
-			string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+
+            string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
 			
 			if (!string.IsNullOrEmpty(backgroundColor))
 			{

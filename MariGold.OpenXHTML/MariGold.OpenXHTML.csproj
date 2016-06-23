@@ -89,6 +89,7 @@
     <Compile Include="Styles\DocxFont.cs" />
     <Compile Include="Styles\DocxMargin.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />
+    <Compile Include="Styles\DocxStyle.cs" />
     <Compile Include="Styles\DocxTableCellStyle.cs" />
     <Compile Include="Styles\DocxTableRowStyle.cs" />
     <Compile Include="Styles\DocxTableStyle.cs" />
