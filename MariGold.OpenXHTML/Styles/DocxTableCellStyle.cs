@@ -3,7 +3,8 @@
 	using System;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using MariGold.HtmlParser;
-	
+    using System.Collections.Generic;
+
 	internal sealed class DocxTableCellStyle
 	{
 		private const string colspan = "colspan";
@@ -113,19 +114,22 @@
 		internal static IHtmlNode GetHtmlNodeForTableCellContent(IHtmlNode node)
 		{
 			IHtmlNode clone = node.Clone();
-			
-			clone.Styles.Remove(DocxBorder.borderName);
-			clone.Styles.Remove(DocxBorder.leftBorderName);
-			clone.Styles.Remove(DocxBorder.rightBorderName);
-			clone.Styles.Remove(DocxBorder.topBorderName);
-			clone.Styles.Remove(DocxBorder.bottomBorderName);
-			
-			clone.Styles.Remove(DocxMargin.margin);
-			clone.Styles.Remove(DocxMargin.marginLeft);
-			clone.Styles.Remove(DocxMargin.marginRight);
-			clone.Styles.Remove(DocxMargin.marginTop);
-			clone.Styles.Remove(DocxMargin.marginBottom);
-			
+            Dictionary<string, string> styles = clone.Styles;
+
+            styles.Remove(DocxBorder.borderName);
+            styles.Remove(DocxBorder.leftBorderName);
+            styles.Remove(DocxBorder.rightBorderName);
+            styles.Remove(DocxBorder.topBorderName);
+            styles.Remove(DocxBorder.bottomBorderName);
+
+            styles.Remove(DocxMargin.margin);
+            styles.Remove(DocxMargin.marginLeft);
+            styles.Remove(DocxMargin.marginRight);
+            styles.Remove(DocxMargin.marginTop);
+            styles.Remove(DocxMargin.marginBottom);
+
+            clone.Styles = styles;
+
 			return clone;
 		}
 	}

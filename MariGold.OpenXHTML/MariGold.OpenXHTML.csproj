@@ -96,7 +96,7 @@
     <Compile Include="Styles\DocxUnits.cs" />
     <Compile Include="WordDocument.cs" />
     <Compile Include="DocxElement.cs" />
-    <Compile Include="Properties\DocxRunStyle.cs" />
+    <Compile Include="Styles\DocxRunStyle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

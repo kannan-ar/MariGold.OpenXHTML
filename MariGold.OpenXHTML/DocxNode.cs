@@ -56,14 +56,14 @@
                 }
             }
 
-            if (!string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key))
             {
-                node.Styles[key] = value;
+                key = styleName;
             }
-            else
-            {
-                node.Styles[styleName] = value;
-            }
+
+            Dictionary<string, string> styles = node.Styles;
+            styles[key] = value;
+            node.Styles = styles;
         }
 
         internal void CopyStyles(IHtmlNode toNode, params string[] styles)

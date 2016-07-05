@@ -86,11 +86,10 @@
             {
                 styleElement.Append(new Underline() { Val = UnderlineValues.Single });
             }
-            else
-                if (string.Compare(style, lineThrough, StringComparison.InvariantCultureIgnoreCase) == 0)
-                {
-                    styleElement.Append(new Strike());
-                }
+            else if (string.Compare(style, lineThrough, StringComparison.InvariantCultureIgnoreCase) == 0)
+            {
+                styleElement.Append(new Strike());
+            }
         }
 
         internal static void ApplyUnderline(OpenXmlElement styleElement)
