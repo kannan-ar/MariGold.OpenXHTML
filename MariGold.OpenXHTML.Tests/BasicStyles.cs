@@ -306,5 +306,42 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void HeaderTagStyleOverride()
+        {
+            string html = "<h2 style='font-size:10px;font-weight:normal'>test</h2>";
+
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+                doc.Process(new HtmlParser(html));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties runProperties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(runProperties);
+                Assert.AreEqual(1, runProperties.ChildElements.Count);
+
+                FontSize fontSize = runProperties.ChildElements[0] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("20", fontSize.Val.Value);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }

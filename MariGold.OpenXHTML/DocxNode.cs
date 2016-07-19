@@ -8,6 +8,14 @@
     {
         private readonly IHtmlNode node;
 
+        internal string Tag
+        {
+            get
+            {
+                return node.Tag;
+            }
+        }
+
         internal DocxNode(IHtmlNode node)
         {
             if (node == null)
@@ -63,6 +71,29 @@
 
             Dictionary<string, string> styles = node.Styles;
             styles[key] = value;
+            node.Styles = styles;
+        }
+
+        internal void SetStyleValues(Dictionary<string, string> newStyles)
+        {
+            Dictionary<string, string> styles = node.Styles;
+
+            foreach (KeyValuePair<string, string> newStyle in newStyles)
+            {
+                string styleName = newStyle.Key;
+
+                foreach (string key in styles.Keys)
+                {
+                    if (string.Compare(key, newStyle.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        styleName = key;
+                        break;
+                    }
+                }
+
+                styles[styleName] = newStyle.Value;
+            }
+
             node.Styles = styles;
         }
 

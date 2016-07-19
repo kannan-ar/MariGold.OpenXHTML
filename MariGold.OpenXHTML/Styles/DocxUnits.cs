@@ -121,7 +121,7 @@
 		
 		static DocxUnits()
 		{
-            digit = new Regex("(\\.)?\\d+");
+            digit = new Regex("(\\.)?\\d+(\\.?\\d+)?");
 			
 			toPt = new Dictionary<string, decimal>();
 			toPt.Add("px", 1);

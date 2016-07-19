@@ -113,6 +113,7 @@
 
             if (fontSize != 0)
             {
+                fontSize = decimal.Round(fontSize);
                 styleElement.Append(new FontSize() { Val = fontSize.ToString("N0") });
             }
         }

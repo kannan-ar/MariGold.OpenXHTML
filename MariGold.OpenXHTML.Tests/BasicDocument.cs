@@ -766,7 +766,7 @@
 				Assert.IsNotNull(bold);
 				FontSize fontSize = run.RunProperties.ChildElements[1] as FontSize;
 				Assert.IsNotNull(fontSize);
-				Assert.AreEqual("32", fontSize.Val.Value);
+				Assert.AreEqual("48", fontSize.Val.Value);
 				
 				
 				OpenXmlValidator validator = new OpenXmlValidator();
@@ -1449,6 +1449,109 @@
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void H1ToH6DefaultStyles()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<h1>test</h1><h2>test</h2><h3>test</h3><h4>test</h4><h5>test</h5><h6>test</h6>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(6, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Bold bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+                FontSize fontSize = properties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("48", fontSize.Val.Value);
+
+                para = doc.Document.Body.ChildElements[1] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+                run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+                fontSize = properties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("36", fontSize.Val.Value);
+
+                para = doc.Document.Body.ChildElements[2] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+                run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+                fontSize = properties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("28", fontSize.Val.Value);
+
+                para = doc.Document.Body.ChildElements[3] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+                run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+                fontSize = properties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("24", fontSize.Val.Value);
+
+                para = doc.Document.Body.ChildElements[4] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+                run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+                fontSize = properties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("20", fontSize.Val.Value);
+
+                para = doc.Document.Body.ChildElements[5] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+                run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+                fontSize = properties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("16", fontSize.Val.Value);
 
                 OpenXmlValidator validator = new OpenXmlValidator();
                 var errors = validator.Validate(doc.WordprocessingDocument);

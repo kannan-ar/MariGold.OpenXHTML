@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using MariGold.HtmlParser;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
@@ -10,7 +11,7 @@
     {
         private Regex isValid;
 
-        private int GetHeaderNumber(IHtmlNode node)
+        private int GetHeaderNumber(DocxNode node)
         {
             int value = -1;
             Regex regex = new Regex("[1-6]{1}$");
@@ -25,55 +26,62 @@
             return value;
         }
 
-        private int CalculateFontSize(int headerSize)
+        private string CalculateFontSize(int headerSize)
         {
-            int fontSize = -1;
+            string fontSize = string.Empty;
 
             switch (headerSize)
             {
                 case 1:
-                    fontSize = 32;
+                    fontSize = "2em";
                     break;
 
                 case 2:
-                    fontSize = 24;
+                    fontSize = "1.5em";
                     break;
 
                 case 3:
-                    fontSize = 19;
+                    fontSize = "1.17em";
                     break;
 
                 case 4:
-                    fontSize = 22;
+                    fontSize = "1em";
                     break;
 
                 case 5:
-                    fontSize = 13;
+                    fontSize = ".83em";
                     break;
 
                 case 6:
-                    fontSize = 11;
+                    fontSize = ".67em";
                     break;
             }
 
             return fontSize;
         }
 
-        private void ApplyStyle(IHtmlNode node, Run run)
+        private void ApplyStyle(IHtmlNode node)
         {
-            int fontSize = CalculateFontSize(GetHeaderNumber(node));
+            DocxNode docxNode = new DocxNode(node);
+            string fontSizeValue = docxNode.ExtractStyleValue(DocxFont.fontSize);
+            string fontWeightValue = docxNode.ExtractStyleValue(DocxFont.fontWeight);
 
-            if (fontSize == -1)
+            if (string.IsNullOrEmpty(fontSizeValue))
             {
-                return;
+                fontSizeValue = CalculateFontSize(GetHeaderNumber(docxNode));
             }
 
-            if (run.RunProperties == null)
+            if(string.IsNullOrEmpty(fontWeightValue))
             {
-                run.RunProperties = new RunProperties();
+                fontWeightValue = DocxFont.bold;
             }
 
-            DocxFont.ApplyFont(fontSize, true, run.RunProperties);
+            Dictionary<string, string> newStyles = new Dictionary<string, string>();
+
+            newStyles.Add(DocxFont.fontSize, fontSizeValue);
+            newStyles.Add(DocxFont.fontWeight, fontWeightValue);
+
+            docxNode.SetStyleValues(newStyles);
         }
 
         internal DocxHeading(IOpenXmlContext context)
@@ -89,7 +97,7 @@
 
         internal override void Process(DocxProperties properties, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null 
+            if (properties.CurrentNode == null || properties.Parent == null
                 || IsHidden(properties.CurrentNode))
             {
                 return;
@@ -111,8 +119,8 @@
                         }
 
                         Run run = headerParagraph.AppendChild(new Run());
-                        RunCreated(child, run);
-                        ApplyStyle(properties.CurrentNode, run);
+                        ApplyStyle(properties.CurrentNode);
+                        RunCreated(properties.CurrentNode, run);
 
                         run.AppendChild(new Text()
                         {
