@@ -163,18 +163,25 @@
 
             if (!string.IsNullOrEmpty(src))
             {
-                Drawing drawing = PrepareImage(src);
-
-                if (drawing != null)
+                try
                 {
-                    if (paragraph == null)
-                    {
-                        paragraph = properties.Parent.AppendChild(new Paragraph());
-                        ParagraphCreated(properties.CurrentNode, paragraph);
-                    }
+                    Drawing drawing = PrepareImage(src);
 
-                    Run run = paragraph.AppendChild(new Run(drawing));
-                    RunCreated(properties.CurrentNode, run);
+                    if (drawing != null)
+                    {
+                        if (paragraph == null)
+                        {
+                            paragraph = properties.Parent.AppendChild(new Paragraph());
+                            ParagraphCreated(properties.CurrentNode, paragraph);
+                        }
+
+                        Run run = paragraph.AppendChild(new Run(drawing));
+                        RunCreated(properties.CurrentNode, run);
+                    }
+                }
+                catch
+                {
+                    return;//fails silently?
                 }
             }
         }
@@ -197,12 +204,19 @@
 
             if (!string.IsNullOrEmpty(src))
             {
-                Drawing drawing = PrepareImage(src);
-
-                if (drawing != null)
+                try
                 {
-                    Run run = properties.Parent.AppendChild(new Run(drawing));
-                    RunCreated(properties.CurrentNode, run);
+                    Drawing drawing = PrepareImage(src);
+
+                    if (drawing != null)
+                    {
+                        Run run = properties.Parent.AppendChild(new Run(drawing));
+                        RunCreated(properties.CurrentNode, run);
+                    }
+                }
+                catch
+                {
+                    return;//fails silently?
                 }
             }
         }

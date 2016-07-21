@@ -106,7 +106,7 @@
 
                     if (dxa != -1)
                     {
-                        spacing.After = dxa.ToString("N0");
+                        spacing.After = decimal.Round(dxa).ToString();
                     }
                 }
 
@@ -129,6 +129,7 @@
 
                         if (dxa != -1)
                         {
+                            spacing.LineRule = LineSpacingRuleValues.AtLeast;
                             spacing.Line = dxa.ToString();
                         }
                     }

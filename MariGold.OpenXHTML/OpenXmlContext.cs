@@ -37,6 +37,7 @@
                 new DocxHeader(this),
                 new DocxFooter(this),
 				new DocxAddress(this),
+                new DocxSection(this),
 				new DocxDL(this),
 				new DocxHr(this),
 				new DocxTable(this)
