@@ -145,21 +145,19 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, "img", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (IsHidden(properties.CurrentNode))
+            if (IsHidden(node))
             {
                 return;
             }
 
-            DocxNode docxNode = new DocxNode(properties.CurrentNode);
-
-            string src = docxNode.ExtractAttributeValue("src");
+            string src = node.ExtractAttributeValue("src");
 
             if (!string.IsNullOrEmpty(src))
             {
@@ -171,12 +169,12 @@
                     {
                         if (paragraph == null)
                         {
-                            paragraph = properties.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(properties.CurrentNode, paragraph);
+                            paragraph = node.Parent.AppendChild(new Paragraph());
+                            ParagraphCreated(node, paragraph);
                         }
 
                         Run run = paragraph.AppendChild(new Run(drawing));
-                        RunCreated(properties.CurrentNode, run);
+                        RunCreated(node, run);
                     }
                 }
                 catch
@@ -186,21 +184,19 @@
             }
         }
 
-        bool ITextElement.CanConvert(IHtmlNode node)
+        bool ITextElement.CanConvert(DocxNode node)
         {
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxProperties properties)
+        void ITextElement.Process(DocxNode node)
         {
-            if (IsHidden(properties.CurrentNode))
+            if (IsHidden(node))
             {
                 return;
             }
 
-            DocxNode docxNode = new DocxNode(properties.CurrentNode);
-
-            string src = docxNode.ExtractAttributeValue("src");
+            string src = node.ExtractAttributeValue("src");
 
             if (!string.IsNullOrEmpty(src))
             {
@@ -210,8 +206,8 @@
 
                     if (drawing != null)
                     {
-                        Run run = properties.Parent.AppendChild(new Run(drawing));
-                        RunCreated(properties.CurrentNode, run);
+                        Run run = node.Parent.AppendChild(new Run(drawing));
+                        RunCreated(node, run);
                     }
                 }
                 catch

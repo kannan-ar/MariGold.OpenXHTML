@@ -6,7 +6,7 @@
 	
 	internal interface ITextElement
 	{
-		bool CanConvert(IHtmlNode node);
-        void Process(DocxProperties properties);
+        bool CanConvert(DocxNode node);
+        void Process(DocxNode node);
 	}
 }

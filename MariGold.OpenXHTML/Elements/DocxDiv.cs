@@ -7,10 +7,10 @@
 
     internal sealed class DocxDiv : DocxElement, ITextElement
     {
-        private Paragraph CreateParagraph(DocxProperties properties)
+        private Paragraph CreateParagraph(DocxNode node)
         {
-            Paragraph para = properties.Parent.AppendChild(new Paragraph());
-            ParagraphCreated(properties.CurrentNode, para);
+            Paragraph para = node.Parent.AppendChild(new Paragraph());
+            ParagraphCreated(node, para);
             return para;
         }
 
@@ -19,15 +19,15 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, "div", StringComparison.InvariantCultureIgnoreCase) == 0 ||
             string.Compare(node.Tag, "p", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
                 return;
             }
@@ -37,7 +37,7 @@
             paragraph = null;
             Paragraph divParagraph = null;
 
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
                 {
@@ -45,7 +45,7 @@
                     {
                         if (divParagraph == null)
                         {
-                            divParagraph = CreateParagraph(properties);
+                            divParagraph = CreateParagraph(node);
                         }
 
                         Run run = divParagraph.AppendChild(new Run(new Text()
@@ -61,24 +61,28 @@
                 {
                     //ProcessChild forwards the incomming parent to the child element. So any div element inside this div
                     //creates a new paragraph on the parent element.
-                    ProcessChild(new DocxProperties(DocxStyle.AdjustCSS(child, properties.CurrentNode), properties.CurrentNode, properties.Parent), ref divParagraph);
+                    child.ParagraphNode = node;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref divParagraph);
+                    //ProcessChild(new DocxNode(DocxStyle.AdjustCSS(child, node), node, node.Parent), ref divParagraph);
                 }
             }
         }
 
-        bool ITextElement.CanConvert(IHtmlNode node)
+        bool ITextElement.CanConvert(DocxNode node)
         {
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxProperties properties)
+        void ITextElement.Process(DocxNode node)
         {
-            if (IsHidden(properties.CurrentNode))
+            if (IsHidden(node))
             {
                 return;
             }
 
-            ProcessTextChild(properties);
+            ProcessTextChild(node);
         }
     }
 }

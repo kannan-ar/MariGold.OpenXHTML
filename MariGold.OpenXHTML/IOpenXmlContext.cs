@@ -15,8 +15,8 @@
 		Document Document{ get; }
 		
 		void Save();
-		DocxElement Convert(IHtmlNode node);
-		ITextElement ConvertTextElement(IHtmlNode node);
+		DocxElement Convert(DocxNode node);
+        ITextElement ConvertTextElement(DocxNode node);
 		DocxElement GetBodyElement();
 		bool HasNumberingDefinition(NumberFormatValues format);
 		void SaveNumberingDefinition(NumberFormatValues format, AbstractNum abstractNum, NumberingInstance numberingInstance);

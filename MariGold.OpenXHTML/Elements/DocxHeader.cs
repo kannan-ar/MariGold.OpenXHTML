@@ -7,24 +7,23 @@
 
     internal sealed class DocxHeader : DocxElement, ITextElement
     {
-        private Paragraph CreateParagraph(DocxProperties properties)
+        private Paragraph CreateParagraph(DocxNode node)
         {
-            Paragraph para = properties.Parent.AppendChild(new Paragraph());
-            ParagraphCreated(properties.CurrentNode, para);
+            Paragraph para = node.Parent.AppendChild(new Paragraph());
+            ParagraphCreated(node, para);
             return para;
         }
 
         internal DocxHeader(IOpenXmlContext context) : base(context) { }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, "header", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null 
-                || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
                 return;
             }
@@ -32,7 +31,7 @@
             paragraph = null;
             Paragraph headerParagraph = null;
 
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
                 {
@@ -40,7 +39,7 @@
                     {
                         if (headerParagraph == null)
                         {
-                            headerParagraph = CreateParagraph(properties);
+                            headerParagraph = CreateParagraph(node);
                         }
 
                         Run run = headerParagraph.AppendChild(new Run(new Text()
@@ -54,24 +53,27 @@
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref headerParagraph);
+                    child.ParagraphNode = node;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref headerParagraph);
                 }
             }
         }
 
-        bool ITextElement.CanConvert(IHtmlNode node)
+        bool ITextElement.CanConvert(DocxNode node)
         {
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxProperties properties)
+        void ITextElement.Process(DocxNode node)
         {
-            if (IsHidden(properties.CurrentNode))
+            if (IsHidden(node))
             {
                 return;
             }
 
-            ProcessTextChild(properties);
+            ProcessTextChild(node);
         }
     }
 }

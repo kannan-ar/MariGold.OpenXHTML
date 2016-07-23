@@ -177,7 +177,7 @@
 			mainPart = null;
 		}
 		
-		public DocxElement Convert(IHtmlNode node)
+		public DocxElement Convert(DocxNode node)
 		{
 			foreach (DocxElement element in elements)
 			{
@@ -190,7 +190,7 @@
 			return null;
 		}
 		
-		public ITextElement ConvertTextElement(IHtmlNode node)
+		public ITextElement ConvertTextElement(DocxNode node)
 		{
 			foreach (ITextElement element in textElements)
 			{

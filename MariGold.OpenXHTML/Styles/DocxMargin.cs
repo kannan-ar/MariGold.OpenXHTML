@@ -14,12 +14,12 @@
         internal const string marginLeft = "margin-left";
         internal const string marginRight = "margin-right";
         internal const string lineHeight = "line-height";
-
+        /*
         internal DocxMargin(IHtmlNode node)
         {
             this.node = new DocxNode(node);
         }
-
+        */
         internal DocxMargin(DocxNode node)
         {
             this.node = node;
@@ -75,7 +75,7 @@
 
         internal void SetLeftMargin(string value)
         {
-            node.SetStyleValue(marginLeft, value);
+            node.SetExtentedStyle(marginLeft, value);
         }
 
         internal void ProcessParagraphMargin(ParagraphProperties properties)

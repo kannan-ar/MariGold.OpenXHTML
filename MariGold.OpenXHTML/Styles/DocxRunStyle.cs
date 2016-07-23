@@ -6,11 +6,11 @@
 	
 	internal sealed class DocxRunStyle
 	{
-		private void CheckFonts(DocxNode docxNode, RunProperties properties)
+		private void CheckFonts(DocxNode node, RunProperties properties)
 		{
-			string fontFamily = docxNode.ExtractStyleValue(DocxFont.fontFamily);
-			string fontWeight = docxNode.ExtractStyleValue(DocxFont.fontWeight);
-			string fontStyle = docxNode.ExtractStyleValue(DocxFont.fontStyle);
+            string fontFamily = node.ExtractStyleValue(DocxFont.fontFamily);
+            string fontWeight = node.ExtractStyleValue(DocxFont.fontWeight);
+            string fontStyle = node.ExtractStyleValue(DocxFont.fontStyle);
 			
 			if (!string.IsNullOrEmpty(fontFamily))
 			{
@@ -27,11 +27,11 @@
 				DocxFont.ApplyFontStyle(fontStyle, properties);
 			}
 		}
-		
-		private void CheckFontStyle(DocxNode docxNode, RunProperties properties)
+
+        private void CheckFontStyle(DocxNode node, RunProperties properties)
 		{
-			string fontSize = docxNode.ExtractStyleValue(DocxFont.fontSize);
-			string textDecoration = docxNode.ExtractStyleValue(DocxFont.textDecoration);
+            string fontSize = node.ExtractStyleValue(DocxFont.fontSize);
+            string textDecoration = node.ExtractStyleValue(DocxFont.textDecoration);
 			
 			if (!string.IsNullOrEmpty(fontSize))
 			{
@@ -44,10 +44,10 @@
 			}
 		}
 
-        private void ProcessBackGround(DocxNode docxNode, RunProperties properties)
+        private void ProcessBackGround(DocxNode node, RunProperties properties)
         {
-            string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
-            string backGround = DocxColor.ExtractBackGround(docxNode.ExtractStyleValue(DocxColor.backGround));
+            string backgroundColor = node.ExtractStyleValue(DocxColor.backGroundColor);
+            string backGround = DocxColor.ExtractBackGround(node.ExtractStyleValue(DocxColor.backGround));
 
             if (!string.IsNullOrEmpty(backgroundColor))
             {
@@ -59,10 +59,9 @@
             }
         }
 
-		internal void Process(Run element, IHtmlNode node)
+        internal void Process(Run element, DocxNode node)
 		{
 			RunProperties properties = element.RunProperties;
-			DocxNode docxNode = new DocxNode(node);
 			
 			if (properties == null)
 			{
@@ -70,18 +69,18 @@
 			}
 			
 			//Order of assigning styles to run property is important. The order should not change.
-			CheckFonts(docxNode, properties);
-			
-			string color = docxNode.ExtractStyleValue(DocxColor.color);
+            CheckFonts(node, properties);
+
+            string color = node.ExtractStyleValue(DocxColor.color);
 			
 			if (!string.IsNullOrEmpty(color))
 			{
 				DocxColor.ApplyColor(color, properties);
 			}
-			
-			CheckFontStyle(docxNode, properties);
 
-            ProcessBackGround(docxNode, properties);
+            CheckFontStyle(node, properties);
+
+            ProcessBackGround(node, properties);
 			
 			if (element.RunProperties == null && properties.HasChildren)
 			{

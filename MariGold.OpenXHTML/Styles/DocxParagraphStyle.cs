@@ -6,16 +6,16 @@
 	
 	internal sealed class DocxParagraphStyle
 	{
-		private void ProcessBorder(DocxNode docxNode, ParagraphProperties properties)
+		private void ProcessBorder(DocxNode node, ParagraphProperties properties)
 		{
 			ParagraphBorders paragraphBorders = new ParagraphBorders();
 			
 			DocxBorder.ApplyBorders(paragraphBorders,
-				docxNode.ExtractStyleValue(DocxBorder.borderName),
-				docxNode.ExtractStyleValue(DocxBorder.leftBorderName),
-				docxNode.ExtractStyleValue(DocxBorder.topBorderName),
-				docxNode.ExtractStyleValue(DocxBorder.rightBorderName),
-				docxNode.ExtractStyleValue(DocxBorder.bottomBorderName),
+				node.ExtractStyleValue(DocxBorder.borderName),
+				node.ExtractStyleValue(DocxBorder.leftBorderName),
+				node.ExtractStyleValue(DocxBorder.topBorderName),
+				node.ExtractStyleValue(DocxBorder.rightBorderName),
+				node.ExtractStyleValue(DocxBorder.bottomBorderName),
 				false);
 			
 			if (paragraphBorders.HasChildren)
@@ -23,11 +23,10 @@
 				properties.Append(paragraphBorders);
 			}
 		}
-		
-		internal void Process(Paragraph element, IHtmlNode node)
+
+        internal void Process(Paragraph element, DocxNode node)
 		{
 			ParagraphProperties properties = element.ParagraphProperties;
-			DocxNode docxNode = new DocxNode(node);
 			
 			if (properties == null)
 			{
@@ -35,10 +34,10 @@
 			}
 			
 			//Order of assigning styles to paragraph property is important. The order should not change.
-			ProcessBorder(docxNode, properties);
+            ProcessBorder(node, properties);
 
-            string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
-            string backGround = DocxColor.ExtractBackGround(docxNode.ExtractStyleValue(DocxColor.backGround));
+            string backgroundColor = node.ExtractStyleValue(DocxColor.backGroundColor);
+            string backGround = DocxColor.ExtractBackGround(node.ExtractStyleValue(DocxColor.backGround));
 
 			if (!string.IsNullOrEmpty(backgroundColor))
 			{
@@ -49,10 +48,10 @@
                 DocxColor.ApplyBackGroundColor(backGround, properties);
             }
 
-			DocxMargin margin = new DocxMargin(docxNode);
+            DocxMargin margin = new DocxMargin(node);
 			margin.ProcessParagraphMargin(properties);
-			
-			string textAlign = docxNode.ExtractStyleValue(DocxAlignment.textAlign);
+
+            string textAlign = node.ExtractStyleValue(DocxAlignment.textAlign);
 			if (!string.IsNullOrEmpty(textAlign))
 			{
 				DocxAlignment.ApplyTextAlign(textAlign, properties);

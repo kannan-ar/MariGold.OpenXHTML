@@ -5,10 +5,14 @@
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit" Expanded="true" />
-    <Node UniqueName="[0-1103]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll" Expanded="true" />
-    <Node UniqueName="[0-1104]MariGold" Expanded="true" />
-    <Node UniqueName="[0-1105]MariGold.OpenXHTML" Expanded="true" />
-    <Node UniqueName="[0-1106]MariGold.OpenXHTML.Tests" Expanded="true" />
+    <Node UniqueName="[0-1104]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1105]MariGold" Expanded="true" />
+    <Node UniqueName="[0-1106]MariGold.OpenXHTML" Expanded="true" />
+    <Node UniqueName="[0-1107]MariGold.OpenXHTML.Tests" Expanded="true" />
     <Node UniqueName="[0-1001]MariGold.OpenXHTML.Tests.BasicDocument" Expanded="true" />
+    <Node UniqueName="[0-1036]MariGold.OpenXHTML.Tests.BasicStyles" Expanded="true" />
+    <Node UniqueName="[0-1049]MariGold.OpenXHTML.Tests.InheritedStyles" Expanded="true" />
+    <Node UniqueName="[0-1053]MariGold.OpenXHTML.Tests.SimpleHtmlFromFile" Expanded="true" />
+    <Node UniqueName="[0-1082]MariGold.OpenXHTML.Tests.Table" Expanded="true" />
   </Nodes>
 </VisualState>

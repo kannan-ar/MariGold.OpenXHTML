@@ -9,25 +9,25 @@
     {
         private const string href = "href";
 
-        private void CreateParagraph(DocxProperties properties, ref Paragraph paragraph)
+        private void CreateParagraph(DocxNode node, ref Paragraph paragraph)
         {
             if (paragraph == null)
             {
-                paragraph = properties.Parent.AppendChild(new Paragraph());
-                ParagraphCreated(properties.ParagraphNode, paragraph);
+                paragraph = node.Parent.AppendChild(new Paragraph());
+                ParagraphCreated(node.ParagraphNode, paragraph);
             }
         }
 
-        private void ProcessNonLinkText(DocxProperties properties, ref Paragraph paragraph)
+        private void ProcessNonLinkText(DocxNode node, ref Paragraph paragraph)
         {
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
                 {
                     if (paragraph == null)
                     {
-                        paragraph = properties.Parent.AppendChild(new Paragraph());
-                        ParagraphCreated(properties.ParagraphNode, paragraph);
+                        paragraph = node.Parent.AppendChild(new Paragraph());
+                        ParagraphCreated(node.ParagraphNode, paragraph);
                     }
 
                     if (!IsEmptyText(child.InnerHtml))
@@ -38,19 +38,22 @@
                              Space = SpaceProcessingModeValues.Preserve
                          }));
 
-                        RunCreated(properties.CurrentNode, run);
+                        RunCreated(node, run);
                     }
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(child, properties.ParagraphNode, properties.Parent), ref paragraph);
+                    child.ParagraphNode = node.ParagraphNode;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref paragraph);
                 }
             }
         }
 
-        private void ProcessChildren(DocxProperties currentProperties, DocxProperties newProperties, Run run)
+        private void ProcessChildren(DocxNode currentNode, DocxNode newNode, Run run)
         {
-            foreach (IHtmlNode child in currentProperties.CurrentNode.Children)
+            foreach (DocxNode child in currentNode.Children)
             {
                 if (child.IsText)
                 {
@@ -65,7 +68,8 @@
                 }
                 else
                 {
-                    ProcessTextElement(newProperties);
+                    currentNode.CopyExtentedStyles(newNode);
+                    ProcessTextElement(newNode);
                 }
             }
         }
@@ -75,21 +79,19 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, "a", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || IsHidden(node))
             {
                 return;
             }
 
-            DocxNode docxNode = new DocxNode(properties.CurrentNode);
-
-            string link = docxNode.ExtractAttributeValue(href);
+            string link = node.ExtractAttributeValue(href);
 
             link = CleanUrl(link);
 
@@ -101,7 +103,7 @@
 
                 var hyperLink = new Hyperlink() { History = true, Id = relationship.Id };
 
-                foreach (IHtmlNode child in properties.CurrentNode.Children)
+                foreach (DocxNode child in node.Children)
                 {
                     if (child.IsText)
                     {
@@ -114,22 +116,23 @@
                              }));
 
                             run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
-                            RunCreated(properties.CurrentNode, run);
+                            RunCreated(node, run);
                         }
                     }
                     else
                     {
-                        ProcessTextElement(new DocxProperties(child, hyperLink));
+                        child.Parent = hyperLink;
+                        node.CopyExtentedStyles(child);
+                        ProcessTextElement(child);
                     }
                 }
 
-                CreateParagraph(properties, ref paragraph);
-
+                CreateParagraph(node, ref paragraph);
                 paragraph.Append(hyperLink);
             }
             else
             {
-                ProcessNonLinkText(properties, ref paragraph);
+                ProcessNonLinkText(node, ref paragraph);
             }
         }
     }

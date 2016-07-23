@@ -14,14 +14,14 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, tag, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
                 return;
             }
@@ -29,7 +29,7 @@
             paragraph = null;
             Paragraph sectionParagraph = null;
 
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
                 {
@@ -37,8 +37,8 @@
                     {
                         if (sectionParagraph == null)
                         {
-                            sectionParagraph = properties.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(properties.ParagraphNode, sectionParagraph);
+                            sectionParagraph = node.Parent.AppendChild(new Paragraph());
+                            ParagraphCreated(node.ParagraphNode, sectionParagraph);
                         }
 
                         Run run = sectionParagraph.AppendChild(new Run(new Text()
@@ -51,7 +51,10 @@
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(child, properties.ParagraphNode, properties.Parent), ref sectionParagraph);
+                    child.ParagraphNode = node.ParagraphNode;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref sectionParagraph);
                 }
             }
         }

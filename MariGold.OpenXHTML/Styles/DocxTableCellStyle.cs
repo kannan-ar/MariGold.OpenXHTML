@@ -8,15 +8,15 @@
 	internal sealed class DocxTableCellStyle
 	{
 		private const string colspan = "colspan";
-		
-		private void ProcessBorders(DocxNode docxNode, DocxTableProperties docxProperties,
+
+        private void ProcessBorders(DocxNode node, DocxTableProperties docxProperties,
 			TableCellProperties cellProperties)
 		{
-			string borderStyle = docxNode.ExtractStyleValue(DocxBorder.borderName);
-			string leftBorder = docxNode.ExtractStyleValue(DocxBorder.leftBorderName);
-			string topBorder = docxNode.ExtractStyleValue(DocxBorder.topBorderName);
-			string rightBorder = docxNode.ExtractStyleValue(DocxBorder.rightBorderName);
-			string bottomBorder = docxNode.ExtractStyleValue(DocxBorder.bottomBorderName);
+            string borderStyle = node.ExtractStyleValue(DocxBorder.borderName);
+            string leftBorder = node.ExtractStyleValue(DocxBorder.leftBorderName);
+            string topBorder = node.ExtractStyleValue(DocxBorder.topBorderName);
+            string rightBorder = node.ExtractStyleValue(DocxBorder.rightBorderName);
+            string bottomBorder = node.ExtractStyleValue(DocxBorder.bottomBorderName);
 			
 			TableCellBorders cellBorders = new TableCellBorders();
 			
@@ -28,12 +28,12 @@
 				cellProperties.Append(cellBorders);
 			}
 		}
-		
-		private void ProcessColSpan(DocxNode docxNode, TableCellProperties cellProperties)
+
+        private void ProcessColSpan(DocxNode node, TableCellProperties cellProperties)
 		{
 			Int32 value;
-			
-			if (Int32.TryParse(docxNode.ExtractAttributeValue(colspan), out value))
+
+            if (Int32.TryParse(node.ExtractAttributeValue(colspan), out value))
 			{
 				if (value > 1)
 				{
@@ -41,10 +41,10 @@
 				}
 			}
 		}
-		
-		private void ProcessWidth(DocxNode docxNode, TableCellProperties cellProperties)
+
+        private void ProcessWidth(DocxNode node, TableCellProperties cellProperties)
 		{
-			string width = docxNode.ExtractStyleValue(DocxUnits.width);
+            string width = node.ExtractStyleValue(DocxUnits.width);
 			
 			if (!string.IsNullOrEmpty(width))
 			{
@@ -62,10 +62,10 @@
 				}
 			}
 		}
-		
-		private void ProcessVerticalAlignment(DocxNode docxNode, TableCellProperties cellProperties)
+
+        private void ProcessVerticalAlignment(DocxNode node, TableCellProperties cellProperties)
 		{
-			string alignment = docxNode.ExtractStyleValue(DocxAlignment.verticalAlign);
+            string alignment = node.ExtractStyleValue(DocxAlignment.verticalAlign);
 			
 			if (!string.IsNullOrEmpty(alignment))
 			{
@@ -80,13 +80,12 @@
 		
 		internal bool HasRowSpan{ get; set; }
 		
-		internal void Process(TableCell cell, DocxTableProperties docxProperties, IHtmlNode node)
+		internal void Process(TableCell cell, DocxTableProperties docxProperties, DocxNode node)
 		{
-			DocxNode docxNode = new DocxNode(node);
 			TableCellProperties cellProperties = new TableCellProperties();
-			
-			ProcessColSpan(docxNode, cellProperties);
-			ProcessWidth(docxNode, cellProperties);
+
+            ProcessColSpan(node, cellProperties);
+            ProcessWidth(node, cellProperties);
 			
 			if (HasRowSpan)
 			{
@@ -94,43 +93,30 @@
 			}
 			
 			//Processing border should be after colspan
-			ProcessBorders(docxNode, docxProperties, cellProperties);
+            ProcessBorders(node, docxProperties, cellProperties);
 
-            string backgroundColor = docxNode.ExtractStyleValue(DocxColor.backGroundColor);
+            string backgroundColor = node.ExtractStyleValue(DocxColor.backGroundColor);
 			
 			if (!string.IsNullOrEmpty(backgroundColor))
 			{
 				DocxColor.ApplyBackGroundColor(backgroundColor, cellProperties);
 			}
-			
-			ProcessVerticalAlignment(docxNode, cellProperties);
+
+            ProcessVerticalAlignment(node, cellProperties);
 			
 			if (cellProperties.HasChildren)
 			{
 				cell.Append(cellProperties);
 			}
 		}
-		
-		internal static IHtmlNode GetHtmlNodeForTableCellContent(IHtmlNode node)
+
+        internal static DocxNode GetHtmlNodeForTableCellContent(DocxNode node)
 		{
-			IHtmlNode clone = node.Clone();
-            Dictionary<string, string> styles = clone.Styles;
+            node.RemoveStyles(DocxBorder.borderName, DocxBorder.leftBorderName, DocxBorder.rightBorderName,
+                DocxBorder.topBorderName, DocxBorder.bottomBorderName, DocxMargin.margin, DocxMargin.marginLeft,
+                DocxMargin.marginRight, DocxMargin.marginTop, DocxMargin.marginBottom);
 
-            styles.Remove(DocxBorder.borderName);
-            styles.Remove(DocxBorder.leftBorderName);
-            styles.Remove(DocxBorder.rightBorderName);
-            styles.Remove(DocxBorder.topBorderName);
-            styles.Remove(DocxBorder.bottomBorderName);
-
-            styles.Remove(DocxMargin.margin);
-            styles.Remove(DocxMargin.marginLeft);
-            styles.Remove(DocxMargin.marginRight);
-            styles.Remove(DocxMargin.marginTop);
-            styles.Remove(DocxMargin.marginBottom);
-
-            clone.Styles = styles;
-
-			return clone;
+            return node;
 		}
 	}
 }

@@ -8,7 +8,11 @@
 	{
 		internal const string textAlign = "text-align";
 		internal const string verticalAlign = "vertical-align";
-		
+
+        internal const string center = "center";
+        internal const string left = "left";
+        internal const string right = "right";
+
 		internal static void ApplyTextAlign(string style, OpenXmlElement styleElement)
 		{
 			JustificationValues alignment;
@@ -26,17 +30,17 @@
 
 			switch (style.ToLower())
 			{
-				case "right":
+				case right:
 					assigned = true;
 					alignment = JustificationValues.Right;
 					break;
 
-				case "left":
+				case left:
 					assigned = true;
 					alignment = JustificationValues.Left;
 					break;
 
-				case "center":
+				case center:
 					assigned = true;
 					alignment = JustificationValues.Center;
 					break;

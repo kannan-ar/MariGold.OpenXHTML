@@ -7,15 +7,13 @@
 
     internal sealed class DocxAddress : DocxElement
     {
-        private void SetDefaultStyle(IHtmlNode node)
+        private void SetDefaultStyle(DocxNode node)
         {
-            DocxNode docxNode = new DocxNode(node);
-
-            string value = docxNode.ExtractStyleValue(DocxFont.fontStyle);
+            string value = node.ExtractStyleValue(DocxFont.fontStyle);
 
             if (string.IsNullOrEmpty(value))
             {
-                docxNode.SetStyleValue(DocxFont.fontStyle, DocxFont.italic);
+                node.SetExtentedStyle(DocxFont.fontStyle, DocxFont.italic);
             }
         }
 
@@ -24,14 +22,14 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, "address", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
                 return;
             }
@@ -39,19 +37,18 @@
             //Address tag also creats a new block element. Thus clear the existing paragraph
             paragraph = null;
             Paragraph addrParagraph = null;
+            SetDefaultStyle(node);
 
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
-                SetDefaultStyle(child);
-
                 if (child.IsText)
                 {
                     if (!IsEmptyText(child.InnerHtml))
                     {
                         if (addrParagraph == null)
                         {
-                            addrParagraph = properties.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(properties.ParagraphNode, addrParagraph);
+                            addrParagraph = node.Parent.AppendChild(new Paragraph());
+                            ParagraphCreated(node.ParagraphNode, addrParagraph);
                         }
 
                         Run run = addrParagraph.AppendChild(new Run(new Text()
@@ -59,13 +56,17 @@
                             Text = ClearHtml(child.InnerHtml),
                             Space = SpaceProcessingModeValues.Preserve
                         }));
-                        RunCreated(child, run);
+
+                        RunCreated(node, run);
                     }
                 }
                 else
                 {
                     //Child elements will create on new address paragraph
-                    ProcessChild(new DocxProperties(child, properties.ParagraphNode, properties.Parent), ref addrParagraph);
+                    child.ParagraphNode = node.ParagraphNode;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref addrParagraph);
                 }
             }
         }

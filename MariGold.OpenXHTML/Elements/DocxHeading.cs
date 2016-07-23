@@ -60,15 +60,14 @@
             return fontSize;
         }
 
-        private void ApplyStyle(IHtmlNode node)
+        private void ApplyStyle(DocxNode node)
         {
-            DocxNode docxNode = new DocxNode(node);
-            string fontSizeValue = docxNode.ExtractStyleValue(DocxFont.fontSize);
-            string fontWeightValue = docxNode.ExtractStyleValue(DocxFont.fontWeight);
+            string fontSizeValue = node.ExtractStyleValue(DocxFont.fontSize);
+            string fontWeightValue = node.ExtractStyleValue(DocxFont.fontWeight);
 
             if (string.IsNullOrEmpty(fontSizeValue))
             {
-                fontSizeValue = CalculateFontSize(GetHeaderNumber(docxNode));
+                fontSizeValue = CalculateFontSize(GetHeaderNumber(node));
             }
 
             if(string.IsNullOrEmpty(fontWeightValue))
@@ -78,10 +77,8 @@
 
             Dictionary<string, string> newStyles = new Dictionary<string, string>();
 
-            newStyles.Add(DocxFont.fontSize, fontSizeValue);
-            newStyles.Add(DocxFont.fontWeight, fontWeightValue);
-
-            docxNode.SetStyleValues(newStyles);
+            node.SetExtentedStyle(DocxFont.fontSize, fontSizeValue);
+            node.SetExtentedStyle(DocxFont.fontWeight, fontWeightValue);
         }
 
         internal DocxHeading(IOpenXmlContext context)
@@ -90,23 +87,23 @@
             isValid = new Regex(@"^[hH][1-6]{1}$");
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return isValid.IsMatch(node.Tag);
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null
-                || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
                 return;
             }
 
             paragraph = null;
             Paragraph headerParagraph = null;
+            ApplyStyle(node);
 
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
                 {
@@ -114,13 +111,12 @@
                     {
                         if (headerParagraph == null)
                         {
-                            headerParagraph = properties.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(properties.CurrentNode, headerParagraph);
+                            headerParagraph = node.Parent.AppendChild(new Paragraph());
+                            ParagraphCreated(node, headerParagraph);
                         }
 
                         Run run = headerParagraph.AppendChild(new Run());
-                        ApplyStyle(properties.CurrentNode);
-                        RunCreated(properties.CurrentNode, run);
+                        RunCreated(node, run);
 
                         run.AppendChild(new Text()
                         {
@@ -131,7 +127,10 @@
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref headerParagraph);
+                    child.ParagraphNode = node;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref headerParagraph);
                 }
             }
         }

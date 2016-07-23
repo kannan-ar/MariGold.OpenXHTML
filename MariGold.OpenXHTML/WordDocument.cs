@@ -112,7 +112,7 @@
             {
                 DocxElement body = context.GetBodyElement();
                 Paragraph paragraph = null;
-                body.Process(new DocxProperties(node, null, null), ref paragraph);
+                body.Process(new DocxNode(node), ref paragraph);
             }
         }
 

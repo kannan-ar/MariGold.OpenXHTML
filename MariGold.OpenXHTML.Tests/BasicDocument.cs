@@ -1050,7 +1050,7 @@
 				RunStyle runStyle = properties.ChildElements[0] as RunStyle;
 				Assert.IsNotNull(runStyle);
 				Assert.AreEqual("Hyperlink", runStyle.Val.Value);
-				
+
 				text = run.ChildElements[1] as Word.Text;
 				Assert.IsNotNull(text);
 				Assert.AreEqual("test", text.InnerText);

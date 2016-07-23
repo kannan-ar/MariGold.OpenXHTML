@@ -10,17 +10,17 @@
         private const string defaultDDLeftMargin = "40px";
         private const string defaultDLMargin = "1em";
 
-        private void ProcessChild(DocxProperties properties)
+        private void ProcessChild(DocxNode node)
         {
-            if (properties.CurrentNode == null)
+            if (node.IsNull())
             {
                 return;
             }
 
-            Paragraph paragraph = properties.Parent.AppendChild(new Paragraph());
-            ParagraphCreated(properties.CurrentNode, paragraph);
+            Paragraph paragraph = node.Parent.AppendChild(new Paragraph());
+            ParagraphCreated(node, paragraph);
 
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (child.IsText && !IsEmptyText(child.InnerHtml))
                 {
@@ -30,16 +30,19 @@
                         Space = SpaceProcessingModeValues.Preserve
                     }));
 
-                    RunCreated(properties.CurrentNode, run);
+                    RunCreated(node, run);
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(child, properties.CurrentNode, properties.Parent), ref paragraph);
+                    child.ParagraphNode = node;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref paragraph);
                 }
             }
         }
 
-        private void SetDDProperties(IHtmlNode node)
+        private void SetDDProperties(DocxNode node)
         {
             DocxMargin margin = new DocxMargin(node);
 
@@ -73,20 +76,19 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, "dl", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null || 
-                !CanConvert(properties.CurrentNode) || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || !CanConvert(node) || IsHidden(node))
             {
                 return;
             }
 
-            if (!properties.CurrentNode.HasChildren)
+            if (!node.HasChildren)
             {
                 return;
             }
@@ -94,24 +96,27 @@
             paragraph = null;
 
             //Add an empty paragraph to set default margin top
-            SetMarginTop(properties.Parent);
+            SetMarginTop(node.Parent);
 
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (string.Compare(child.Tag, "dt", StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
-                    ProcessChild(new DocxProperties(child, properties.Parent));
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child);
                 }
-                else
-                    if (string.Compare(child.Tag, "dd", StringComparison.InvariantCultureIgnoreCase) == 0)
-                    {
-                        SetDDProperties(child);
-                        ProcessChild(new DocxProperties(child, properties.Parent));
-                    }
+                else if (string.Compare(child.Tag, "dd", StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    node.CopyExtentedStyles(child);
+                    SetDDProperties(child);
+                    child.Parent = node.Parent;
+                    ProcessChild(child);
+                }
             }
 
             //Add an empty paragraph at the end to set default margin bottom
-            SetMarginBottom(properties.Parent);
+            SetMarginBottom(node.Parent);
         }
     }
 }

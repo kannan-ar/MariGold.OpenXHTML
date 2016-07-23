@@ -12,40 +12,39 @@
 		{
 		}
 		
-		internal override bool CanConvert(IHtmlNode node)
+		internal override bool CanConvert(DocxNode node)
 		{
 			return string.Compare(node.Tag, "br", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
 		{
-            if (properties.CurrentNode != null && properties.Parent != null 
-                || IsHidden(properties.CurrentNode))
+            if (!node.IsNull() && node.Parent != null || IsHidden(node))
 			{
 				if (paragraph == null)
 				{
-                    paragraph = properties.Parent.AppendChild(new Paragraph());
-                    ParagraphCreated(properties.ParagraphNode, paragraph);
+                    paragraph = node.Parent.AppendChild(new Paragraph());
+                    ParagraphCreated(node.ParagraphNode, paragraph);
 				}
 				
 				Run run = paragraph.AppendChild(new Run(new Break()));
-                RunCreated(properties.CurrentNode, run);
+                RunCreated(node, run);
 			}
 		}
 
-        bool ITextElement.CanConvert(IHtmlNode node)
+        bool ITextElement.CanConvert(DocxNode node)
         {
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxProperties properties)
+        void ITextElement.Process(DocxNode node)
         {
-            if (IsHidden(properties.CurrentNode))
+            if (IsHidden(node))
             {
                 return;
             }
 
-            properties.Parent.AppendChild(new Run(new Break()));
+            node.Parent.AppendChild(new Run(new Break()));
         }
 	}
 }

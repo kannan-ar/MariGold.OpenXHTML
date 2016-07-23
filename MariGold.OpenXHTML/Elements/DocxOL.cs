@@ -66,7 +66,7 @@
             paragraphProperties.Append(numberingProperties);
         }
 
-        private void ProcessLi(IHtmlNode li, OpenXmlElement parent, NumberFormatValues numberFormat)
+        private void ProcessLi(DocxNode li, OpenXmlElement parent, NumberFormatValues numberFormat)
         {
             Paragraph paragraph = parent.AppendChild(new Paragraph());
             ParagraphCreated(li, paragraph);
@@ -78,7 +78,7 @@
 
             SetListProperties(numberFormat, paragraph.ParagraphProperties);
 
-            foreach (IHtmlNode child in li.Children)
+            foreach (DocxNode child in li.Children)
             {
                 if (child.IsText)
                 {
@@ -95,17 +95,19 @@
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(child, li, parent), ref paragraph);
+                    child.ParagraphNode = li;
+                    child.Parent = parent;
+                    li.CopyExtentedStyles(child);
+                    ProcessChild(child, ref paragraph);
                 }
             }
         }
 
-        private NumberFormatValues GetNumberFormat(IHtmlNode node)
+        private NumberFormatValues GetNumberFormat(DocxNode node)
         {
             NumberFormatValues numberFormat = NumberFormatValues.Decimal;
-            DocxNode docxNode = new DocxNode(node);
 
-            string type = docxNode.ExtractAttributeValue("type");
+            string type = node.ExtractAttributeValue("type");
 
             if (!string.IsNullOrEmpty(type))
             {
@@ -141,32 +143,32 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, elementName, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || !CanConvert(properties.CurrentNode) 
-                || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || !CanConvert(node) || IsHidden(node))
             {
                 return;
             }
 
             paragraph = null;
 
-            if (properties.CurrentNode.HasChildren)
+            if (node.HasChildren)
             {
-                NumberFormatValues numberFormat = GetNumberFormat(properties.CurrentNode);
+                NumberFormatValues numberFormat = GetNumberFormat(node);
 
                 InitNumberDefinitions(numberFormat);
 
-                foreach (IHtmlNode child in properties.CurrentNode.Children)
+                foreach (DocxNode child in node.Children)
                 {
                     if (string.Compare(child.Tag, liName, StringComparison.InvariantCultureIgnoreCase) == 0)
                     {
-                        ProcessLi(child, properties.Parent, numberFormat);
+                        node.CopyExtentedStyles(child);
+                        ProcessLi(child, node.Parent, numberFormat);
                     }
                 }
             }

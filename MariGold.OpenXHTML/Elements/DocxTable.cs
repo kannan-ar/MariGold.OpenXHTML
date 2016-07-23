@@ -8,25 +8,22 @@
 
     internal sealed class DocxTable : DocxElement
     {
-        private void SetThStyleToRun(IHtmlNode run)
+        private void SetThStyleToRun(DocxNode run)
         {
-            DocxNode docxNode = new DocxNode(run);
-
-            string value = docxNode.ExtractStyleValue(DocxFont.fontWeight);
+            string value = run.ExtractStyleValue(DocxFont.fontWeight);
 
             if (string.IsNullOrEmpty(value))
             {
-                docxNode.SetStyleValue(DocxFont.fontWeight, DocxFont.bold);
+                run.SetExtentedStyle(DocxFont.fontWeight, DocxFont.bold);
             }
         }
 
-        private void ProcessTd(int colIndex, IHtmlNode td, TableRow row, DocxTableProperties tableProperties)
+        private void ProcessTd(int colIndex, DocxNode td, TableRow row, DocxTableProperties tableProperties)
         {
             TableCell cell = new TableCell();
             bool hasRowSpan = false;
 
-            DocxNode docxNode = new DocxNode(td);
-            string rowSpan = docxNode.ExtractAttributeValue(DocxTableProperties.rowSpan);
+            string rowSpan = td.ExtractAttributeValue(DocxTableProperties.rowSpan);
             Int32 rowSpanValue;
             if (Int32.TryParse(rowSpan, out rowSpanValue))
             {
@@ -42,7 +39,7 @@
             {
                 Paragraph para = null;
 
-                foreach (IHtmlNode child in td.Children)
+                foreach (DocxNode child in td.Children)
                 {
                     //If the cell is th header, apply font-weight:bold to the text
                     if (tableProperties.IsCellHeader)
@@ -71,7 +68,10 @@
                     }
                     else
                     {
-                        ProcessChild(new DocxProperties(child, DocxTableCellStyle.GetHtmlNodeForTableCellContent(td), cell), ref para);
+                        child.ParagraphNode = DocxTableCellStyle.GetHtmlNodeForTableCellContent(td);
+                        child.Parent = cell;
+                        td.CopyExtentedStyles(child);
+                        ProcessChild(child, ref para);
                     }
                 }
             }
@@ -110,19 +110,18 @@
             }
         }
 
-        private void ProcessTr(IHtmlNode tr, Table table, DocxTableProperties tableProperties)
+        private void ProcessTr(DocxNode tr, Table table, DocxTableProperties tableProperties)
         {
             if (tr.HasChildren)
             {
                 TableRow row = new TableRow();
-                DocxNode trNode = new DocxNode(tr);
 
                 DocxTableRowStyle style = new DocxTableRowStyle();
                 style.Process(row, tableProperties);
 
                 int colIndex = 0;
 
-                foreach (IHtmlNode td in tr.Children)
+                foreach (DocxNode td in tr.Children)
                 {
                     ProcessVerticalSpan(ref colIndex, row, tableProperties);
 
@@ -130,7 +129,8 @@
 
                     if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || tableProperties.IsCellHeader)
                     {
-                        trNode.CopyStyles(td, DocxColor.backGroundColor);
+                        //tr.CopyStyles(td, DocxColor.backGroundColor);
+                        tr.CopyExtentedStyles(td);
                         ProcessTd(colIndex++, td, row, tableProperties);
                     }
                 }
@@ -149,38 +149,38 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, DocxTableProperties.tableName, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (properties.CurrentNode == null || properties.Parent == null
-                || !CanConvert(properties.CurrentNode) || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || !CanConvert(node) || IsHidden(node))
             {
                 return;
             }
 
             paragraph = null;
 
-            if (properties.CurrentNode.HasChildren)
+            if (node.HasChildren)
             {
                 Table table = new Table();
                 DocxTableProperties tableProperties = new DocxTableProperties();
 
-                tableProperties.FetchTableProperties(properties.CurrentNode);
-                tableProperties.ApplyTableProperties(table, properties.CurrentNode);
+                tableProperties.FetchTableProperties(node);
+                tableProperties.ApplyTableProperties(table, node);
 
-                foreach (IHtmlNode tr in properties.CurrentNode.Children)
+                foreach (DocxNode tr in node.Children)
                 {
                     if (string.Compare(tr.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
                     {
+                        node.CopyExtentedStyles(tr);
                         ProcessTr(tr, table, tableProperties);
                     }
                 }
 
-                properties.Parent.Append(table);
+                node.Parent.Append(table);
             }
         }
     }

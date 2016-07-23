@@ -6,9 +6,9 @@
 	
 	internal sealed class DocxTableStyle
 	{
-		private void ProcessTableBorder(DocxNode docxNode, DocxTableProperties docxProperties, TableProperties tableProperties)
+        private void ProcessTableBorder(DocxNode node, DocxTableProperties docxProperties, TableProperties tableProperties)
 		{
-			string borderStyle = docxNode.ExtractAttributeValue(DocxBorder.borderName);
+            string borderStyle = node.ExtractAttributeValue(DocxBorder.borderName);
 			
 			if (borderStyle == "1")
 			{
@@ -18,11 +18,11 @@
 			}
 			else
 			{
-				borderStyle = docxNode.ExtractStyleValue(DocxBorder.borderName);
-				string leftBorder = docxNode.ExtractStyleValue(DocxBorder.leftBorderName);
-				string topBorder = docxNode.ExtractStyleValue(DocxBorder.topBorderName);
-				string rightBorder = docxNode.ExtractStyleValue(DocxBorder.rightBorderName);
-				string bottomBorder = docxNode.ExtractStyleValue(DocxBorder.bottomBorderName);
+                borderStyle = node.ExtractStyleValue(DocxBorder.borderName);
+                string leftBorder = node.ExtractStyleValue(DocxBorder.leftBorderName);
+                string topBorder = node.ExtractStyleValue(DocxBorder.topBorderName);
+                string rightBorder = node.ExtractStyleValue(DocxBorder.rightBorderName);
+                string bottomBorder = node.ExtractStyleValue(DocxBorder.bottomBorderName);
 				
 				TableBorders tableBorders = new TableBorders();
 					
@@ -66,11 +66,11 @@
 				tableProperties.Append(cellMargin);
 			}
 		}
-		
-		private void ProcessWidth(DocxNode docxNode, TableProperties tableProperties)
+
+        private void ProcessWidth(DocxNode node, TableProperties tableProperties)
 		{
-			string width = docxNode.ExtractAttributeValue(DocxUnits.width);
-			string styleWidth = docxNode.ExtractStyleValue(DocxUnits.width);
+            string width = node.ExtractAttributeValue(DocxUnits.width);
+            string styleWidth = node.ExtractStyleValue(DocxUnits.width);
 			
 			if (!string.IsNullOrEmpty(styleWidth))
 			{
@@ -93,12 +93,11 @@
 			}
 		}
 		
-		internal void Process(TableProperties tableProperties, DocxTableProperties docxProperties, IHtmlNode node)
+		internal void Process(TableProperties tableProperties, DocxTableProperties docxProperties, DocxNode node)
 		{
-			DocxNode docxNode = new DocxNode(node);
-			ProcessWidth(docxNode, tableProperties);
-			
-			ProcessTableBorder(docxNode, docxProperties, tableProperties);
+            ProcessWidth(node, tableProperties);
+
+            ProcessTableBorder(node, docxProperties, tableProperties);
 			ProcessTableCellMargin(docxProperties, tableProperties);
 			
 		}

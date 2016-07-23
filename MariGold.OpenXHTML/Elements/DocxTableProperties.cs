@@ -83,24 +83,23 @@
 				return rowSpanInfo;
 			}
 		}
-		
-		private Int32 GetTdCount(IHtmlNode table)
+
+        private Int32 GetTdCount(DocxNode table)
 		{
 			int count = 0;
-			DocxNode docxNode = new DocxNode(table);
 			
 			if (table != null && table.HasChildren)
 			{
-				foreach (IHtmlNode tr in table.Children)
+				foreach (DocxNode tr in table.Children)
 				{
 					if (string.Compare(tr.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
 					{
-						foreach (IHtmlNode td in tr.Children)
+						foreach (DocxNode td in tr.Children)
 						{
 							if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 ||
 							    string.Compare(td.Tag, DocxTableProperties.thName, StringComparison.InvariantCultureIgnoreCase) == 0)
 							{
-								string colSpan = docxNode.ExtractAttributeValue("colspan");
+								string colSpan = table.ExtractAttributeValue("colspan");
 								Int32 colspanValue;
 								
 								if (!string.IsNullOrEmpty(colspan) && Int32.TryParse(colspan, out colspanValue))
@@ -122,27 +121,25 @@
 			
 			return count;
 		}
-		
-		internal void FetchTableProperties(IHtmlNode node)
+
+        internal void FetchTableProperties(DocxNode node)
 		{
-			DocxNode docxNode = new DocxNode(node);
-				
-			this.HasDefaultBorder = docxNode.ExtractAttributeValue(DocxBorder.borderName) == "1";
+            this.HasDefaultBorder = node.ExtractAttributeValue(DocxBorder.borderName) == "1";
 			
 			Int16 value;
-			
-			if (Int16.TryParse(docxNode.ExtractAttributeValue(cellSpacingName), out value))
+
+            if (Int16.TryParse(node.ExtractAttributeValue(cellSpacingName), out value))
 			{
 				this.CellSpacing = value;
 			}
-			
-			if (Int16.TryParse(docxNode.ExtractAttributeValue(cellPaddingName), out value))
+
+            if (Int16.TryParse(node.ExtractAttributeValue(cellPaddingName), out value))
 			{
 				this.CellPadding = value;
 			}
 		}
-		
-		internal void ApplyTableProperties(Table table, IHtmlNode node)
+
+        internal void ApplyTableProperties(Table table, DocxNode node)
 		{
 			TableProperties tableProp = new TableProperties();
 			

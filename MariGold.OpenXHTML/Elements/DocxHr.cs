@@ -10,26 +10,24 @@
 		internal DocxHr(IOpenXmlContext context)
 			: base(context)
 		{
-			
 		}
 		
-		internal override bool CanConvert(IHtmlNode node)
+		internal override bool CanConvert(DocxNode node)
 		{
 			return string.Compare(node.Tag, "hr", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
 		{
-            if (properties.CurrentNode == null || properties.Parent == null 
-                || IsHidden(properties.CurrentNode))
+            if (node.IsNull() || node.Parent == null || IsHidden(node))
 			{
 				return;
 			}
 			
 			paragraph = null;
 
-            Paragraph hrParagraph = properties.Parent.AppendChild(new Paragraph());
-            ParagraphCreated(properties.CurrentNode, hrParagraph);
+            Paragraph hrParagraph = node.Parent.AppendChild(new Paragraph());
+            ParagraphCreated(node, hrParagraph);
 				
 			if (hrParagraph.ParagraphProperties == null)
 			{
@@ -41,7 +39,7 @@
 			hrParagraph.ParagraphProperties.Append(paragraphBorders);
 				
 			Run run = hrParagraph.AppendChild(new Run(new Text()));
-            RunCreated(properties.CurrentNode, run);
+            RunCreated(node, run);
 		}
 	}
 }

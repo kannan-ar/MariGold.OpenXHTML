@@ -10,55 +10,56 @@
     {
         protected readonly IOpenXmlContext context;
 
-        protected void RunCreated(IHtmlNode node, Run run)
+        protected void RunCreated(DocxNode node, Run run)
         {
             DocxRunStyle style = new DocxRunStyle();
             style.Process(run, node);
         }
 
-        protected void ParagraphCreated(IHtmlNode node, Paragraph para)
+        protected void ParagraphCreated(DocxNode node, Paragraph para)
         {
             DocxParagraphStyle style = new DocxParagraphStyle();
             style.Process(para, node);
         }
 
-        protected void ProcessChild(DocxProperties properties, ref Paragraph paragraph)
+        protected void ProcessChild(DocxNode node, ref Paragraph paragraph)
         {
-            DocxElement element = context.Convert(properties.CurrentNode);
+            DocxElement element = context.Convert(node);
 
             if (element != null)
             {
-                element.Process(properties, ref paragraph);
+                element.Process(node, ref paragraph);
             }
         }
 
-        protected void ProcessTextElement(DocxProperties properties)
+        protected void ProcessTextElement(DocxNode node)
         {
-            ITextElement element = context.ConvertTextElement(properties.CurrentNode);
+            ITextElement element = context.ConvertTextElement(node);
 
             if (element != null)
             {
-                element.Process(properties);
+                element.Process(node);
             }
         }
 
-        protected void ProcessTextChild(DocxProperties properties)
+        protected void ProcessTextChild(DocxNode node)
         {
-            foreach (IHtmlNode child in properties.CurrentNode.Children)
+            foreach (DocxNode child in node.Children)
             {
                 if (child.IsText && !IsEmptyText(child.InnerHtml))
                 {
-                    Run run = properties.Parent.AppendChild(new Run(new Text()
+                    Run run = node.Parent.AppendChild(new Run(new Text()
                     {
                         Text = ClearHtml(child.InnerHtml),
                         Space = SpaceProcessingModeValues.Preserve
                     }));
 
-                    RunCreated(properties.CurrentNode, run);
+                    RunCreated(node, run);
                 }
                 else
                 {
-                    ProcessTextElement(new DocxProperties(child, properties.Parent));
+                    child.Parent = node.Parent;
+                    ProcessTextElement(child);
                 }
             }
         }
@@ -78,15 +79,14 @@
             return url;
         }
 
-        protected bool IsHidden(IHtmlNode node)
+        protected bool IsHidden(DocxNode node)
         {
             if (node == null)
             {
                 return false;
             }
 
-            DocxNode docxNode = new DocxNode(node);
-            string display = docxNode.ExtractStyleValue("display");
+            string display = node.ExtractStyleValue("display");
             return display.CompareStringInvariantCultureIgnoreCase("none");
         }
 
@@ -142,8 +142,8 @@
             return false;
         }
 
-        internal abstract bool CanConvert(IHtmlNode node);
+        internal abstract bool CanConvert(DocxNode node);
 
-        internal abstract void Process(DocxProperties properties, ref Paragraph paragraph);
+        internal abstract void Process(DocxNode node, ref Paragraph paragraph);
     }
 }

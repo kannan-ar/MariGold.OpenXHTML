@@ -10,7 +10,7 @@
     {
         private OpenXmlElement body;
 
-        private void ProcessBody(IHtmlNode node, ref Paragraph paragraph)
+        private void ProcessBody(DocxNode node, ref Paragraph paragraph)
         {
             while (node != null)
             {
@@ -35,7 +35,9 @@
                 }
                 else
                 {
-                    ProcessChild(new DocxProperties(node, node, body), ref paragraph);
+                    node.ParagraphNode = node;
+                    node.Parent = body;
+                    ProcessChild(node, ref paragraph);
                 }
 
                 node = node.Next;
@@ -47,20 +49,19 @@
         {
         }
 
-        internal override bool CanConvert(IHtmlNode node)
+        internal override bool CanConvert(DocxNode node)
         {
             return string.Compare(node.Tag, "body", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxProperties properties, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
             body = context.Document.AppendChild(new Body());
-            IHtmlNode node = properties.CurrentNode;
 
             //If the node is body tag, find the first children to process
-            if (CanConvert(properties.CurrentNode))
+            if (CanConvert(node))
             {
-                if (!properties.CurrentNode.HasChildren)
+                if (!node.HasChildren)
                 {
                     //Nothing to process. Just return from here.
                     return;
