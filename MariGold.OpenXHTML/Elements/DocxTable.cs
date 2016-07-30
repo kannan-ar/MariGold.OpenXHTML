@@ -39,14 +39,16 @@
             {
                 Paragraph para = null;
 
+                //If the cell is th header, apply font-weight:bold to the text
+                if (tableProperties.IsCellHeader)
+                {
+                    SetThStyleToRun(td);
+                }
+
                 foreach (DocxNode child in td.Children)
                 {
-                    //If the cell is th header, apply font-weight:bold to the text
-                    if (tableProperties.IsCellHeader)
-                    {
-                        SetThStyleToRun(child);
-                    }
-
+                    td.CopyExtentedStyles(child);
+                    
                     if (child.IsText)
                     {
                         if (!IsEmptyText(child.InnerHtml))

@@ -47,22 +47,14 @@
                             paragraph = node.Parent.AppendChild(new Paragraph());
                             ParagraphCreated(node.ParagraphNode, paragraph);
                         }
-                        /*
-                        if (paragraph.ParagraphProperties == null)
-                        {
-                            paragraph.ParagraphProperties = new ParagraphProperties();
-                        }
-
-                        DocxAlignment.AlignCenter(paragraph.ParagraphProperties);
-                        */
-                        Run run = paragraph.AppendChild(new Run());
-                        RunCreated(node, run);
-
-                        run.AppendChild(new Text()
+                       
+                        Run run = paragraph.AppendChild(new Run(new Text()
                         {
                             Text = ClearHtml(child.InnerHtml),
                             Space = SpaceProcessingModeValues.Preserve
-                        });
+                        }));
+
+                        RunCreated(node, run);
                     }
                 }
                 else
@@ -88,26 +80,7 @@
             }
 
             SetStyle(node);
-
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText && !IsEmptyText(child.InnerHtml))
-                {
-                    Run run = node.Parent.AppendChild(new Run(new Text()
-                    {
-                        Text = ClearHtml(child.InnerHtml),
-                        Space = SpaceProcessingModeValues.Preserve
-                    }));
-
-                    RunCreated(child, run);
-                }
-                else
-                {
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessTextElement(child);
-                }
-            }
+            ProcessTextChild(node);
         }
     }
 }

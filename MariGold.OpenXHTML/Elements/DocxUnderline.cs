@@ -17,22 +17,6 @@
             }
         }
 
-        private void ProcessRun(Run run, DocxNode node)
-        {
-            if (run.RunProperties == null)
-            {
-                run.RunProperties = new RunProperties();
-            }
-
-            DocxFont.ApplyUnderline(run.RunProperties);
-
-            run.AppendChild(new Text()
-            {
-                Text = ClearHtml(node.InnerHtml),
-                Space = SpaceProcessingModeValues.Preserve
-            });
-        }
-
         internal DocxUnderline(IOpenXmlContext context)
             : base(context)
         {
@@ -62,10 +46,13 @@
                             ParagraphCreated(node.ParagraphNode, paragraph);
                         }
 
-                        Run run = paragraph.AppendChild(new Run());
-                        RunCreated(node, run);
+                        Run run = paragraph.AppendChild(new Run(new Text()
+                        {
+                            Text = ClearHtml(child.InnerHtml),
+                            Space = SpaceProcessingModeValues.Preserve
+                        }));
 
-                        ProcessRun(run, child);
+                        RunCreated(node, run);
                     }
                 }
                 else
@@ -90,21 +77,8 @@
                 return;
             }
 
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText && !IsEmptyText(child.InnerHtml))
-                {
-                    Run run = node.Parent.AppendChild(new Run());
-                    ProcessRun(run, child);
-                }
-                else
-                {
-                    SetStyle(child);
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessTextElement(child);
-                }
-            }
+            SetStyle(node);
+            ProcessTextChild(node);
         }
     }
 }

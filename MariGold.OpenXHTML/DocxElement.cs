@@ -59,6 +59,7 @@
                 else
                 {
                     child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
                     ProcessTextElement(child);
                 }
             }

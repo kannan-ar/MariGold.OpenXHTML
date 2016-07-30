@@ -1315,9 +1315,15 @@
                 Run run = link.ChildElements[0] as Run;
 
                 Assert.IsNotNull(run);
-                Assert.AreEqual(1, run.ChildElements.Count);
+                Assert.AreEqual(2, run.ChildElements.Count);
 
-                Word.Text text = run.ChildElements[0] as Word.Text;
+                RunProperties runProperties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(runProperties);
+                Assert.AreEqual(1, runProperties.ChildElements.Count);
+                Italic italic = runProperties.ChildElements[0] as Italic;
+                Assert.IsNotNull(italic);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
 
                 Assert.IsNotNull(text);
                 Assert.AreEqual("click ", text.InnerText);

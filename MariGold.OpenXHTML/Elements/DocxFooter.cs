@@ -48,7 +48,7 @@
                             Space = SpaceProcessingModeValues.Preserve
                         }));
 
-                        RunCreated(child, run);
+                        RunCreated(node, run);
                     }
                 }
                 else

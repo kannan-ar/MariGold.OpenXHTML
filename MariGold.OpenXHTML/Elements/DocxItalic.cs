@@ -7,6 +7,16 @@
 
     internal sealed class DocxItalic : DocxElement, ITextElement
     {
+        private void SetStyle(DocxNode node)
+        {
+            string value = node.ExtractStyleValue(DocxFont.italic);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                node.SetExtentedStyle(DocxFont.fontStyle, DocxFont.italic);
+            }
+        }
+
         internal DocxItalic(IOpenXmlContext context)
             : base(context)
         {
@@ -25,6 +35,8 @@
                 return;
             }
 
+            SetStyle(node);
+
             foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
@@ -39,14 +51,7 @@
 
                         Run run = paragraph.AppendChild(new Run());
                         RunCreated(node, run);
-
-                        if (run.RunProperties == null)
-                        {
-                            run.RunProperties = new RunProperties();
-                        }
-
-                        DocxFont.ApplyFontItalic(run.RunProperties);
-
+                        
                         run.AppendChild(new Text()
                         {
                             Text = ClearHtml(child.InnerHtml),
@@ -76,25 +81,8 @@
                 return;
             }
 
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText && !IsEmptyText(child.InnerHtml))
-                {
-                    Run run = node.Parent.AppendChild(new Run(new Text()
-                    {
-                        Text = ClearHtml(child.InnerHtml),
-                        Space = SpaceProcessingModeValues.Preserve
-                    }));
-
-                    RunCreated(child, run);
-                }
-                else
-                {
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessTextElement(child);
-                }
-            }
+            SetStyle(node);
+            ProcessTextChild(node);
         }
     }
 }

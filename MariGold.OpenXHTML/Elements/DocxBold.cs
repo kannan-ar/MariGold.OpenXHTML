@@ -17,27 +17,6 @@
             }
         }
 
-        private void ProcessRun(Run run, DocxNode parent, DocxNode child)
-        {
-            RunCreated(parent, run);
-
-            //Need to analyze the child style properties. If there is a font-weight:normal property, 
-            //apply bold should not happen
-            /*
-            if (run.RunProperties == null)
-            {
-                run.RunProperties = new RunProperties();
-            }
-
-            DocxFont.ApplyBold(run.RunProperties);
-            */
-            run.AppendChild(new Text()
-            {
-                Text = ClearHtml(child.InnerHtml),
-                Space = SpaceProcessingModeValues.Preserve
-            });
-        }
-
         public DocxBold(IOpenXmlContext context)
             : base(context)
         {
@@ -70,8 +49,13 @@
                             ParagraphCreated(node.ParagraphNode, paragraph);
                         }
 
-                        Run run = paragraph.AppendChild(new Run());
-                        ProcessRun(run, node, child);
+                        Run run = paragraph.AppendChild(new Run(new Text()
+                        {
+                            Text = ClearHtml(child.InnerHtml),
+                            Space = SpaceProcessingModeValues.Preserve
+                        }));
+
+                        RunCreated(node, run);
                     }
                 }
                 else
@@ -97,21 +81,7 @@
             }
 
             SetStyle(node);
-
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText && !IsEmptyText(child.InnerHtml))
-                {
-                    Run run = node.Parent.AppendChild(new Run());
-                    ProcessRun(run, node, child);
-                }
-                else
-                {
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessTextElement(child);
-                }
-            }
+            ProcessTextChild(node);
         }
     }
 }
