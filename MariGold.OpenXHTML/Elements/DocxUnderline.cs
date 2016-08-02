@@ -34,6 +34,8 @@
                 return;
             }
 
+            SetStyle(node);
+
             foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
