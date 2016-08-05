@@ -7,6 +7,7 @@
 
     internal sealed class DocxAddress : DocxElement
     {
+        /*
         private void SetDefaultStyle(DocxNode node)
         {
             string value = node.ExtractStyleValue(DocxFont.fontStyle);
@@ -16,6 +17,7 @@
                 node.SetExtentedStyle(DocxFont.fontStyle, DocxFont.italic);
             }
         }
+        */
 
         internal DocxAddress(IOpenXmlContext context)
             : base(context)
@@ -37,7 +39,8 @@
             //Address tag also creats a new block element. Thus clear the existing paragraph
             paragraph = null;
             Paragraph addrParagraph = null;
-            SetDefaultStyle(node);
+            //SetDefaultStyle(node);
+            node.SetExtentedStyle(DocxFont.fontStyle, DocxFont.italic);
 
             foreach (DocxNode child in node.Children)
             {

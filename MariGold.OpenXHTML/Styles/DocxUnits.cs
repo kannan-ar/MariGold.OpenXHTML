@@ -41,7 +41,7 @@
 			
 			foreach (var item in toPt)
 			{
-				if (style.IndexOf(item.Key, StringComparison.InvariantCultureIgnoreCase) >= 0)
+				if (style.IndexOf(item.Key, StringComparison.OrdinalIgnoreCase) >= 0)
 				{
 					value = value * item.Value;
 					return true;

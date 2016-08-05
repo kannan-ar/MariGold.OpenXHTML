@@ -7,6 +7,7 @@
 
     internal sealed class DocxCenter : DocxElement, ITextElement
     {
+        /*
         private void SetStyle(DocxNode node)
         {
             string value = node.ExtractStyleValue(DocxAlignment.textAlign);
@@ -16,6 +17,7 @@
                 node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
             }
         }
+        */
 
         internal DocxCenter(IOpenXmlContext context)
             : base(context)
@@ -34,7 +36,13 @@
                 return;
             }
 
-            SetStyle(node);
+            //SetStyle(node);
+            node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
+
+            if (node.ParagraphNode != null)
+            {
+                node.ParagraphNode.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
+            }
 
             foreach (DocxNode child in node.Children)
             {
@@ -47,7 +55,7 @@
                             paragraph = node.Parent.AppendChild(new Paragraph());
                             ParagraphCreated(node.ParagraphNode, paragraph);
                         }
-                       
+
                         Run run = paragraph.AppendChild(new Run(new Text()
                         {
                             Text = ClearHtml(child.InnerHtml),
@@ -79,7 +87,8 @@
                 return;
             }
 
-            SetStyle(node);
+            //SetStyle(node);
+            node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
             ProcessTextChild(node);
         }
     }

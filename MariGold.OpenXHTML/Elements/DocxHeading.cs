@@ -75,7 +75,7 @@
                 fontWeightValue = DocxFont.bold;
             }
 
-            Dictionary<string, string> newStyles = new Dictionary<string, string>();
+            //Dictionary<string, string> newStyles = new Dictionary<string, string>();
 
             node.SetExtentedStyle(DocxFont.fontSize, fontSizeValue);
             node.SetExtentedStyle(DocxFont.fontWeight, fontWeightValue);

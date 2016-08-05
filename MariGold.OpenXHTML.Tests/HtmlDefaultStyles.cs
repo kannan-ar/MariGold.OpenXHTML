@@ -238,43 +238,6 @@
         }
 
         [Test]
-        public void DivInsideAddress()
-        {
-            using (MemoryStream mem = new MemoryStream())
-            {
-                WordDocument doc = new WordDocument(mem);
-
-                doc.Process(new HtmlParser("<address><div>test</div></address>"));
-
-                Assert.IsNotNull(doc.Document.Body);
-                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
-
-                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
-                Assert.IsNotNull(para);
-                Assert.AreEqual(1, para.ChildElements.Count);
-
-                Run run = para.ChildElements[0] as Run;
-                Assert.IsNotNull(run);
-                Assert.AreEqual(2, run.ChildElements.Count);
-
-                RunProperties properties = run.ChildElements[0] as RunProperties;
-                Assert.IsNotNull(properties);
-                Assert.AreEqual(1, properties.ChildElements.Count);
-
-                Italic italic = properties.ChildElements[0] as Italic;
-                Assert.IsNotNull(italic);
-
-                Word.Text text = run.ChildElements[1] as Word.Text;
-                Assert.IsNotNull(text);
-                Assert.AreEqual("test", text.InnerText);
-
-                OpenXmlValidator validator = new OpenXmlValidator();
-                var errors = validator.Validate(doc.WordprocessingDocument);
-                Assert.AreEqual(0, errors.Count());
-            }
-        }
-
-        [Test]
         public void TwoLevelDivInsideH1()
         {
             using (MemoryStream mem = new MemoryStream())
@@ -341,6 +304,195 @@
 
                 Underline underline = properties.ChildElements[0] as Underline;
                 Assert.IsNotNull(underline);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void BInsideNoFontWeightDiv()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style=\"font-weight:normal\"><b>test</b></div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                Bold bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void IInsideNoTextDecorationDiv()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style=\"text-decoration:none\"><u>test</u></div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                Underline underline = properties.ChildElements[0] as Underline;
+                Assert.IsNotNull(underline);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void AddressInsideFontStyleNormalDiv()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style=\"font-style:normal\"><address>test</address></div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                Italic italic = properties.ChildElements[0] as Italic;
+                Assert.IsNotNull(italic);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void CenterInsideTextAlignLeftDiv()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style=\"text-align:left\"><center>test</center></div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(2, para.ChildElements.Count);
+
+                ParagraphProperties paraProperties = para.ChildElements[0] as ParagraphProperties;
+                Assert.IsNotNull(paraProperties);
+                Assert.AreEqual(1, paraProperties.ChildElements.Count);
+                Justification justification = paraProperties.ChildElements[0] as Justification;
+                Assert.IsNotNull(justification);
+                Assert.AreEqual(JustificationValues.Center, justification.Val.Value);
+
+                Run run = para.ChildElements[1] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                Word.Text text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void H1DefaultStyleIn10PxDiv()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style=\"font-size:10px\"><h1>test</h1></div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(2, properties.ChildElements.Count);
+
+                Bold bold = properties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+
+                FontSize fontSize = properties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("40", fontSize.Val.Value);
 
                 Word.Text text = run.ChildElements[1] as Word.Text;
                 Assert.IsNotNull(text);

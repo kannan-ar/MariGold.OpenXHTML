@@ -7,6 +7,7 @@
 
     internal sealed class DocxUnderline : DocxElement, ITextElement
     {
+        /*
         private void SetStyle(DocxNode node)
         {
             string value = node.ExtractStyleValue(DocxFont.underLine);
@@ -16,6 +17,7 @@
                 node.SetExtentedStyle(DocxFont.textDecoration, DocxFont.underLine);
             }
         }
+        */
 
         internal DocxUnderline(IOpenXmlContext context)
             : base(context)
@@ -34,7 +36,8 @@
                 return;
             }
 
-            SetStyle(node);
+            //SetStyle(node);
+            node.SetExtentedStyle(DocxFont.textDecoration, DocxFont.underLine);
 
             foreach (DocxNode child in node.Children)
             {
@@ -79,7 +82,8 @@
                 return;
             }
 
-            SetStyle(node);
+            //SetStyle(node);
+            node.SetExtentedStyle(DocxFont.textDecoration, DocxFont.underLine);
             ProcessTextChild(node);
         }
     }

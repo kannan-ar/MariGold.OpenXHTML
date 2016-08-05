@@ -194,7 +194,7 @@
 
         internal string ExtractStyleValue(string styleName)
         {
-            foreach (KeyValuePair<string, string> style in styles)
+            foreach (KeyValuePair<string, string> style in extentedStyles)
             {
                 if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
@@ -202,7 +202,7 @@
                 }
             }
 
-            foreach (KeyValuePair<string, string> style in extentedStyles)
+            foreach (KeyValuePair<string, string> style in styles)
             {
                 if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
