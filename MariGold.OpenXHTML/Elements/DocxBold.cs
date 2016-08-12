@@ -25,7 +25,7 @@
                 return;
             }
 
-            node.SetExtentedStyle(DocxFont.fontWeight, DocxFont.bold);
+            node.SetExtentedStyle(DocxFontStyle.fontWeight, DocxFontStyle.bold);
 
             foreach (DocxNode child in node.Children)
             {
@@ -70,7 +70,7 @@
                 return;
             }
 
-            node.SetExtentedStyle(DocxFont.fontWeight, DocxFont.bold);
+            node.SetExtentedStyle(DocxFontStyle.fontWeight, DocxFontStyle.bold);
             ProcessTextChild(node);
         }
     }

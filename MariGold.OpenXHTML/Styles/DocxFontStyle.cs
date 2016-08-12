@@ -5,7 +5,7 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
-    internal static class DocxFont
+    internal static class DocxFontStyle
     {
         private const int fontMaxLength = 31;
 

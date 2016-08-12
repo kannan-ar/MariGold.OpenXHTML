@@ -50,6 +50,7 @@
     <Compile Include="BlockElements.cs" />
     <Compile Include="HtmlDefaultStyles.cs" />
     <Compile Include="InheritedStyles.cs" />
+    <Compile Include="InlineElements.cs" />
     <Compile Include="SimpleHtmlFromFile.cs" />
     <Compile Include="TestDiv.cs" />
     <Compile Include="TestP.cs" />

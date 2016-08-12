@@ -105,7 +105,7 @@
                     }
                 }
 
-                if (!string.IsNullOrEmpty(line) && !line.CompareStringInvariantCultureIgnoreCase(DocxFont.normal))
+                if (!string.IsNullOrEmpty(line) && !line.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.normal))
                 {
                     int number;
 

@@ -27,7 +27,7 @@
             //Address tag also creats a new block element. Thus clear the existing paragraph
             paragraph = null;
             Paragraph addrParagraph = null;
-            node.SetExtentedStyle(DocxFont.fontStyle, DocxFont.italic);
+            node.SetExtentedStyle(DocxFontStyle.fontStyle, DocxFontStyle.italic);
 
             foreach (DocxNode child in node.Children)
             {

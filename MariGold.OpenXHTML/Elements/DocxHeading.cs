@@ -62,13 +62,13 @@
 
         private void ApplyStyle(DocxNode node)
         {
-            string fontSizeValue = node.ExtractOwnStyleValue(DocxFont.fontSize);
-            string fontWeightValue = node.ExtractOwnStyleValue(DocxFont.fontWeight);
+            string fontSizeValue = node.ExtractOwnStyleValue(DocxFontStyle.fontSize);
+            string fontWeightValue = node.ExtractOwnStyleValue(DocxFontStyle.fontWeight);
 
             if (string.IsNullOrEmpty(fontSizeValue))
             {
                 string headingFontSize = CalculateFontSize(GetHeaderNumber(node));
-                string inheritedStyle = node.ExtractInheritedStyleValue(DocxFont.fontSize);
+                string inheritedStyle = node.ExtractInheritedStyleValue(DocxFontStyle.fontSize);
 
                 if (!string.IsNullOrEmpty(inheritedStyle))
                 {
@@ -84,11 +84,11 @@
 
             if (string.IsNullOrEmpty(fontWeightValue))
             {
-                fontWeightValue = DocxFont.bold;
+                fontWeightValue = DocxFontStyle.bold;
             }
 
-            node.SetExtentedStyle(DocxFont.fontSize, fontSizeValue);
-            node.SetExtentedStyle(DocxFont.fontWeight, fontWeightValue);
+            node.SetExtentedStyle(DocxFontStyle.fontSize, fontSizeValue);
+            node.SetExtentedStyle(DocxFontStyle.fontWeight, fontWeightValue);
         }
 
         internal DocxHeading(IOpenXmlContext context)

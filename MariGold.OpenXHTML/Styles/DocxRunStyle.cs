@@ -8,39 +8,39 @@
 	{
 		private void CheckFonts(DocxNode node, RunProperties properties)
 		{
-            string fontFamily = node.ExtractStyleValue(DocxFont.fontFamily);
-            string fontWeight = node.ExtractStyleValue(DocxFont.fontWeight);
-            string fontStyle = node.ExtractStyleValue(DocxFont.fontStyle);
+            string fontFamily = node.ExtractStyleValue(DocxFontStyle.fontFamily);
+            string fontWeight = node.ExtractStyleValue(DocxFontStyle.fontWeight);
+            string fontStyle = node.ExtractStyleValue(DocxFontStyle.fontStyle);
 			
 			if (!string.IsNullOrEmpty(fontFamily))
 			{
-				DocxFont.ApplyFontFamily(fontFamily, properties);
+				DocxFontStyle.ApplyFontFamily(fontFamily, properties);
 			}
 			
 			if (!string.IsNullOrEmpty(fontWeight))
 			{
-				DocxFont.ApplyFontWeight(fontWeight, properties);
+				DocxFontStyle.ApplyFontWeight(fontWeight, properties);
 			}
 				
 			if (!string.IsNullOrEmpty(fontStyle))
 			{
-				DocxFont.ApplyFontStyle(fontStyle, properties);
+				DocxFontStyle.ApplyFontStyle(fontStyle, properties);
 			}
 		}
 
         private void CheckFontStyle(DocxNode node, RunProperties properties)
 		{
-            string fontSize = node.ExtractStyleValue(DocxFont.fontSize);
-            string textDecoration = node.ExtractStyleValue(DocxFont.textDecoration);
+            string fontSize = node.ExtractStyleValue(DocxFontStyle.fontSize);
+            string textDecoration = node.ExtractStyleValue(DocxFontStyle.textDecoration);
 			
 			if (!string.IsNullOrEmpty(fontSize))
 			{
-				DocxFont.ApplyFontSize(fontSize, properties);
+				DocxFontStyle.ApplyFontSize(fontSize, properties);
 			}
 			
 			if (!string.IsNullOrEmpty(textDecoration))
 			{
-				DocxFont.ApplyTextDecoration(textDecoration, properties);
+				DocxFontStyle.ApplyTextDecoration(textDecoration, properties);
 			}
 		}
 

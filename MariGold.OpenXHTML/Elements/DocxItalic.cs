@@ -9,11 +9,11 @@
     {
         private void SetStyle(DocxNode node)
         {
-            string value = node.ExtractStyleValue(DocxFont.italic);
+            string value = node.ExtractStyleValue(DocxFontStyle.italic);
 
             if (string.IsNullOrEmpty(value))
             {
-                node.SetExtentedStyle(DocxFont.fontStyle, DocxFont.italic);
+                node.SetExtentedStyle(DocxFontStyle.fontStyle, DocxFontStyle.italic);
             }
         }
 

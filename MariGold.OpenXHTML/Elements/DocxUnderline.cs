@@ -24,7 +24,7 @@
                 return;
             }
 
-            node.SetExtentedStyle(DocxFont.textDecoration, DocxFont.underLine);
+            node.SetExtentedStyle(DocxFontStyle.textDecoration, DocxFontStyle.underLine);
 
             foreach (DocxNode child in node.Children)
             {
@@ -69,7 +69,7 @@
                 return;
             }
 
-            node.SetExtentedStyle(DocxFont.textDecoration, DocxFont.underLine);
+            node.SetExtentedStyle(DocxFontStyle.textDecoration, DocxFontStyle.underLine);
             ProcessTextChild(node);
         }
     }

@@ -46,6 +46,7 @@
     <Reference Include="System.Net">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -64,6 +65,7 @@
     <Compile Include="Elements\DocxCenter.cs" />
     <Compile Include="Elements\DocxDiv.cs" />
     <Compile Include="Elements\DocxDL.cs" />
+    <Compile Include="Elements\DocxFont.cs" />
     <Compile Include="Elements\DocxFooter.cs" />
     <Compile Include="Elements\DocxHeader.cs" />
     <Compile Include="Elements\DocxHeading.cs" />
@@ -86,7 +88,7 @@
     <Compile Include="Styles\DocxAlignment.cs" />
     <Compile Include="Styles\DocxBorder.cs" />
     <Compile Include="Styles\DocxColor.cs" />
-    <Compile Include="Styles\DocxFont.cs" />
+    <Compile Include="Styles\DocxFontStyle.cs" />
     <Compile Include="Styles\DocxMargin.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />
     <Compile Include="Styles\DocxTableCellStyle.cs" />

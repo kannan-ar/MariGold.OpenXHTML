@@ -10,11 +10,11 @@
     {
         private void SetThStyleToRun(DocxNode run)
         {
-            string value = run.ExtractStyleValue(DocxFont.fontWeight);
+            string value = run.ExtractStyleValue(DocxFontStyle.fontWeight);
 
             if (string.IsNullOrEmpty(value))
             {
-                run.SetExtentedStyle(DocxFont.fontWeight, DocxFont.bold);
+                run.SetExtentedStyle(DocxFontStyle.fontWeight, DocxFontStyle.bold);
             }
         }
 

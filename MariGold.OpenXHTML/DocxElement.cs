@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Web;
     using System.Text.RegularExpressions;
     using MariGold.HtmlParser;
     using DocumentFormat.OpenXml;
@@ -108,6 +109,7 @@
                 return string.Empty;
             }
 
+            html = HttpUtility.HtmlDecode(html);
             html = html.Replace("&nbsp;", " ");
             html = html.Replace("&amp;", "&");
 
