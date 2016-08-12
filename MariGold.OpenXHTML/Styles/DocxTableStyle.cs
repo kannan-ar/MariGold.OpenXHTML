@@ -99,7 +99,6 @@
 
             ProcessTableBorder(node, docxProperties, tableProperties);
 			ProcessTableCellMargin(docxProperties, tableProperties);
-			
 		}
 	}
 }

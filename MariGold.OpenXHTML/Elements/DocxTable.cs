@@ -131,7 +131,6 @@
 
                     if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || tableProperties.IsCellHeader)
                     {
-                        //tr.CopyStyles(td, DocxColor.backGroundColor);
                         tr.CopyExtentedStyles(td);
                         ProcessTd(colIndex++, td, row, tableProperties);
                     }

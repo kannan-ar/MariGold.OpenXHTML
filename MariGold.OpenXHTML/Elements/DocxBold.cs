@@ -7,21 +7,6 @@
 
     internal sealed class DocxBold : DocxElement, ITextElement
     {
-        /*
-        private void SetStyle(DocxNode node)
-        {
-            
-            string value = node.ExtractStyleValue(DocxFont.fontWeight);
-
-            if (string.IsNullOrEmpty(value))
-            {
-                node.SetExtentedStyle(DocxFont.fontWeight, DocxFont.bold);
-            }
-             
-            
-        }
-        */
-
         public DocxBold(IOpenXmlContext context)
             : base(context)
         {

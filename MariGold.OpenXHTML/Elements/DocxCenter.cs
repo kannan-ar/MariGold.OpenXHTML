@@ -7,18 +7,6 @@
 
     internal sealed class DocxCenter : DocxElement, ITextElement
     {
-        /*
-        private void SetStyle(DocxNode node)
-        {
-            string value = node.ExtractStyleValue(DocxAlignment.textAlign);
-
-            if (string.IsNullOrEmpty(value))
-            {
-                node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
-            }
-        }
-        */
-
         internal DocxCenter(IOpenXmlContext context)
             : base(context)
         {
@@ -36,7 +24,6 @@
                 return;
             }
 
-            //SetStyle(node);
             node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
 
             if (node.ParagraphNode != null)
@@ -87,7 +74,6 @@
                 return;
             }
 
-            //SetStyle(node);
             node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
             ProcessTextChild(node);
         }

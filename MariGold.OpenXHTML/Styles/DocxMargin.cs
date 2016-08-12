@@ -14,12 +14,7 @@
         internal const string marginLeft = "margin-left";
         internal const string marginRight = "margin-right";
         internal const string lineHeight = "line-height";
-        /*
-        internal DocxMargin(IHtmlNode node)
-        {
-            this.node = new DocxNode(node);
-        }
-        */
+        
         internal DocxMargin(DocxNode node)
         {
             this.node = node;

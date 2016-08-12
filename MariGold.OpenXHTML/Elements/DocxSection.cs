@@ -46,6 +46,7 @@
                             Text = ClearHtml(child.InnerHtml),
                             Space = SpaceProcessingModeValues.Preserve
                         }));
+
                         RunCreated(child, run);
                     }
                 }

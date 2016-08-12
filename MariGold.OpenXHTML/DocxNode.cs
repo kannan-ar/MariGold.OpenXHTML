@@ -100,15 +100,7 @@
                 }
             }
         }
-        /*
-        internal IHtmlNode CurrentNode
-        {
-            get
-            {
-                return node;
-            }
-        }
-        */
+       
         internal DocxNode ParagraphNode
         {
             get
@@ -154,25 +146,6 @@
             this.styles = node.Styles;
             this.extentedStyles = new Dictionary<string, string>();
         }
-
-        /*
-        internal DocxNode(IHtmlNode currentNode, OpenXmlElement parent)
-        {
-            this.node = currentNode;
-            this.parent = parent;
-
-            Init();
-        }
-
-        internal DocxNode(IHtmlNode currentNode, IHtmlNode paragraphNode, OpenXmlElement parent)
-        {
-            this.node = currentNode;
-            this.paragraphNode = paragraphNode;
-            this.parent = parent;
-
-            Init();
-        }
-        */
 
         internal bool IsNull()
         {
@@ -260,71 +233,6 @@
             this.extentedStyles[styleName] = value;
         }
 
-        /*
-        internal void SetStyleValue(string styleName, string value)
-        {
-            string key = string.Empty;
-
-            foreach (KeyValuePair<string, string> style in node.Styles)
-            {
-                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
-                {
-                    key = style.Key;
-                }
-            }
-
-            if (string.IsNullOrEmpty(key))
-            {
-                key = styleName;
-            }
-
-            Dictionary<string, string> styles = node.Styles;
-            styles[key] = value;
-            node.Styles = styles;
-        }
-
-        internal void SetStyleValues(Dictionary<string, string> newStyles)
-        {
-            Dictionary<string, string> styles = node.Styles;
-
-            foreach (KeyValuePair<string, string> newStyle in newStyles)
-            {
-                string styleName = newStyle.Key;
-
-                foreach (string key in styles.Keys)
-                {
-                    if (string.Compare(key, newStyle.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
-                    {
-                        styleName = key;
-                        break;
-                    }
-                }
-
-                styles[styleName] = newStyle.Value;
-            }
-
-            node.Styles = styles;
-        }
-        */
-        /*
-        internal void CopyStyles(DocxNode toNode, params string[] styles)
-        {
-            if (toNode.IsNull())
-            {
-                return;
-            }
-
-            foreach (string style in styles)
-            {
-                string value;
-
-                if (this.Styles.TryGetValue(style, out value) && !toNode.Styles.ContainsKey(style))
-                {
-                    toNode.Styles.Add(style, value);
-                }
-            }
-        }
-        */
         internal void CopyExtentedStyles(DocxNode toNode)
         {
             if (toNode.IsNull())

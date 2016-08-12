@@ -65,7 +65,6 @@
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
                     ProcessChild(child, ref divParagraph);
-                    //ProcessChild(new DocxNode(DocxStyle.AdjustCSS(child, node), node, node.Parent), ref divParagraph);
                 }
             }
         }
