@@ -11,5 +11,6 @@
         string BaseURL { get; set; }
         string UriSchema { get; set; }
 		IHtmlNode FindBodyOrFirstElement();
+        decimal CalculateRelativeChildFontSize(string parentFontSize, string childFontSize);
 	}
 }

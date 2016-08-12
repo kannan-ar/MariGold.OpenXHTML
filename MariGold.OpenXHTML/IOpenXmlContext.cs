@@ -13,12 +13,14 @@
 		WordprocessingDocument WordprocessingDocument{ get; }
 		MainDocumentPart MainDocumentPart{ get; }
 		Document Document{ get; }
-		
+        IParser Parser { get; }
+
 		void Save();
 		DocxElement Convert(DocxNode node);
         ITextElement ConvertTextElement(DocxNode node);
 		DocxElement GetBodyElement();
 		bool HasNumberingDefinition(NumberFormatValues format);
 		void SaveNumberingDefinition(NumberFormatValues format, AbstractNum abstractNum, NumberingInstance numberingInstance);
+        void SetParser(IParser parser);
 	}
 }

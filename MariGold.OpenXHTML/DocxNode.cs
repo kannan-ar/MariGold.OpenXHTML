@@ -210,6 +210,48 @@
                 }
             }
 
+            foreach (KeyValuePair<string, string> style in node.InheritedStyles)
+            {
+                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    return style.Value;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        internal string ExtractOwnStyleValue(string styleName)
+        {
+            foreach (KeyValuePair<string, string> style in styles)
+            {
+                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    return style.Value;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        internal string ExtractInheritedStyleValue(string styleName)
+        {
+            foreach (KeyValuePair<string, string> style in extentedStyles)
+            {
+                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    return style.Value;
+                }
+            }
+
+            foreach (KeyValuePair<string, string> style in node.InheritedStyles)
+            {
+                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    return style.Value;
+                }
+            }
+
             return string.Empty;
         }
 

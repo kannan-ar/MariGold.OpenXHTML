@@ -67,7 +67,7 @@
 		public IHtmlNode FindBodyOrFirstElement()
 		{
 			MariGold.HtmlParser.HtmlParser parser = new HtmlTextParser(html);
-
+            
             parser.UriSchema = uriSchema;
             parser.BaseURL = baseUrl;
 
@@ -91,5 +91,10 @@
 			
 			return body ?? parser.Current;
 		}
+
+        public decimal CalculateRelativeChildFontSize(string parentFontSize, string childFontSize)
+        {
+            return CSSUtility.CalculateRelativeChildFontSize(parentFontSize, childFontSize);
+        }
 	}
 }

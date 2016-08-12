@@ -62,15 +62,27 @@
 
         private void ApplyStyle(DocxNode node)
         {
-            string fontSizeValue = node.ExtractStyleValue(DocxFont.fontSize);
-            string fontWeightValue = node.ExtractStyleValue(DocxFont.fontWeight);
+            string fontSizeValue = node.ExtractOwnStyleValue(DocxFont.fontSize);
+            string fontWeightValue = node.ExtractOwnStyleValue(DocxFont.fontWeight);
 
             if (string.IsNullOrEmpty(fontSizeValue))
             {
-                fontSizeValue = CalculateFontSize(GetHeaderNumber(node));
+                string headingFontSize = CalculateFontSize(GetHeaderNumber(node));
+                string inheritedStyle = node.ExtractInheritedStyleValue(DocxFont.fontSize);
+
+                if (!string.IsNullOrEmpty(inheritedStyle))
+                {
+                    fontSizeValue = string.Concat(
+                        context.Parser.CalculateRelativeChildFontSize(
+                        inheritedStyle, headingFontSize).ToString("G29"), "px");
+                }
+                else
+                {
+                    fontSizeValue = headingFontSize;
+                }
             }
 
-            if(string.IsNullOrEmpty(fontWeightValue))
+            if (string.IsNullOrEmpty(fontWeightValue))
             {
                 fontWeightValue = DocxFont.bold;
             }

@@ -107,6 +107,7 @@
             parser.BaseURL = context.BaseURL;
             parser.UriSchema = context.UriSchema;
             IHtmlNode node = parser.FindBodyOrFirstElement();
+            context.SetParser(parser);
 
             if (node != null)
             {
