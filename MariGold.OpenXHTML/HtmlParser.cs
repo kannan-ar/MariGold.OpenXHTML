@@ -72,7 +72,7 @@
             parser.BaseURL = baseUrl;
 
 			parser.Parse();
-			parser.ParseCSS();
+			parser.ParseStyles();
 			
 			IHtmlNode node = parser.Current;
 			IHtmlNode body = null;
