@@ -52,6 +52,7 @@
     <Compile Include="InheritedStyles.cs" />
     <Compile Include="InlineElements.cs" />
     <Compile Include="SimpleHtmlFromFile.cs" />
+    <Compile Include="StyleOverrides.cs" />
     <Compile Include="TestDiv.cs" />
     <Compile Include="TestP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,7 @@
   <ItemGroup>
     <Content Include="Html\imageinsideatag.htm" />
     <Content Include="Html\img.png" />
+    <Content Include="Html\ownstyleoverride.htm" />
     <Content Include="Html\relativestylesheet.htm" />
   </ItemGroup>
   <ItemGroup>
