@@ -33,6 +33,9 @@
             {
                 if (child.IsText)
                 {
+                    ProcessParagraph(child, node, ref addrParagraph);
+
+                    /*
                     if (!IsEmptyText(child.InnerHtml))
                     {
                         if (addrParagraph == null)
@@ -49,6 +52,7 @@
 
                         RunCreated(node, run);
                     }
+                     * */
                 }
                 else
                 {

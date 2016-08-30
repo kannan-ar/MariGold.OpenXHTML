@@ -35,6 +35,8 @@
             {
                 if (child.IsText)
                 {
+                    ProcessParagraph(child, node, ref paragraph);
+                    /*
                     if (!IsEmptyText(child.InnerHtml))
                     {
                         if (footerParagraph == null)
@@ -50,6 +52,7 @@
 
                         RunCreated(node, run);
                     }
+                     * */
                 }
                 else
                 {

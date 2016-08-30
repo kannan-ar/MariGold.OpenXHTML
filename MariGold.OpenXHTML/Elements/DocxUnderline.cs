@@ -26,6 +26,8 @@
 
             node.SetExtentedStyle(DocxFontStyle.textDecoration, DocxFontStyle.underLine);
 
+            ProcessElement(node, ref paragraph);
+            /*
             foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
@@ -55,6 +57,7 @@
                     ProcessChild(child, ref paragraph);
                 }
             }
+             * */
         }
 
         bool ITextElement.CanConvert(DocxNode node)

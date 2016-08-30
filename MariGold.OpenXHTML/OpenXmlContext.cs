@@ -42,7 +42,8 @@
                 new DocxFont(this),
 				new DocxDL(this),
 				new DocxHr(this),
-				new DocxTable(this)
+				new DocxTable(this),
+                new DocxInline(this)
 			};
 
             textElements = new List<ITextElement>() {
@@ -56,7 +57,8 @@
                 new DocxDiv(this),
                 new DocxHeader(this),
                 new DocxFooter(this),
-                new DocxFont(this)
+                new DocxFont(this),
+                new DocxInline(this)
 			};
         }
 

@@ -7,12 +7,14 @@
 
     internal sealed class DocxDiv : DocxElement, ITextElement
     {
+        /*
         private Paragraph CreateParagraph(DocxNode node)
         {
             Paragraph para = node.Parent.AppendChild(new Paragraph());
             OnParagraphCreated(node, para);
             return para;
         }
+        */
 
         internal DocxDiv(IOpenXmlContext context)
             : base(context)
@@ -41,6 +43,9 @@
             {
                 if (child.IsText)
                 {
+                    ProcessParagraph(child, node, ref divParagraph);
+
+                    /*
                     if (!IsEmptyText(child.InnerHtml))
                     {
                         if (divParagraph == null)
@@ -56,6 +61,7 @@
 
                         RunCreated(node, run);
                     }
+                     * */
                 }
                 else
                 {

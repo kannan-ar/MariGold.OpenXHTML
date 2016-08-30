@@ -87,7 +87,6 @@
             fontSizes.Add(5, 24);
             fontSizes.Add(6, 32);
             fontSizes.Add(7, 48);
-
         }
 
         public DocxFont(IOpenXmlContext context)
@@ -112,6 +111,9 @@
 
             ApplyStyle(node);
 
+            ProcessElement(node, ref paragraph);
+
+            /*
             foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
@@ -141,6 +143,7 @@
                     ProcessChild(child, ref paragraph);
                 }
             }
+             * */
         }
 
         bool ITextElement.CanConvert(DocxNode node)

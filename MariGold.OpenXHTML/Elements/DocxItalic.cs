@@ -37,6 +37,9 @@
 
             SetStyle(node);
 
+            ProcessElement(node, ref paragraph);
+
+            /*
             foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
@@ -67,6 +70,7 @@
                     ProcessChild(child, ref paragraph);
                 }
             }
+             * */
         }
 
         bool ITextElement.CanConvert(DocxNode node)

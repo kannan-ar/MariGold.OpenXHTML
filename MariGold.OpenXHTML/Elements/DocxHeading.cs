@@ -117,6 +117,9 @@
             {
                 if (child.IsText)
                 {
+                    ProcessParagraph(child, node, ref headerParagraph);
+
+                    /*
                     if (!IsEmptyText(child.InnerHtml))
                     {
                         if (headerParagraph == null)
@@ -134,6 +137,7 @@
                             Space = SpaceProcessingModeValues.Preserve
                         });
                     }
+                     * */
                 }
                 else
                 {

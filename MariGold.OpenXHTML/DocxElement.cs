@@ -103,6 +103,44 @@
             return display.CompareStringInvariantCultureIgnoreCase("none");
         }
 
+        protected void ProcessElement(DocxNode node, ref Paragraph paragraph)
+        {
+            foreach (DocxNode child in node.Children)
+            {
+                if (child.IsText)
+                {
+                    ProcessParagraph(child, node, ref paragraph);
+                }
+                else
+                {
+                    child.ParagraphNode = node.ParagraphNode;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref paragraph);
+                }
+            }
+        }
+
+        protected void ProcessParagraph(DocxNode child, DocxNode node, ref Paragraph paragraph)
+        {
+            if (!IsEmptyText(child.InnerHtml))
+            {
+                if (paragraph == null)
+                {
+                    paragraph = node.Parent.AppendChild(new Paragraph());
+                    OnParagraphCreated(node.ParagraphNode, paragraph);
+                }
+
+                Run run = paragraph.AppendChild(new Run(new Text()
+                {
+                    Text = ClearHtml(child.InnerHtml),
+                    Space = SpaceProcessingModeValues.Preserve
+                }));
+
+                RunCreated(node, run);
+            }
+        }
+
         internal DocxElement(IOpenXmlContext context)
         {
             if (context == null)

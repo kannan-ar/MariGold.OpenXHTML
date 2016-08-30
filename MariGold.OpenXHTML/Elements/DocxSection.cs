@@ -29,6 +29,8 @@
             paragraph = null;
             Paragraph sectionParagraph = null;
 
+            ProcessElement(node, ref sectionParagraph);
+            /*
             foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
@@ -58,6 +60,7 @@
                     ProcessChild(child, ref sectionParagraph);
                 }
             }
+             * */
         }
     }
 }
