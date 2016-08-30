@@ -15,6 +15,7 @@
 		private Dictionary<int, int> rowSpanInfo;
 		
 		internal const string tableName = "table";
+        internal const string tbody = "tbody";
 		internal const string trName = "tr";
 		internal const string tdName = "td";
 		internal const string thName = "th";

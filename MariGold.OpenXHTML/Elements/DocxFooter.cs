@@ -10,7 +10,7 @@
         private Paragraph CreateParagraph(DocxNode node)
         {
             Paragraph para = node.Parent.AppendChild(new Paragraph());
-            ParagraphCreated(node, para);
+            OnParagraphCreated(node, para);
             return para;
         }
 

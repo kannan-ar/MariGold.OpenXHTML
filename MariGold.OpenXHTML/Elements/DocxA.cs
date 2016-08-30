@@ -14,7 +14,7 @@
             if (paragraph == null)
             {
                 paragraph = node.Parent.AppendChild(new Paragraph());
-                ParagraphCreated(node.ParagraphNode, paragraph);
+                OnParagraphCreated(node.ParagraphNode, paragraph);
             }
         }
 
@@ -27,7 +27,7 @@
                     if (paragraph == null)
                     {
                         paragraph = node.Parent.AppendChild(new Paragraph());
-                        ParagraphCreated(node.ParagraphNode, paragraph);
+                        OnParagraphCreated(node.ParagraphNode, paragraph);
                     }
 
                     if (!IsEmptyText(child.InnerHtml))

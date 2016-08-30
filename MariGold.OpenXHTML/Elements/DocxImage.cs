@@ -170,7 +170,7 @@
                         if (paragraph == null)
                         {
                             paragraph = node.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(node, paragraph);
+                            OnParagraphCreated(node, paragraph);
                         }
 
                         Run run = paragraph.AppendChild(new Run(drawing));

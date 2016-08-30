@@ -21,7 +21,7 @@
                         if (paragraph == null)
                         {
                             paragraph = body.AppendChild(new Paragraph());
-                            ParagraphCreated(node, paragraph);
+                            OnParagraphCreated(node, paragraph);
                         }
 
                         Run run = paragraph.AppendChild(new Run(new Text()

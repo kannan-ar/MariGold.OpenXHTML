@@ -10,6 +10,9 @@
         private const string elementName = "ol";
         private const string liName = "li";
 
+        private bool isParagraphCreated;
+        private NumberFormatValues numberFormat;
+        
         private void InitNumberDefinitions(NumberFormatValues numberFormat)
         {
             if (!context.HasNumberingDefinition(numberFormat))
@@ -66,10 +69,37 @@
             paragraphProperties.Append(numberingProperties);
         }
 
+        private Paragraph CreateParagraph(DocxNode node, OpenXmlElement parent)
+        {
+            Paragraph para = parent.AppendChild(new Paragraph());
+            OnParagraphCreated(node, para);
+            OnOLParagraphCreated(this, new ParagraphEventArgs(para));
+            return para;
+        }
+
+        private void OnOLParagraphCreated(object sender, ParagraphEventArgs args)
+        {
+            if (!isParagraphCreated)
+            {
+                if (args.Paragraph.ParagraphProperties == null)
+                {
+                    args.Paragraph.ParagraphProperties = new ParagraphProperties();
+                }
+
+                SetListProperties(numberFormat, args.Paragraph.ParagraphProperties);
+
+                isParagraphCreated = true;
+            }
+        }
+
         private void ProcessLi(DocxNode li, OpenXmlElement parent, NumberFormatValues numberFormat)
         {
+            Paragraph paragraph = null;
+            isParagraphCreated = false;
+
+            /*
             Paragraph paragraph = parent.AppendChild(new Paragraph());
-            ParagraphCreated(li, paragraph);
+            OnParagraphCreated(li, paragraph);
 
             if (paragraph.ParagraphProperties == null)
             {
@@ -77,6 +107,9 @@
             }
 
             SetListProperties(numberFormat, paragraph.ParagraphProperties);
+            */
+
+            ParagraphCreated = OnOLParagraphCreated;
 
             foreach (DocxNode child in li.Children)
             {
@@ -84,6 +117,11 @@
                 {
                     if (!IsEmptyText(child.InnerHtml))
                     {
+                        if (paragraph == null)
+                        {
+                            paragraph = CreateParagraph(li, parent);
+                        }
+
                         Run run = paragraph.AppendChild(new Run(new Text()
                         {
                             Text = ClearHtml(child.InnerHtml),
@@ -159,7 +197,7 @@
 
             if (node.HasChildren)
             {
-                NumberFormatValues numberFormat = GetNumberFormat(node);
+                numberFormat = GetNumberFormat(node);
 
                 InitNumberDefinitions(numberFormat);
 

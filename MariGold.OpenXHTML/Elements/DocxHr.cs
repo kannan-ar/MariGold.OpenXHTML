@@ -27,7 +27,7 @@
 			paragraph = null;
 
             Paragraph hrParagraph = node.Parent.AppendChild(new Paragraph());
-            ParagraphCreated(node, hrParagraph);
+            OnParagraphCreated(node, hrParagraph);
 				
 			if (hrParagraph.ParagraphProperties == null)
 			{

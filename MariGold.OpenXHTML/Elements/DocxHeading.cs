@@ -122,7 +122,7 @@
                         if (headerParagraph == null)
                         {
                             headerParagraph = node.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(node, headerParagraph);
+                            OnParagraphCreated(node, headerParagraph);
                         }
 
                         Run run = headerParagraph.AppendChild(new Run());

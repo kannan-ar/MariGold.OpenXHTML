@@ -36,7 +36,7 @@
                         if (paragraph == null)
                         {
                             paragraph = node.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(node.ParagraphNode, paragraph);
+                            OnParagraphCreated(node.ParagraphNode, paragraph);
                         }
 
                         Run run = paragraph.AppendChild(new Run(new Text()

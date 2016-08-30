@@ -20,7 +20,10 @@
 
             foreach(var style in extentedStyles)
             {
-                this.extentedStyles.Add(style.Key, style.Value);
+                if (!node.Styles.ContainsKey(style.Key))
+                {
+                    this.extentedStyles.Add(style.Key, style.Value);
+                }
             }
         }
 

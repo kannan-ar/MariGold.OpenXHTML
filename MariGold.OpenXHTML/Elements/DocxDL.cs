@@ -18,7 +18,7 @@
             }
 
             Paragraph paragraph = node.Parent.AppendChild(new Paragraph());
-            ParagraphCreated(node, paragraph);
+            OnParagraphCreated(node, paragraph);
 
             foreach (DocxNode child in node.Children)
             {

@@ -10,11 +10,39 @@
         private const string elementName = "ul";
         private const string liName = "li";
         private const NumberFormatValues numberFormat = NumberFormatValues.Bullet;
+        private bool isParagraphCreated;
+
+        private Paragraph CreateParagraph(DocxNode node, OpenXmlElement parent)
+        {
+            Paragraph para = parent.AppendChild(new Paragraph());
+            OnParagraphCreated(node, para);
+            OnULParagraphCreated(this, new ParagraphEventArgs(para));
+            return para;
+        }
+
+        private void OnULParagraphCreated(object sender, ParagraphEventArgs args)
+        {
+            if (!isParagraphCreated)
+            {
+                if (args.Paragraph.ParagraphProperties == null)
+                {
+                    args.Paragraph.ParagraphProperties = new ParagraphProperties();
+                }
+
+                SetListProperties(args.Paragraph.ParagraphProperties);
+
+                isParagraphCreated = true;
+            }
+        }
 
         private void ProcessLi(DocxNode li, OpenXmlElement parent)
         {
-            Paragraph paragraph = parent.AppendChild(new Paragraph());
-            ParagraphCreated(li, paragraph);
+            Paragraph paragraph = null;
+            isParagraphCreated = false;
+
+            /*
+             Paragraph paragraph = parent.AppendChild(new Paragraph());
+            OnParagraphCreated(li, paragraph);
 
             if (paragraph.ParagraphProperties == null)
             {
@@ -22,6 +50,9 @@
             }
 
             SetListProperties(paragraph.ParagraphProperties);
+            */
+
+            ParagraphCreated = OnULParagraphCreated;
 
             foreach (DocxNode child in li.Children)
             {
@@ -29,6 +60,11 @@
                 {
                     if (!IsEmptyText(child.InnerHtml))
                     {
+                        if (paragraph == null)
+                        {
+                            paragraph = CreateParagraph(li, parent);
+                        }
+
                         Run run = paragraph.AppendChild(new Run(new Text()
                         {
                             Text = ClearHtml(child.InnerHtml),

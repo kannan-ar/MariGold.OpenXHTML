@@ -10,6 +10,7 @@
     internal abstract class DocxElement
     {
         protected readonly IOpenXmlContext context;
+        internal EventHandler<ParagraphEventArgs> ParagraphCreated;
 
         protected void RunCreated(DocxNode node, Run run)
         {
@@ -17,10 +18,15 @@
             style.Process(run, node);
         }
 
-        protected void ParagraphCreated(DocxNode node, Paragraph para)
+        protected void OnParagraphCreated(DocxNode node, Paragraph para)
         {
             DocxParagraphStyle style = new DocxParagraphStyle();
             style.Process(para, node);
+
+            if (ParagraphCreated != null)
+            {
+                ParagraphCreated(this, new ParagraphEventArgs(para));
+            }
         }
 
         protected void ProcessChild(DocxNode node, ref Paragraph paragraph)
@@ -29,6 +35,11 @@
 
             if (element != null)
             {
+                if (ParagraphCreated != null)
+                {
+                    element.ParagraphCreated = ParagraphCreated;
+                }
+
                 element.Process(node, ref paragraph);
             }
         }

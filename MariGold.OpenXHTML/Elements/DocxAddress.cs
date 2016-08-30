@@ -38,7 +38,7 @@
                         if (addrParagraph == null)
                         {
                             addrParagraph = node.Parent.AppendChild(new Paragraph());
-                            ParagraphCreated(node.ParagraphNode, addrParagraph);
+                            OnParagraphCreated(node.ParagraphNode, addrParagraph);
                         }
 
                         Run run = addrParagraph.AppendChild(new Run(new Text()

@@ -134,5 +134,42 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void H1AndSpanWithStyleSpan()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<h1><span style='font-size:48px'><span>test</span></span></h1>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                var text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                Assert.IsNotNull(run.RunProperties);
+                Bold bold = run.RunProperties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+                FontSize fontSize = run.RunProperties.ChildElements[1] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("96", fontSize.Val.Value);
+
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
     }
 }

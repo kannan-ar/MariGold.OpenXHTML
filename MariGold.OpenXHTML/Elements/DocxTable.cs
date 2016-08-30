@@ -56,7 +56,7 @@
                             if (para == null)
                             {
                                 para = cell.AppendChild(new Paragraph());
-                                ParagraphCreated(DocxTableCellStyle.GetHtmlNodeForTableCellContent(td), para);
+                                OnParagraphCreated(DocxTableCellStyle.GetHtmlNodeForTableCellContent(td), para);
                             }
 
                             Run run = para.AppendChild(new Run(new Text()
@@ -145,6 +145,18 @@
             }
         }
 
+        private void ProcessTBody(DocxNode tbody, Table table, DocxTableProperties tableProperties)
+        {
+            foreach (DocxNode tr in tbody.Children)
+            {
+                if (string.Compare(tr.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    tbody.CopyExtentedStyles(tr);
+                    ProcessTr(tr, table, tableProperties);
+                }
+            }
+        }
+
         internal DocxTable(IOpenXmlContext context)
             : base(context)
         {
@@ -172,12 +184,17 @@
                 tableProperties.FetchTableProperties(node);
                 tableProperties.ApplyTableProperties(table, node);
 
-                foreach (DocxNode tr in node.Children)
+                foreach (DocxNode child in node.Children)
                 {
-                    if (string.Compare(tr.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    if (string.Compare(child.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
                     {
-                        node.CopyExtentedStyles(tr);
-                        ProcessTr(tr, table, tableProperties);
+                        node.CopyExtentedStyles(child);
+                        ProcessTr(child, table, tableProperties);
+                    }
+                    else if (string.Compare(child.Tag, DocxTableProperties.tbody, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        node.CopyExtentedStyles(child);
+                        ProcessTBody(child, table, tableProperties);
                     }
                 }
 
