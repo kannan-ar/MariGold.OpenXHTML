@@ -52,6 +52,7 @@
     <Compile Include="HtmlDefaultStyles.cs" />
     <Compile Include="InheritedStyles.cs" />
     <Compile Include="InlineElements.cs" />
+    <Compile Include="InvalidElements.cs" />
     <Compile Include="SimpleHtmlFromFile.cs" />
     <Compile Include="StyleOverrides.cs" />
     <Compile Include="TestDiv.cs" />
