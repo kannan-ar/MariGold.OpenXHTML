@@ -145,5 +145,105 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void QuoteElement()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<q>one</q>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(3, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                var text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("\"", text.InnerText);
+
+                run = para.ChildElements[1] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("one", text.InnerText);
+
+                run = para.ChildElements[2] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("\"", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void SpanQuoteElement()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<span>test</span><q>one</q>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(4, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                var text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                run = para.ChildElements[1] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("\"", text.InnerText);
+
+                run = para.ChildElements[2] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("one", text.InnerText);
+
+                run = para.ChildElements[3] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                text = run.ChildElements[0] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("\"", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
     }
 }

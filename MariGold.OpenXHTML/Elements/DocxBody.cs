@@ -44,7 +44,7 @@
             }
         }
 
-        public DocxBody(IOpenXmlContext context)
+        internal DocxBody(IOpenXmlContext context)
             : base(context)
         {
         }

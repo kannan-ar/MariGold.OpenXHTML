@@ -7,7 +7,7 @@
 
     internal sealed class DocxBold : DocxElement, ITextElement
     {
-        public DocxBold(IOpenXmlContext context)
+        internal DocxBold(IOpenXmlContext context)
             : base(context)
         {
         }

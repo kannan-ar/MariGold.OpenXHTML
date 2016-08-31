@@ -89,7 +89,7 @@
             fontSizes.Add(7, 48);
         }
 
-        public DocxFont(IOpenXmlContext context)
+        internal DocxFont(IOpenXmlContext context)
             : base(context)
         {
             fontSizes = new Dictionary<Int32, Int32>();

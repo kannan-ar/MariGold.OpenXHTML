@@ -42,6 +42,7 @@
                 new DocxFont(this),
 				new DocxDL(this),
 				new DocxHr(this),
+                new DocxQ(this),
 				new DocxTable(this),
                 new DocxInline(this)
 			};
@@ -58,6 +59,7 @@
                 new DocxHeader(this),
                 new DocxFooter(this),
                 new DocxFont(this),
+                new DocxQ(this),
                 new DocxInline(this)
 			};
         }

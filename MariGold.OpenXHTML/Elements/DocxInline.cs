@@ -7,7 +7,7 @@
 
     internal sealed class DocxInline : DocxElement, ITextElement
     {
-        public DocxInline(IOpenXmlContext context) : base(context) { }
+        internal DocxInline(IOpenXmlContext context) : base(context) { }
 
         internal override bool CanConvert(DocxNode node)
         {

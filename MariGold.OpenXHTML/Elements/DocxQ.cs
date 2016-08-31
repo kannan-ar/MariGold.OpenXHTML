@@ -5,16 +5,39 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
-    internal sealed class DocxSpan : DocxElement, ITextElement
+    internal sealed class DocxQ : DocxElement, ITextElement
     {
-        internal DocxSpan(IOpenXmlContext context)
-            : base(context)
+        private bool hasOpenQuote;
+
+        private Paragraph CreateParagraph(DocxNode node)
         {
+            Paragraph paragraph = node.Parent.AppendChild(new Paragraph());
+            OnParagraphCreated(node.ParagraphNode, paragraph);
+           
+            return paragraph;
         }
+
+        private void ApplyOpenQuoteIfEmpty(DocxNode node, ref Paragraph paragraph)
+        {
+            if (paragraph == null)
+            {
+                paragraph = CreateParagraph(node);
+            }
+
+            if (hasOpenQuote)
+            {
+                return;
+            }
+
+            paragraph.AppendChild(new Run(new Text() { Text = "\"" }));
+            hasOpenQuote = true;
+        }
+
+        internal DocxQ(IOpenXmlContext context) : base(context) { }
 
         internal override bool CanConvert(DocxNode node)
         {
-            return string.Compare(node.Tag, "span", StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Compare(node.Tag, "q", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
         internal override void Process(DocxNode node, ref Paragraph paragraph)
@@ -24,20 +47,13 @@
                 return;
             }
 
-            ProcessElement(node, ref paragraph);
-
-            /*
             foreach (DocxNode child in node.Children)
             {
                 if (child.IsText)
                 {
                     if (!IsEmptyText(child.InnerHtml))
                     {
-                        if (paragraph == null)
-                        {
-                            paragraph = node.Parent.AppendChild(new Paragraph());
-                            OnParagraphCreated(node.ParagraphNode, paragraph);
-                        }
+                        ApplyOpenQuoteIfEmpty(node, ref paragraph);
 
                         Run run = paragraph.AppendChild(new Run(new Text()
                         {
@@ -53,10 +69,15 @@
                     child.ParagraphNode = node.ParagraphNode;
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
+                    ApplyOpenQuoteIfEmpty(node, ref paragraph);
                     ProcessChild(child, ref paragraph);
                 }
             }
-             * */
+
+            if (paragraph != null && hasOpenQuote)
+            {
+                paragraph.AppendChild(new Run(new Text() { Text = "\"" }));
+            }
         }
 
         bool ITextElement.CanConvert(DocxNode node)
