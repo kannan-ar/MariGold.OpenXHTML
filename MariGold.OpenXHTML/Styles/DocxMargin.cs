@@ -14,7 +14,7 @@
         internal const string marginLeft = "margin-left";
         internal const string marginRight = "margin-right";
         internal const string lineHeight = "line-height";
-        
+
         internal DocxMargin(DocxNode node)
         {
             this.node = node;
@@ -107,15 +107,15 @@
 
                 if (!string.IsNullOrEmpty(line) && !line.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.normal))
                 {
-                    int number;
+                    decimal number;
 
-                    if (Int32.TryParse(line, out number))
+                    if (decimal.TryParse(line, out number))
                     {
-                        int dxa = DocxUnits.GetDxaFromNumber(number);
+                        decimal dxa = DocxUnits.GetDxaFromNumber(number);
 
                         if (dxa != -1)
                         {
-                            spacing.Line = dxa.ToString();
+                            spacing.Line = decimal.Round(dxa).ToString();
                         }
                     }
                     else

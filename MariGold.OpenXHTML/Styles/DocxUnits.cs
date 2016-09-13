@@ -204,7 +204,7 @@
 			return -1;
 		}
 
-        internal static Int32 GetDxaFromNumber(Int32 number)
+        internal static decimal GetDxaFromNumber(decimal number)
         {
             return number * DocxFontStyle.defaultFontSizeInPixel * 20;
         }

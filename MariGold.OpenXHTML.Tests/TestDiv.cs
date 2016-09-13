@@ -383,5 +383,42 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void ParagraphDecimalLineHeight()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style='line-height:1.5'>test</div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph paragraph = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(paragraph);
+                Assert.AreEqual(2, paragraph.ChildElements.Count);
+
+                ParagraphProperties properties = paragraph.ChildElements[0] as ParagraphProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                SpacingBetweenLines space = properties.ChildElements[0] as SpacingBetweenLines;
+                Assert.IsNotNull(space);
+                Assert.AreEqual("480", space.Line.Value);
+
+                Run run = paragraph.ChildElements[1] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+                Word.Text text = run.ChildElements[0] as Word.Text;
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
 	}
 }

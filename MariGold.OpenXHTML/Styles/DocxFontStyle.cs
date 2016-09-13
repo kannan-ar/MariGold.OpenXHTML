@@ -9,7 +9,7 @@
     {
         private const int fontMaxLength = 31;
 
-        internal const int defaultFontSizeInPixel = 16;
+        internal const decimal defaultFontSizeInPixel = 16;
         internal const string fontFamily = "font-family";
         internal const string fontWeight = "font-weight";
         internal const string fontStyle = "font-style";
