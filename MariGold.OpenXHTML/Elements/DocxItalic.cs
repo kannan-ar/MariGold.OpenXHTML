@@ -38,39 +38,6 @@
             SetStyle(node);
 
             ProcessElement(node, ref paragraph);
-
-            /*
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText)
-                {
-                    if (!IsEmptyText(child.InnerHtml))
-                    {
-                        if (paragraph == null)
-                        {
-                            paragraph = node.Parent.AppendChild(new Paragraph());
-                            OnParagraphCreated(node.ParagraphNode, paragraph);
-                        }
-
-                        Run run = paragraph.AppendChild(new Run());
-                        RunCreated(node, run);
-                        
-                        run.AppendChild(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        });
-                    }
-                }
-                else
-                {
-                    child.ParagraphNode = node.ParagraphNode;
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref paragraph);
-                }
-            }
-             * */
         }
 
         bool ITextElement.CanConvert(DocxNode node)

@@ -40,18 +40,6 @@
             Paragraph paragraph = null;
             isParagraphCreated = false;
 
-            /*
-             Paragraph paragraph = parent.AppendChild(new Paragraph());
-            OnParagraphCreated(li, paragraph);
-
-            if (paragraph.ParagraphProperties == null)
-            {
-                paragraph.ParagraphProperties = new ParagraphProperties();
-            }
-
-            SetListProperties(paragraph.ParagraphProperties);
-            */
-
             ParagraphCreated = OnULParagraphCreated;
 
             foreach (DocxNode child in li.Children)

@@ -59,6 +59,16 @@
             }
         }
 
+        private void ProcessVerticalAlign(DocxNode node, RunProperties properties)
+        {
+            string verticalAlign = node.ExtractStyleValue(DocxAlignment.verticalAlign);
+
+            if(!string.IsNullOrEmpty(verticalAlign))
+            {
+                DocxAlignment.ApplyVerticalTextAlign(verticalAlign, properties);
+            }
+        }
+
         internal void Process(Run element, DocxNode node)
 		{
 			RunProperties properties = element.RunProperties;
@@ -81,7 +91,9 @@
             CheckFontStyle(node, properties);
 
             ProcessBackGround(node, properties);
-			
+
+            ProcessVerticalAlign(node, properties);
+
 			if (element.RunProperties == null && properties.HasChildren)
 			{
 				element.RunProperties = properties;

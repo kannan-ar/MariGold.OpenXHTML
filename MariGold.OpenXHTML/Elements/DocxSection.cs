@@ -30,37 +30,6 @@
             Paragraph sectionParagraph = null;
 
             ProcessElement(node, ref sectionParagraph);
-            /*
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText)
-                {
-                    if (!IsEmptyText(child.InnerHtml))
-                    {
-                        if (sectionParagraph == null)
-                        {
-                            sectionParagraph = node.Parent.AppendChild(new Paragraph());
-                            OnParagraphCreated(node.ParagraphNode, sectionParagraph);
-                        }
-
-                        Run run = sectionParagraph.AppendChild(new Run(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        }));
-
-                        RunCreated(child, run);
-                    }
-                }
-                else
-                {
-                    child.ParagraphNode = node.ParagraphNode;
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref sectionParagraph);
-                }
-            }
-             * */
         }
     }
 }

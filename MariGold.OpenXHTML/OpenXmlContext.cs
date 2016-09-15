@@ -43,6 +43,9 @@
 				new DocxDL(this),
 				new DocxHr(this),
                 new DocxQ(this),
+                new DocxSup(this),
+                new DocxSub(this),
+                new DocxStrike(this),
 				new DocxTable(this),
                 new DocxInline(this)
 			};
@@ -60,6 +63,9 @@
                 new DocxFooter(this),
                 new DocxFont(this),
                 new DocxQ(this),
+                new DocxSup(this),
+                new DocxSub(this),
+                new DocxStrike(this),
                 new DocxInline(this)
 			};
         }

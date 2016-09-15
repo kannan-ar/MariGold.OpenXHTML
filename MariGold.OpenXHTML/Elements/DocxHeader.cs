@@ -36,24 +36,6 @@
                 if (child.IsText)
                 {
                     ProcessParagraph(child, node, ref paragraph);
-
-                    /*
-                    if (!IsEmptyText(child.InnerHtml))
-                    {
-                        if (headerParagraph == null)
-                        {
-                            headerParagraph = CreateParagraph(node);
-                        }
-
-                        Run run = headerParagraph.AppendChild(new Run(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        }));
-
-                        RunCreated(node, run);
-                    }
-                     * */
                 }
                 else
                 {

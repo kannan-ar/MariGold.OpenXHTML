@@ -118,26 +118,6 @@
                 if (child.IsText)
                 {
                     ProcessParagraph(child, node, ref headerParagraph);
-
-                    /*
-                    if (!IsEmptyText(child.InnerHtml))
-                    {
-                        if (headerParagraph == null)
-                        {
-                            headerParagraph = node.Parent.AppendChild(new Paragraph());
-                            OnParagraphCreated(node, headerParagraph);
-                        }
-
-                        Run run = headerParagraph.AppendChild(new Run());
-                        RunCreated(node, run);
-
-                        run.AppendChild(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        });
-                    }
-                     * */
                 }
                 else
                 {

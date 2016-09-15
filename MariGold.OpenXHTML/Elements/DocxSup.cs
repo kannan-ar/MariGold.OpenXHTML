@@ -5,17 +5,13 @@
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
-    internal sealed class DocxBold : DocxElement, ITextElement
+    internal sealed class DocxSup : DocxElement, ITextElement
     {
-        internal DocxBold(IOpenXmlContext context)
-            : base(context)
-        {
-        }
+        internal DocxSup(IOpenXmlContext context) : base(context) { }
 
         internal override bool CanConvert(DocxNode node)
         {
-            return string.Compare(node.Tag, "b", StringComparison.InvariantCultureIgnoreCase) == 0 ||
-            string.Compare(node.Tag, "strong", StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Compare(node.Tag, "sup", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
         internal override void Process(DocxNode node, ref Paragraph paragraph)
@@ -25,7 +21,7 @@
                 return;
             }
 
-            node.SetExtentedStyle(DocxFontStyle.fontWeight, DocxFontStyle.bold);
+            node.SetExtentedStyle(DocxAlignment.verticalAlign, DocxAlignment.super);
 
             ProcessElement(node, ref paragraph);
         }
@@ -42,7 +38,6 @@
                 return;
             }
 
-            node.SetExtentedStyle(DocxFontStyle.fontWeight, DocxFontStyle.bold);
             ProcessTextChild(node);
         }
     }

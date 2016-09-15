@@ -36,23 +36,6 @@
                 if (child.IsText)
                 {
                     ProcessParagraph(child, node, ref paragraph);
-                    /*
-                    if (!IsEmptyText(child.InnerHtml))
-                    {
-                        if (footerParagraph == null)
-                        {
-                            footerParagraph = CreateParagraph(node);
-                        }
-
-                        Run run = footerParagraph.AppendChild(new Run(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        }));
-
-                        RunCreated(node, run);
-                    }
-                     * */
                 }
                 else
                 {

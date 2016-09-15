@@ -63,6 +63,7 @@
     <Compile Include="Elements\DocxBody.cs" />
     <Compile Include="Elements\DocxBr.cs" />
     <Compile Include="Elements\DocxCenter.cs" />
+    <Compile Include="Elements\DocxStrike.cs" />
     <Compile Include="Elements\DocxDiv.cs" />
     <Compile Include="Elements\DocxDL.cs" />
     <Compile Include="Elements\DocxFont.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="Elements\DocxQ.cs" />
     <Compile Include="Elements\DocxSection.cs" />
     <Compile Include="Elements\DocxSpan.cs" />
+    <Compile Include="Elements\DocxSub.cs" />
+    <Compile Include="Elements\DocxSup.cs" />
     <Compile Include="Elements\DocxTable.cs" />
     <Compile Include="Elements\DocxTableProperties.cs" />
     <Compile Include="Elements\DocxUL.cs" />

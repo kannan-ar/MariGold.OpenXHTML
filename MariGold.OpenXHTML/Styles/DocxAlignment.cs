@@ -12,41 +12,64 @@
         internal const string center = "center";
         internal const string left = "left";
         internal const string right = "right";
+        internal const string sub = "sub";
+        internal const string super = "super";
 
+        private static bool GetVerticalPositionValues(string style, out VerticalPositionValues alignment)
+        {
+            alignment = VerticalPositionValues.Baseline;
+            bool assigned = false;
+
+            switch (style.ToLower())
+            {
+                case sub:
+                    assigned = true;
+                    alignment = VerticalPositionValues.Subscript;
+                    break;
+
+                case super:
+                    assigned = true;
+                    alignment = VerticalPositionValues.Superscript;
+                    break;
+            }
+
+            return assigned;
+        }
+
+        private static bool GetJustificationValue(string style, out JustificationValues alignment)
+        {
+            alignment = JustificationValues.Left;
+            bool assigned = false;
+
+            switch (style.ToLower())
+            {
+                case right:
+                    assigned = true;
+                    alignment = JustificationValues.Right;
+                    break;
+
+                case left:
+                    assigned = true;
+                    alignment = JustificationValues.Left;
+                    break;
+
+                case center:
+                    assigned = true;
+                    alignment = JustificationValues.Center;
+                    break;
+            }
+
+            return assigned;
+        }
+		
 		internal static void ApplyTextAlign(string style, OpenXmlElement styleElement)
 		{
 			JustificationValues alignment;
 					
-			if (DocxAlignment.GetJustificationValue(style, out alignment))
+			if (GetJustificationValue(style, out alignment))
 			{
 				styleElement.Append(new Justification() { Val = alignment });
 			}
-		}
-		
-		internal static bool GetJustificationValue(string style, out JustificationValues alignment)
-		{
-			alignment = JustificationValues.Left;
-			bool assigned = false;
-
-			switch (style.ToLower())
-			{
-				case right:
-					assigned = true;
-					alignment = JustificationValues.Right;
-					break;
-
-				case left:
-					assigned = true;
-					alignment = JustificationValues.Left;
-					break;
-
-				case center:
-					assigned = true;
-					alignment = JustificationValues.Center;
-					break;
-			}
-
-			return assigned;
 		}
 		
 		internal static bool GetCellVerticalAlignment(string style, out TableVerticalAlignmentValues alignment)
@@ -75,9 +98,21 @@
 			return assigned;
 		}
 		
+        /*
 		internal static void AlignCenter(OpenXmlElement styleElement)
 		{
 			styleElement.Append(new Justification() { Val = JustificationValues.Center });
 		}
+        */
+
+        internal static void ApplyVerticalTextAlign(string style, OpenXmlElement styleElement)
+        {
+            VerticalPositionValues alignment;
+
+            if (GetVerticalPositionValues(style, out alignment))
+            {
+                styleElement.Append(new VerticalTextAlignment() { Val = alignment });
+            }
+        }
 	}
 }

@@ -34,25 +34,6 @@
                 if (child.IsText)
                 {
                     ProcessParagraph(child, node, ref addrParagraph);
-
-                    /*
-                    if (!IsEmptyText(child.InnerHtml))
-                    {
-                        if (addrParagraph == null)
-                        {
-                            addrParagraph = node.Parent.AppendChild(new Paragraph());
-                            OnParagraphCreated(node.ParagraphNode, addrParagraph);
-                        }
-
-                        Run run = addrParagraph.AppendChild(new Run(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        }));
-
-                        RunCreated(node, run);
-                    }
-                     * */
                 }
                 else
                 {

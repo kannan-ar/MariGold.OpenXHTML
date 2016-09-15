@@ -245,5 +245,155 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
+
+        [Test]
+        public void Superscript()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<sup>test</sup>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                VerticalTextAlignment verticalTextAlignment = properties.ChildElements[0] as VerticalTextAlignment;
+                Assert.IsNotNull(verticalTextAlignment);
+                Assert.AreEqual(VerticalPositionValues.Superscript, verticalTextAlignment.Val.Value);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void Subscript()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<sub>test</sub>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                VerticalTextAlignment verticalTextAlignment = properties.ChildElements[0] as VerticalTextAlignment;
+                Assert.IsNotNull(verticalTextAlignment);
+                Assert.AreEqual(VerticalPositionValues.Subscript, verticalTextAlignment.Val.Value);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void StrikeDel()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<del>test</del>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                Strike strike = properties.ChildElements[0] as Strike;
+                Assert.IsNotNull(strike);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void StrikeS()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<s>test</s>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                Strike strike = properties.ChildElements[0] as Strike;
+                Assert.IsNotNull(strike);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
     }
 }
