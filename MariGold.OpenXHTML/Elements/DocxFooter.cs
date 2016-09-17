@@ -31,20 +31,7 @@
             paragraph = null;
             Paragraph footerParagraph = null;
 
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText)
-                {
-                    ProcessParagraph(child, node, ref paragraph);
-                }
-                else
-                {
-                    child.ParagraphNode = node;
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref footerParagraph);
-                }
-            }
+            ProcessBlockElement(node, ref footerParagraph);
         }
 
         bool ITextElement.CanConvert(DocxNode node)

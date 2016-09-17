@@ -447,7 +447,7 @@
                 Assert.AreEqual(1, paraProperties.ChildElements.Count);
                 Justification justification = paraProperties.ChildElements[0] as Justification;
                 Assert.IsNotNull(justification);
-                Assert.AreEqual(JustificationValues.Left, justification.Val.Value);
+                Assert.AreEqual(JustificationValues.Center, justification.Val.Value);
 
                 Run run = para.ChildElements[1] as Run;
                 Assert.IsNotNull(run);

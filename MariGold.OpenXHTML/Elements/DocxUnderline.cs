@@ -14,7 +14,8 @@
 
         internal override bool CanConvert(DocxNode node)
         {
-            return string.Compare(node.Tag, "u", StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Compare(node.Tag, "u", StringComparison.InvariantCultureIgnoreCase) == 0 ||
+                string.Compare(node.Tag, "ins", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
         internal override void Process(DocxNode node, ref Paragraph paragraph)
@@ -23,7 +24,7 @@
             {
                 return;
             }
-
+            
             node.SetExtentedStyle(DocxFontStyle.textDecoration, DocxFontStyle.underLine);
 
             ProcessElement(node, ref paragraph);

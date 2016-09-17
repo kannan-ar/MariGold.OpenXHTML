@@ -29,21 +29,7 @@
             Paragraph addrParagraph = null;
             node.SetExtentedStyle(DocxFontStyle.fontStyle, DocxFontStyle.italic);
 
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText)
-                {
-                    ProcessParagraph(child, node, ref addrParagraph);
-                }
-                else
-                {
-                    //Child elements will create on new address paragraph
-                    child.ParagraphNode = node.ParagraphNode;
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref addrParagraph);
-                }
-            }
+            ProcessBlockElement(node, ref addrParagraph);
         }
     }
 }

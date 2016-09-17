@@ -19,19 +19,18 @@
 
         internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            if (node.IsNull() || IsHidden(node))
+            if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
                 return;
             }
 
+            paragraph = null;
+            Paragraph centerParagraph = null;
             node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
 
-            if (node.ParagraphNode != null)
-            {
-                node.ParagraphNode.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
-            }
+            node.SetExtentedStyle(DocxAlignment.textAlign, DocxAlignment.center);
 
-            ProcessElement(node, ref paragraph);
+            ProcessBlockElement(node, ref centerParagraph);
         }
 
         bool ITextElement.CanConvert(DocxNode node)

@@ -113,20 +113,7 @@
             Paragraph headerParagraph = null;
             ApplyStyle(node);
 
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText)
-                {
-                    ProcessParagraph(child, node, ref headerParagraph);
-                }
-                else
-                {
-                    child.ParagraphNode = node;
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref headerParagraph);
-                }
-            }
+            ProcessBlockElement(node, ref headerParagraph);
         }
     }
 }

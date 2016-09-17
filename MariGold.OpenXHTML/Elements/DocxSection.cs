@@ -29,7 +29,7 @@
             paragraph = null;
             Paragraph sectionParagraph = null;
 
-            ProcessElement(node, ref sectionParagraph);
+            ProcessBlockElement(node, ref sectionParagraph);
         }
     }
 }

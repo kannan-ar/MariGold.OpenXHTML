@@ -109,7 +109,7 @@
             {
                 if (child.IsText)
                 {
-                    ProcessParagraph(child, node, ref paragraph);
+                    ProcessParagraph(child, node, node.ParagraphNode, ref paragraph);
                 }
                 else
                 {
@@ -121,14 +121,34 @@
             }
         }
 
-        protected void ProcessParagraph(DocxNode child, DocxNode node, ref Paragraph paragraph)
+        protected void ProcessBlockElement(DocxNode node, ref Paragraph paragraph)
+        {
+            foreach (DocxNode child in node.Children)
+            {
+                if (child.IsText)
+                {
+                    ProcessParagraph(child, node, node, ref paragraph);
+                }
+                else
+                {
+                    //ProcessChild forwards the incomming parent to the child element. So any div element inside this div
+                    //creates a new paragraph on the parent element.
+                    child.ParagraphNode = node;
+                    child.Parent = node.Parent;
+                    node.CopyExtentedStyles(child);
+                    ProcessChild(child, ref paragraph);
+                }
+            }
+        }
+
+        protected void ProcessParagraph(DocxNode child, DocxNode node, DocxNode paragraphNode, ref Paragraph paragraph)
         {
             if (!IsEmptyText(child.InnerHtml))
             {
                 if (paragraph == null)
                 {
                     paragraph = node.Parent.AppendChild(new Paragraph());
-                    OnParagraphCreated(node.ParagraphNode, paragraph);
+                    OnParagraphCreated(paragraphNode, paragraph);
                 }
 
                 Run run = paragraph.AppendChild(new Run(new Text()

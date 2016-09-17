@@ -30,22 +30,7 @@
             paragraph = null;
             Paragraph divParagraph = null;
 
-            foreach (DocxNode child in node.Children)
-            {
-                if (child.IsText)
-                {
-                    ProcessParagraph(child, node, ref divParagraph);
-                }
-                else
-                {
-                    //ProcessChild forwards the incomming parent to the child element. So any div element inside this div
-                    //creates a new paragraph on the parent element.
-                    child.ParagraphNode = node;
-                    child.Parent = node.Parent;
-                    node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref divParagraph);
-                }
-            }
+            ProcessBlockElement(node, ref divParagraph);
         }
 
         bool ITextElement.CanConvert(DocxNode node)
