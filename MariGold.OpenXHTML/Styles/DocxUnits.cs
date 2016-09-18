@@ -53,7 +53,8 @@
 		
 		private static decimal ConvertPercentageToPt(decimal value)
 		{
-			return value * .12m;
+			//return value * .12m;
+            return (value / 100) * DocxFontStyle.defaultFontSizeInPixel;
 		}
 		
 		private static bool ExtractNamedFontSize(string style, out decimal pt)

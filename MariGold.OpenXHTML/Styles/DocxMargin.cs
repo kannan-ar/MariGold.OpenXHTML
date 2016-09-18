@@ -7,6 +7,7 @@
     internal sealed class DocxMargin
     {
         private readonly DocxNode node;
+        private const decimal defaultLineHeight = DocxFontStyle.defaultFontSizeInPixel * 20;
 
         internal const string margin = "margin";
         internal const string marginTop = "margin-top";
@@ -108,25 +109,36 @@
                 if (!string.IsNullOrEmpty(line) && !line.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.normal))
                 {
                     decimal number;
+                    decimal dxa = -1;
+                    LineSpacingRuleValues lineSpacingRuleValues = LineSpacingRuleValues.AtLeast;
 
                     if (decimal.TryParse(line, out number))
                     {
-                        decimal dxa = DocxUnits.GetDxaFromNumber(number);
+                        dxa = DocxUnits.GetDxaFromNumber(number);
+                        dxa = dxa - defaultLineHeight;//Removing the default line height
+                    }
+                    else if (line.Contains("%"))
+                    {
+                        line = line.Replace("%", string.Empty);
 
-                        if (dxa != -1)
+                        if (decimal.TryParse(line, out number))
                         {
-                            spacing.Line = decimal.Round(dxa).ToString();
+                            dxa = (number / 100) * DocxFontStyle.defaultFontSizeInPixel;
+                            dxa = dxa - defaultLineHeight;//Removing the default line height
                         }
                     }
                     else
                     {
-                        decimal dxa = DocxUnits.GetDxaFromStyle(line);
+                        dxa = DocxUnits.GetDxaFromStyle(line);
+                        //lineSpacingRuleValues = LineSpacingRuleValues.Exact;
+                    }
 
-                        if (dxa != -1)
-                        {
-                            spacing.LineRule = LineSpacingRuleValues.AtLeast;
-                            spacing.Line = dxa.ToString();
-                        }
+                    dxa = decimal.Round(dxa);
+
+                    if (dxa > 0)
+                    {
+                        spacing.LineRule = lineSpacingRuleValues;
+                        spacing.Line = dxa.ToString();
                     }
                 }
 

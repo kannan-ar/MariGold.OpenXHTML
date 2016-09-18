@@ -31,7 +31,7 @@
 				Assert.AreEqual(2, run.ChildElements.Count);
 				Assert.IsNotNull(run.RunProperties);
 				FontSize fontSize = run.RunProperties.ChildElements[0] as FontSize;
-				Assert.AreEqual("24", fontSize.Val.Value);
+				Assert.AreEqual("32", fontSize.Val.Value);
 				
 				Word.Text text = run.ChildElements[1] as Word.Text;
 				Assert.IsNotNull(text);
@@ -312,7 +312,7 @@
 
                 SpacingBetweenLines space = properties.ChildElements[0] as SpacingBetweenLines;
                 Assert.IsNotNull(space);
-                Assert.AreEqual("1600", space.Line.Value);
+                Assert.AreEqual("1280", space.Line.Value);
 
                 Run run = paragraph.ChildElements[1] as Run;
                 Assert.IsNotNull(run);
@@ -406,7 +406,7 @@
 
                 SpacingBetweenLines space = properties.ChildElements[0] as SpacingBetweenLines;
                 Assert.IsNotNull(space);
-                Assert.AreEqual("480", space.Line.Value);
+                Assert.AreEqual("160", space.Line.Value);
 
                 Run run = paragraph.ChildElements[1] as Run;
                 Assert.IsNotNull(run);
