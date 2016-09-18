@@ -1,5 +1,5 @@
 # MariGold.OpenXHTML
 
-#####Relative Images
+####Relative Images
 
 #####Base URL
