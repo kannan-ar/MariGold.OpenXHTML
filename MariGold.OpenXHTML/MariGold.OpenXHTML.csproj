@@ -59,7 +59,6 @@
     <Compile Include="DocxNode.cs" />
     <Compile Include="Elements\DocxA.cs" />
     <Compile Include="Elements\DocxAddress.cs" />
-    <Compile Include="Elements\DocxBlockQuote.cs" />
     <Compile Include="Elements\DocxBold.cs" />
     <Compile Include="Elements\DocxBody.cs" />
     <Compile Include="Elements\DocxBr.cs" />
