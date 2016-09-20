@@ -34,8 +34,9 @@
     <Reference Include="DocumentFormat.OpenXml">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
-    <Reference Include="MariGold.HtmlParser">
-      <HintPath>..\..\MariGold.HtmlParser\MariGold.HtmlParser\bin\Debug\MariGold.HtmlParser.dll</HintPath>
+    <Reference Include="MariGold.HtmlParser, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MariGold.HtmlParser.1.0.1\lib\net35\MariGold.HtmlParser.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>

@@ -1,5 +1,15 @@
-# MariGold.OpenXHTML
+##MariGold.OpenXHTML
+OpenXHTML is a wrapper class of Open XML SDK to convert HTML documents to Open XML documents. 
 
-####Relative Images
+###Installing via NuGet
 
-#####Base URL
+In Package Manager Console, enter the following command:
+```
+Install-Package MariGold.OpenXHTML
+```
+
+###Relative Images
+
+###Base URL
+
+###Image URL

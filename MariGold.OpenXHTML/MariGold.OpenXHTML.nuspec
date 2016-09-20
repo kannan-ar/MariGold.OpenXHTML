@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>MariGold OpenXML HtmlParser</tags>
+    <dependencies>
+    	<dependency id="DocumentFormat.OpenXml" version="2.5" />
+	<dependency id="MariGold.HtmlParser" version="1.0.1" />
+    </dependencies>
+  </metadata>
+</package>
