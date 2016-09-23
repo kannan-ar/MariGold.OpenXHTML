@@ -9,7 +9,7 @@ Install-Package MariGold.OpenXHTML
 ```
 
 ###Usage
-####To create an Open XML word document using the OpenXHTML, use the following code.
+To create an Open XML word document using the OpenXHTML, use the following code.
 
 ```csharp
 WordDocument doc = new WordDocument("sample.docx");
