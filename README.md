@@ -8,7 +8,7 @@ In Package Manager Console, enter the following command:
 Install-Package MariGold.OpenXHTML
 ```
 
-###Usage
+###Usage####
 To create an Open XML word document using the OpenXHTML, use the following code.
 
 ```csharp
@@ -23,7 +23,7 @@ WordDocument doc = new WordDocument("sample.docx");
 doc.Process(new HtmlParser("<div>sample text</div>"));
 doc.Save();
 ```
-Once the HTML is processed, you can access the Open XML document using the following properties in <code>WordDocument</code>
+Once the HTML is processed, you can access the Open XML document using the following properties in `WordDocument`.
 
 ```csharp
 public WordprocessingDocument WordprocessingDocument { get; }
