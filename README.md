@@ -31,6 +31,14 @@ public MainDocumentPart MainDocumentPart { get; }
 public Document Document { get; }
 ```
 
+For example, if you want to append a paragraph at the document body, try the following code.
+```csharp
+WordDocument doc = new WordDocument("sample.docx");
+doc.Process(new HtmlParser("<div>sample text</div>"));
+doc.Document.Body.AppendChild<Paragraph>(new Paragraph(new Run(new Text("added text"))));
+doc.Save();
+```
+
 If you want to create an Open XML document in memory, use the following code.
 
 ```csharp
