@@ -1,5 +1,5 @@
 ##MariGold.OpenXHTML
-OpenXHTML is a wrapper library for Open XML SDK to convert HTML documents into Open XML word documents. It simply encapsulated the complexity of Open XML yet exposes the Open XML document objects for manipulation.
+OpenXHTML is a wrapper library for Open XML SDK to convert HTML documents into Open XML word documents. It simply encapsulated the complexity of Open XML yet exposes its properties for manipulation.
 
 ###Installing via NuGet
 
@@ -49,6 +49,17 @@ using (MemoryStream mem = new MemoryStream())
 OpenXHTML is using a built-in HTML and CSS parser (MariGold.HtmlParser) which can complectly replace with an external HTML and CSS parser. The `Process` method in `WordDocument` accepts an `IParser` interface which you can implement to parser HTML and CSS.
 ```csharp
 public void Process(IParser parser);
+```
+Here is the structure of `IParser`.
+```csharp
+public interface IParser
+{
+	string BaseURL { get; set; }
+        string UriSchema { get; set; }
+
+        decimal CalculateRelativeChildFontSize(string parentFontSize, string childFontSize);
+        IHtmlNode FindBodyOrFirstElement();
+}
 ```
 
 ####Relative Images
