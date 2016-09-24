@@ -15,7 +15,6 @@ To create an Open XML word document using the OpenXHTML, use the following code.
 WordDocument doc = new WordDocument("sample.docx");
 doc.Save();
 ```
-
 To parse the HTML and convert into an Open XML document, use the following code.
 
 ```csharp
@@ -30,7 +29,6 @@ public WordprocessingDocument WordprocessingDocument { get; }
 public MainDocumentPart MainDocumentPart { get; }
 public Document Document { get; }
 ```
-
 For example, if you want to append a paragraph at the document body, try the following code.
 ```csharp
 WordDocument doc = new WordDocument("sample.docx");
@@ -38,7 +36,6 @@ doc.Process(new HtmlParser("<div>sample text</div>"));
 doc.Document.Body.AppendChild<Paragraph>(new Paragraph(new Run(new Text("added text"))));
 doc.Save();
 ```
-
 If you want to create an Open XML document in memory, use the following code.
 
 ```csharp
@@ -49,6 +46,8 @@ using (MemoryStream mem = new MemoryStream())
 }
 			
 ```
+####HTML Parsing
+OpenXHTML is using a built-in utility (MariGold.HtmlParser) to parse HTML and CSS. This can complectly replace with an external HTML and CSS parser. The `Process` method in `WordDocument` accepts an `IParser` interface which you can implement to parser HTML and CSS.
 
 ####Relative Images
 
