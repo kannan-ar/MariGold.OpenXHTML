@@ -7,7 +7,6 @@ In Package Manager Console, enter the following command:
 ```
 Install-Package MariGold.OpenXHTML
 ```
-
 ###Usage
 To create an Open XML word document using the OpenXHTML, use the following code.
 
@@ -47,7 +46,10 @@ using (MemoryStream mem = new MemoryStream())
 			
 ```
 ####HTML Parsing
-OpenXHTML is using a built-in utility (MariGold.HtmlParser) to parse HTML and CSS. This can complectly replace with an external HTML and CSS parser. The `Process` method in `WordDocument` accepts an `IParser` interface which you can implement to parser HTML and CSS.
+OpenXHTML is using a built-in HTML and CSS parser (MariGold.HtmlParser) which can complectly replace with an external HTML and CSS parser. The `Process` method in `WordDocument` accepts an `IParser` interface which you can implement to parser HTML and CSS.
+```csharp
+public void Process(IParser parser);
+```
 
 ####Relative Images
 
