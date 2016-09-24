@@ -55,10 +55,10 @@ Here is the structure of `IParser`.
 public interface IParser
 {
 	string BaseURL { get; set; }
-        string UriSchema { get; set; }
+	string UriSchema { get; set; }
 
-        decimal CalculateRelativeChildFontSize(string parentFontSize, string childFontSize);
-        IHtmlNode FindBodyOrFirstElement();
+	decimal CalculateRelativeChildFontSize(string parentFontSize, string childFontSize);
+	IHtmlNode FindBodyOrFirstElement();
 }
 ```
 
