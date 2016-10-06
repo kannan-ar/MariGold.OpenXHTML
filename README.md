@@ -59,7 +59,7 @@ Sometimes the given html document may contains relative image url. OpenXHTML can
 using MariGold.OpenXHTML;
 
 WordDocument doc = new WordDocument("sample.docx");
-**doc.ImagePath = "http:\\abc.com";**
+doc.ImagePath = "http:\\abc.com";
 doc.Process(new HtmlParser("<img src="sample.png" />"));
 doc.Save();
 ```
@@ -76,7 +76,7 @@ Like image path, an html document may also contain links with relative path. Thi
 using MariGold.OpenXHTML;
 
 WordDocument doc = new WordDocument("sample.docx");
-**doc.BaseURL = "http:\\abc.com";**
+doc.BaseURL = "http:\\abc.com";
 doc.Process(new HtmlParser("<a href="index.htm">sample</a>"));
 doc.Save();
 ```
