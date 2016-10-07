@@ -62,13 +62,13 @@ using MariGold.OpenXHTML;
 
 WordDocument doc = new WordDocument("sample.docx");
 doc.ImagePath = "http:\\abc.com";
-doc.Process(new HtmlParser("<img src="sample.png" />"));
+doc.Process(new HtmlParser("<img src='sample.png' />"));
 doc.Save();
 ```
 
-You can also assign any physical address on image path.
+You can also assign any physical folder address on image path.
 ```csharp
-doc.ImagePath = @"C:\Img";
+doc.ImagePath = @"file:///C:/Img";
 ```
 
 ####Base URL
