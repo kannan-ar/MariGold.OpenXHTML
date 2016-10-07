@@ -26,7 +26,7 @@ doc.Process(new HtmlParser("<div>sample text</div>"));
 doc.Save();
 ```
 Once the HTML is processed, you can access the Open XML document using the following properties in `WordDocument`.
- Any modifications on Open XML document should be done before the `Save' method. This is because the Save method will save all the changes to the target location and unload the document.
+ Any modifications on Open XML document should be done before the `Save` method. This is because the Save method will commit all the changes and unload the document.
 
 ```csharp
 public WordprocessingDocument WordprocessingDocument { get; }
@@ -43,7 +43,7 @@ doc.Process(new HtmlParser("<div>sample text</div>"));
 doc.Document.Body.AppendChild<Paragraph>(new Paragraph(new Run(new Text("added text"))));
 doc.Save();
 ```
-If you want to create an Open XML document in memory, use the following code.
+You can also create an Open XML document in memory. Following example illustrates how to save the document in a `MemoryStream`.
 
 ```csharp
 using (MemoryStream mem = new MemoryStream())
