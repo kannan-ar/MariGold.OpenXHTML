@@ -1,5 +1,5 @@
 ##MariGold.OpenXHTML
-OpenXHTML is a wrapper library for Open XML SDK to convert HTML documents into Open XML word documents. It simply encapsulated the complexity of Open XML yet exposes its properties for manipulation.
+OpenXHTML is a wrapper library for Open XML SDK to convert HTML documents into Open XML word documents. It is simply encapsulated the complexity of Open XML yet exposes the properties for manipulation.
 
 ###Installing via NuGet
 
@@ -8,7 +8,7 @@ In Package Manager Console, enter the following command:
 Install-Package MariGold.OpenXHTML
 ```
 ###Usage
-To create an Open XML word document using the OpenXHTML, use the following code.
+To create an empty Open XML word document using the OpenXHTML, use the following code.
 
 ```csharp
 using MariGold.OpenXHTML;
@@ -16,7 +16,7 @@ using MariGold.OpenXHTML;
 WordDocument doc = new WordDocument("sample.docx");
 doc.Save();
 ```
-To parse the HTML and convert into an Open XML document, use the following code.
+To create an Open XML document from an HTML document, use the following code.
 
 ```csharp
 using MariGold.OpenXHTML;
