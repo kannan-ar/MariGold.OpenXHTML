@@ -26,6 +26,7 @@ doc.Process(new HtmlParser("<div>sample text</div>"));
 doc.Save();
 ```
 Once the HTML is processed, you can access the Open XML document using the following properties in `WordDocument`.
+ Any modifications on Open XML document should be done before the `Save' method. This is because the Save method will save all the changes to the target location and unload the document.
 
 ```csharp
 public WordprocessingDocument WordprocessingDocument { get; }
@@ -52,6 +53,7 @@ using (MemoryStream mem = new MemoryStream())
 }
 			
 ```
+
 ####Relative Images
 Sometimes the given html document may contains relative image url. OpenXHTML cannot process the images in such cases. An image path can be set to avoid this issue.
 
