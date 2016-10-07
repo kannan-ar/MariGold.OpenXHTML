@@ -55,7 +55,7 @@ using (MemoryStream mem = new MemoryStream())
 ```
 
 ####Relative Images
-Sometimes the given html document may contains relative image url. OpenXHTML cannot process the images in such cases. An image path can be set to avoid this issue.
+OpenXHTML cannot process the images with relative URL. We can use `ImagePath` property to set base address for this issue. The image path can be either a URL or a physical folder address.
 
 ```csharp
 using MariGold.OpenXHTML;
@@ -66,7 +66,7 @@ doc.Process(new HtmlParser("<img src='sample.png' />"));
 doc.Save();
 ```
 
-You can also assign any physical folder address on image path.
+You can also assign any file URI address on image path.
 ```csharp
 doc.ImagePath = @"file:///C:/Img";
 ```
