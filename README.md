@@ -26,7 +26,7 @@ doc.Process(new HtmlParser("<div>sample text</div>"));
 doc.Save();
 ```
 Once the HTML is processed, you can access the Open XML document using the following properties in `WordDocument`.
- Any modifications on Open XML document should be done before the `Save` method. This is because the Save method will commit all the changes and unload the document.
+ Any modifications on Open XML document should be done before the `Save` method. This is because the `Save` method will commit all the changes and unload the document from memory.
 
 ```csharp
 public WordprocessingDocument WordprocessingDocument { get; }
@@ -83,6 +83,14 @@ doc.Process(new HtmlParser("<a href="index.htm">sample</a>"));
 doc.Save();
 ```
 Also, if there any relative images in the given html document and `ImagePath` is not assigned, OpenXHTML will attempt to use `BaseURL` to solve relative image paths.
+
+####Uri Schema
+
+The protocol relative URLs can be resolve using `UriSchema` property. 
+
+```csharp
+doc.UriSchema = Uri.UriSchemeHttp;
+```
 
 ####HTML Parsing
 OpenXHTML is using a built-in HTML and CSS parser (MariGold.HtmlParser) which can complectly replace with any external HTML and CSS parser. The `Process` method in `WordDocument` expects an `IParser` interface type implementation to process the HTML and CSS.
