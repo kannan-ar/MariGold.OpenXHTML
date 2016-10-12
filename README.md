@@ -62,7 +62,7 @@ using MariGold.OpenXHTML;
 
 WordDocument doc = new WordDocument("sample.docx");
 doc.ImagePath = "http:\\abc.com";
-doc.Process(new HtmlParser("<img src='sample.png' />"));
+doc.Process(new HtmlParser("<img src=\"sample.png\" />"));
 doc.Save();
 ```
 
@@ -79,7 +79,7 @@ using MariGold.OpenXHTML;
 
 WordDocument doc = new WordDocument("sample.docx");
 doc.BaseURL = "http:\\abc.com";
-doc.Process(new HtmlParser("<a href="index.htm">sample</a>"));
+doc.Process(new HtmlParser("<a href=\"index.htm\">sample</a>"));
 doc.Save();
 ```
 Also, if there any relative images in the given html document and `ImagePath` is not assigned, OpenXHTML will attempt to use `BaseURL` to solve relative image paths.
