@@ -26,14 +26,14 @@ doc.Process(new HtmlParser("<div>sample text</div>"));
 doc.Save();
 ```
 Once the HTML is processed, you can access the Open XML document using the following properties in `WordDocument`.
- Any modifications on Open XML document should be done before the `Save` method. This is because the `Save` method will commit all the changes and unload the document from memory.
+ 
 
 ```csharp
 public WordprocessingDocument WordprocessingDocument { get; }
 public MainDocumentPart MainDocumentPart { get; }
 public Document Document { get; }
 ```
-For example, if you want to append a paragraph at the document body, try the following code.
+Any modifications on Open XML document should be done before the `Save` method. This is because the `Save` method will commit all the changes and unload the document from memory. For example, if you want to append a paragraph at the document body, try the following code.
 ```csharp
 using MariGold.OpenXHTML;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -55,7 +55,7 @@ using (MemoryStream mem = new MemoryStream())
 ```
 
 ####Relative Images
-OpenXHTML cannot process the images with relative URL. We can use `ImagePath` property to set base address for this issue. The image path can be either a URL or a physical folder address.
+OpenXHTML cannot process the images with relative URL. This can be solve using the `ImagePath` property to set base address for every relative image paths. The image path can be either a URL or a physical folder address.
 
 ```csharp
 using MariGold.OpenXHTML;
