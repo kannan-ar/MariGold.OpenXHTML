@@ -93,7 +93,7 @@ doc.UriSchema = Uri.UriSchemeHttp;
 ```
 
 ####HTML Parsing
-OpenXHTML has a built-in HTML and CSS parser (MariGold.HtmlParser) which can be complectly replaced with any external HTML and CSS parser. The Process method in `WordDocument` class expects an IParser interface type implementation to process the HTML and CSS. You can create an implementation of this IParser interface to parse the HTML and CSS.
+OpenXHTML has a built-in HTML and CSS parser (MariGold.HtmlParser) which can be complectly replaced with any external HTML and CSS parser. The Process method in WordDocument class expects an IParser interface type implementation to process the HTML and CSS. You can create an implementation of this IParser interface to parse the HTML and CSS.
 ```csharp
 public void Process(IParser parser);
 ```
@@ -108,7 +108,7 @@ interface IParser
 	IHtmlNode FindBodyOrFirstElement();
 }
 ```
-Here is the structure of IParser. The BaseURL and UriSchema are just two simple properties to store the base url address and uri schema for processing the HTML images and links. Both properties are using to resolve the protocol free or relative path of external style sheet URLs. The `CalculateRelativeChildFontSize` method is used to calculate the relative child font size. For example, in the below html, the font size of the `h1` tag is 20 pixel. 
+Here is the structure of IParser. The BaseURL and UriSchema are just two simple properties to store the base url address and uri schema for processing the HTML images and links. Both properties are using to resolve the protocol free or relative path of external style sheet URLs. The CalculateRelativeChildFontSize method is used to calculate the relative child font size. For example, in the below html, the font size of the h1 tag is 20 pixel. 
 
 ```html
 <div style="font-size:16px"><h1>sample</h1></div>
