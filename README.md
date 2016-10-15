@@ -93,7 +93,7 @@ doc.UriSchema = Uri.UriSchemeHttp;
 ```
 
 ####HTML Parsing
-OpenXHTML has a built-in HTML and CSS parser (MariGold.HtmlParser) which can be complectly replace with any external HTML and CSS parser. The `Process` method in `WordDocument` class expects an `IParser` interface type implementation to process the HTML and CSS. You can create an implementation of this `IParser` interface to parse the HTML and CSS.
+OpenXHTML has a built-in HTML and CSS parser (MariGold.HtmlParser) which can be complectly replaced with any external HTML and CSS parser. The `Process` method in `WordDocument` class expects an `IParser` interface type implementation to process the HTML and CSS. You can create an implementation of this `IParser` interface to parse the HTML and CSS.
 ```csharp
 public void Process(IParser parser);
 ```
