@@ -86,7 +86,7 @@ Also, if there are any relative images in the given html document and ImagePath 
 
 ####Uri Schema
 
-The protocol relative URLs can be resolved using UriSchema property. 
+The protocol relative URLs can be resolved using the UriSchema property. 
 
 ```csharp
 doc.UriSchema = Uri.UriSchemeHttp;
