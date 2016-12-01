@@ -2,6 +2,7 @@
 obj
 bin
 packages
+.vs/
 
 # Compiled source #
 ###################
