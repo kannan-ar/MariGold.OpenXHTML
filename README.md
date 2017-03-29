@@ -1,13 +1,13 @@
-##MariGold.OpenXHTML
+## MariGold.OpenXHTML
 OpenXHTML is a wrapper library for Open XML SDK to convert HTML documents into Open XML word documents. It has simply encapsulated the complexity of Open XML yet exposes the properties of Open XML for manipulation.
 
-###Installing via NuGet
+### Installing via NuGet
 
 In Package Manager Console, enter the following command:
 ```
 Install-Package MariGold.OpenXHTML
 ```
-###Usage
+### Usage
 To create an empty Open XML word document using the OpenXHTML, use the following code.
 
 ```csharp
@@ -54,7 +54,7 @@ using (MemoryStream mem = new MemoryStream())
 			
 ```
 
-####Relative Images
+#### Relative Images
 OpenXHTML cannot process the images with relative URL. This can be solved using the ImagePath property to set the base address for every relative image paths. The image path can be either a URL or a physical folder address.
 
 ```csharp
@@ -71,7 +71,7 @@ You can also assign any file URI address on image path.
 doc.ImagePath = @"file:///C:/Img";
 ```
 
-####Base URL
+#### Base URL
 Like relative images, an HTML document may also contain links with relative path. This can be resolved using the BaseURL property.
 
 ```csharp
@@ -84,7 +84,7 @@ doc.Save();
 ```
 Also, if there are any relative images in the given html document and ImagePath is not assigned, OpenXHTML will attempt to use BaseURL to resolve relative image paths. So using BaseURL, you can resolve both relative image paths and links. The reason to create a seperate property for image path is that sometimes image location is different from base URL address.
 
-####Uri Schema
+#### Uri Schema
 
 The protocol relative URLs can be resolved using the UriSchema property. 
 
@@ -92,7 +92,7 @@ The protocol relative URLs can be resolved using the UriSchema property.
 doc.UriSchema = Uri.UriSchemeHttp;
 ```
 
-####HTML Parsing
+#### HTML Parsing
 OpenXHTML has a built-in HTML and CSS parser (MariGold.HtmlParser) which can be complectly replaced with any external HTML and CSS parser. The Process method in WordDocument class expects an IParser interface type implementation to process the HTML and CSS. You can create an implementation of this IParser interface to parse the HTML and CSS.
 ```csharp
 public void Process(IParser parser);
