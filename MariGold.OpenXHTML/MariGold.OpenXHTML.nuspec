@@ -8,7 +8,7 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Bug fixes</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>MariGold OpenXML HtmlParser</tags>
     <dependencies>

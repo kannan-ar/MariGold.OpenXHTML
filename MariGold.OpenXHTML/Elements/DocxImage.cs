@@ -3,7 +3,6 @@
     using System;
     using System.Net;
     using System.IO;
-    using MariGold.HtmlParser;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Packaging;
     using DocumentFormat.OpenXml.Wordprocessing;
