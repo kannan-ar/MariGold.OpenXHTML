@@ -112,7 +112,7 @@
 		{
             node.RemoveStyles(DocxBorder.borderName, DocxBorder.leftBorderName, DocxBorder.rightBorderName,
                 DocxBorder.topBorderName, DocxBorder.bottomBorderName, DocxMargin.margin, DocxMargin.marginLeft,
-                DocxMargin.marginRight, DocxMargin.marginTop, DocxMargin.marginBottom);
+                DocxMargin.marginRight, DocxMargin.marginTop, DocxMargin.marginBottom, DocxColor.backGroundColor);
 
             return node;
 		}

@@ -13,6 +13,7 @@
         private OpenXmlElement parent;
         private Dictionary<string, string> extentedStyles;
         private Dictionary<string, string> styles;
+        private Dictionary<string, string> inheritedStyles;
 
         private void SetExtentedStyles(Dictionary<string, string> extentedStyles)
         {
@@ -147,6 +148,7 @@
 
             this.node = node;
             this.styles = node.Styles;
+            this.inheritedStyles = node.InheritedStyles;
             this.extentedStyles = new Dictionary<string, string>();
         }
 
@@ -186,7 +188,7 @@
                 }
             }
 
-            foreach (KeyValuePair<string, string> style in node.InheritedStyles)
+            foreach (KeyValuePair<string, string> style in inheritedStyles)
             {
                 if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
@@ -220,7 +222,7 @@
                 }
             }
 
-            foreach (KeyValuePair<string, string> style in node.InheritedStyles)
+            foreach (KeyValuePair<string, string> style in inheritedStyles)
             {
                 if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
@@ -254,6 +256,11 @@
             foreach (string styleName in styleNames)
             {
                 styles.Remove(styleName);
+            }
+
+            foreach (string styleName in styleNames)
+            {
+                inheritedStyles.Remove(styleName);
             }
         }
     }
