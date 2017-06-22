@@ -2,8 +2,6 @@
 {
 	using System;
 	using DocumentFormat.OpenXml.Wordprocessing;
-	using MariGold.HtmlParser;
-    using System.Collections.Generic;
 
 	internal sealed class DocxTableCellStyle
 	{

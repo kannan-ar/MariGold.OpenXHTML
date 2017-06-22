@@ -1,6 +1,5 @@
 ﻿namespace MariGold.OpenXHTML
 {
-	using System;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
 	internal sealed class DocxTableRowStyle

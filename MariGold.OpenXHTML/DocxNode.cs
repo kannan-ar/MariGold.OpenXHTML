@@ -233,7 +233,10 @@
 
         internal void SetExtentedStyle(string styleName, string value)
         {
-            this.extentedStyles[styleName] = value;
+            if (!DocxCombinedStyle.MergeGroupStyles(styleName, value, this.extentedStyles))
+            {
+                this.extentedStyles[styleName] = value;
+            }
         }
 
         internal void CopyExtentedStyles(DocxNode toNode)

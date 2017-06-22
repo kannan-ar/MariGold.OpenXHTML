@@ -82,13 +82,18 @@
 
         internal static void ApplyTextDecoration(string style, OpenXmlElement styleElement)
         {
-            if (string.Compare(style, underLine, StringComparison.InvariantCultureIgnoreCase) == 0)
+            string[] styles = style.Split(new char[] { '|' });
+
+            foreach (string styleItem in styles)
             {
-                styleElement.Append(new Underline() { Val = UnderlineValues.Single });
-            }
-            else if (string.Compare(style, lineThrough, StringComparison.InvariantCultureIgnoreCase) == 0)
-            {
-                styleElement.Append(new Strike());
+                if (string.Compare(styleItem, underLine, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    styleElement.Append(new Underline() { Val = UnderlineValues.Single });
+                }
+                else if (string.Compare(styleItem, lineThrough, StringComparison.InvariantCultureIgnoreCase) == 0)
+                {
+                    styleElement.Append(new Strike());
+                }
             }
         }
 

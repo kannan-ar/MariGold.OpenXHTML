@@ -1,6 +1,5 @@
 ﻿namespace MariGold.OpenXHTML
 {
-	using System;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
@@ -98,13 +97,6 @@
 			return assigned;
 		}
 		
-        /*
-		internal static void AlignCenter(OpenXmlElement styleElement)
-		{
-			styleElement.Append(new Justification() { Val = JustificationValues.Center });
-		}
-        */
-
         internal static void ApplyVerticalTextAlign(string style, OpenXmlElement styleElement)
         {
             VerticalPositionValues alignment;

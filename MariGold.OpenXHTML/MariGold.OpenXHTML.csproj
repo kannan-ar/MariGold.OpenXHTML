@@ -95,6 +95,7 @@
     <Compile Include="Styles\DocxAlignment.cs" />
     <Compile Include="Styles\DocxBorder.cs" />
     <Compile Include="Styles\DocxColor.cs" />
+    <Compile Include="Styles\DocxCombinedStyle.cs" />
     <Compile Include="Styles\DocxFontStyle.cs" />
     <Compile Include="Styles\DocxMargin.cs" />
     <Compile Include="Styles\DocxParagraphStyle.cs" />

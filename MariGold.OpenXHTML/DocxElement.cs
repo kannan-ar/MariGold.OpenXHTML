@@ -3,12 +3,12 @@
     using System;
     using System.Web;
     using System.Text.RegularExpressions;
-    using MariGold.HtmlParser;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
     internal abstract class DocxElement
     {
+        protected const string whiteSpace = " ";
         protected readonly IOpenXmlContext context;
         internal EventHandler<ParagraphEventArgs> ParagraphCreated;
 
@@ -22,7 +22,7 @@
         {
             DocxParagraphStyle style = new DocxParagraphStyle();
             style.Process(para, node);
-
+            
             if (ParagraphCreated != null)
             {
                 ParagraphCreated(this, new ParagraphEventArgs(para));
@@ -143,7 +143,9 @@
 
         protected void ProcessParagraph(DocxNode child, DocxNode node, DocxNode paragraphNode, ref Paragraph paragraph)
         {
-            if (!IsEmptyText(child.InnerHtml))
+            string text;
+
+            if (!IsEmptyText(child, out text))
             {
                 if (paragraph == null)
                 {
@@ -153,7 +155,7 @@
 
                 Run run = paragraph.AppendChild(new Run(new Text()
                 {
-                    Text = ClearHtml(child.InnerHtml),
+                    Text = ClearHtml(text),
                     Space = SpaceProcessingModeValues.Preserve
                 }));
 
@@ -179,7 +181,7 @@
             }
 
             html = HttpUtility.HtmlDecode(html);
-            html = html.Replace("&nbsp;", " ");
+            html = html.Replace("&nbsp;", whiteSpace);
             html = html.Replace("&amp;", "&");
 
             Regex regex = new Regex(Environment.NewLine + "\\s+");
@@ -212,6 +214,32 @@
             }
 
             return false;
+        }
+
+        internal bool IsEmptyText(DocxNode node, out string text)
+        {
+            text = string.Empty;
+
+            if (string.IsNullOrEmpty(node.InnerHtml))
+            {
+                return true;
+            }
+
+            text = node.InnerHtml.Replace(Environment.NewLine, string.Empty);
+
+            if (!string.IsNullOrEmpty(text.Trim()))
+            {
+                return false;
+            }
+            else if (!string.IsNullOrEmpty(text) && 
+                node.Previous != null && !node.Previous.IsText && 
+                node.Next != null && !node.Next.IsText)
+            {
+                text = whiteSpace;
+                return false;
+            }
+
+            return true;
         }
 
         internal abstract bool CanConvert(DocxNode node);

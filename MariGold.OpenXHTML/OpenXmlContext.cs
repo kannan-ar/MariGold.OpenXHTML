@@ -4,8 +4,6 @@
     using DocumentFormat.OpenXml.Packaging;
     using DocumentFormat.OpenXml.Wordprocessing;
     using System.Collections.Generic;
-    using MariGold.HtmlParser;
-    using System.Linq;
 
     internal sealed class OpenXmlContext : IOpenXmlContext
     {
@@ -13,12 +11,13 @@
         private MainDocumentPart mainPart;
         private List<DocxElement> elements;
         private List<ITextElement> textElements;
-        private Dictionary<NumberFormatValues, AbstractNum> abstractNumList;
-        private Dictionary<NumberFormatValues, NumberingInstance> numberingInstanceList;
+        private Dictionary<Int16, AbstractNum> abstractNumList;
+        private Dictionary<Int16, NumberingInstance> numberingInstanceList;
         private string imagePath;
         private string baseUrl;
         private string uriSchema;
         private IParser parser;
+        private Int16 listNumberId;
 
         private void PrepareWordElements()
         {
@@ -185,6 +184,19 @@
             }
         }
 
+        public Int16 ListNumberId
+        {
+            get
+            {
+                return listNumberId;
+            }
+
+            set
+            {
+                listNumberId = value;
+            }
+        }
+
         public void Save()
         {
             SaveNumberDefinitions();
@@ -228,32 +240,32 @@
         {
             return new DocxBody(this);
         }
-
+        /*
         public bool HasNumberingDefinition(NumberFormatValues format)
         {
             return abstractNumList != null && numberingInstanceList != null && abstractNumList.ContainsKey(format) && numberingInstanceList.ContainsKey(format);
         }
-
-        public void SaveNumberingDefinition(NumberFormatValues format, AbstractNum abstractNum, NumberingInstance numberingInstance)
+        */
+        public void SaveNumberingDefinition(Int16 numberId, AbstractNum abstractNum, NumberingInstance numberingInstance)
         {
             if (abstractNumList == null)
             {
-                abstractNumList = new Dictionary<NumberFormatValues, AbstractNum>();
+                abstractNumList = new Dictionary<Int16, AbstractNum>();
             }
 
             if (numberingInstanceList == null)
             {
-                numberingInstanceList = new Dictionary<NumberFormatValues, NumberingInstance>();
+                numberingInstanceList = new Dictionary<Int16, NumberingInstance>();
             }
 
-            if (!abstractNumList.ContainsKey(format))
+            if (!abstractNumList.ContainsKey(numberId))
             {
-                abstractNumList.Add(format, abstractNum);
+                abstractNumList.Add(numberId, abstractNum);
             }
 
-            if (!numberingInstanceList.ContainsKey(format))
+            if (!numberingInstanceList.ContainsKey(numberId))
             {
-                numberingInstanceList.Add(format, numberingInstance);
+                numberingInstanceList.Add(numberId, numberingInstance);
             }
         }
 

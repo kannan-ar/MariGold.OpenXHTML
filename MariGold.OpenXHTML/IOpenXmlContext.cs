@@ -1,9 +1,8 @@
 ﻿namespace MariGold.OpenXHTML
 {
-	using System;
+    using System;
 	using DocumentFormat.OpenXml.Packaging;
 	using DocumentFormat.OpenXml.Wordprocessing;
-	using MariGold.HtmlParser;
 	
 	internal interface IOpenXmlContext
 	{
@@ -14,13 +13,14 @@
 		MainDocumentPart MainDocumentPart{ get; }
 		Document Document{ get; }
         IParser Parser { get; }
+        Int16 ListNumberId { get; set; }
 
 		void Save();
 		DocxElement Convert(DocxNode node);
         ITextElement ConvertTextElement(DocxNode node);
 		DocxElement GetBodyElement();
-		bool HasNumberingDefinition(NumberFormatValues format);
-		void SaveNumberingDefinition(NumberFormatValues format, AbstractNum abstractNum, NumberingInstance numberingInstance);
+		//bool HasNumberingDefinition(NumberFormatValues format);
+		void SaveNumberingDefinition(Int16 numberId, AbstractNum abstractNum, NumberingInstance numberingInstance);
         void SetParser(IParser parser);
 	}
 }

@@ -1,8 +1,7 @@
 ﻿namespace MariGold.OpenXHTML.Tests
 {
-	using System;
 	using NUnit.Framework;
-	using MariGold.OpenXHTML;
+	using OpenXHTML;
 	using System.IO;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	using Word = DocumentFormat.OpenXml.Wordprocessing;

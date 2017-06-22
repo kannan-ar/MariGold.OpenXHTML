@@ -16,7 +16,9 @@
             {
                 if (node.IsText)
                 {
-                    if (!IsEmptyText(node.InnerHtml))
+                    string text;
+
+                    if (!IsEmptyText(node, out text))
                     {
                         if (paragraph == null)
                         {
@@ -26,7 +28,7 @@
 
                         Run run = paragraph.AppendChild(new Run(new Text()
                         {
-                            Text = ClearHtml(node.InnerHtml),
+                            Text = ClearHtml(text),
                             Space = SpaceProcessingModeValues.Preserve
                         }));
 

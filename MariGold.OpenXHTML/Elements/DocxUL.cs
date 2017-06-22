@@ -9,7 +9,8 @@
     {
         private const string elementName = "ul";
         private const string liName = "li";
-        private const NumberFormatValues numberFormat = NumberFormatValues.Bullet;
+        //private const NumberFormatValues numberFormat = NumberFormatValues.Bullet;
+        private Int16 numberId;
         private bool isParagraphCreated;
 
         private Paragraph CreateParagraph(DocxNode node, OpenXmlElement parent)
@@ -78,7 +79,7 @@
 
             NumberingProperties numberingProperties = new NumberingProperties();
             NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = 0 };
-            NumberingId numberingId = new NumberingId() { Val = (Int32)numberFormat };
+            NumberingId numberingId = new NumberingId() { Val = numberId };
 
             numberingProperties.Append(numberingLevelReference);
             numberingProperties.Append(numberingId);
@@ -89,53 +90,48 @@
 
         private void InitNumberDefinitions()
         {
-            if (!context.HasNumberingDefinition(numberFormat))
+            AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
+
+            Level level = new Level() { LevelIndex = 0 };
+            StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
+            NumberingFormat numberingFormat = new NumberingFormat() { Val = NumberFormatValues.Bullet };
+            LevelText levelText = new LevelText() { Val = "·" };
+            LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
+
+            PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
+            Indentation indentation = new Indentation()
             {
-                Int32 numberId = (Int32)numberFormat;
+                Start = "720",
+                Hanging = "360"
+            };
 
-                AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
+            previousParagraphProperties.Append(indentation);
 
-                Level level = new Level() { LevelIndex = 0 };
-                StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
-                NumberingFormat numberingFormat = new NumberingFormat() { Val = numberFormat };
-                LevelText levelText = new LevelText() { Val = "·" };
-                LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
+            NumberingSymbolRunProperties numberingSymbolRunProperties = new NumberingSymbolRunProperties();
+            RunFonts runFonts = new RunFonts()
+            {
+                Hint = FontTypeHintValues.Default,
+                Ascii = "Symbol",
+                HighAnsi = "Symbol"
+            };
 
-                PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
-                Indentation indentation = new Indentation()
-                {
-                    Start = "720",
-                    Hanging = "360"
-                };
+            numberingSymbolRunProperties.Append(runFonts);
 
-                previousParagraphProperties.Append(indentation);
+            level.Append(startNumberingValue);
+            level.Append(numberingFormat);
+            level.Append(levelText);
+            level.Append(levelJustification);
+            level.Append(previousParagraphProperties);
+            level.Append(numberingSymbolRunProperties);
 
-                NumberingSymbolRunProperties numberingSymbolRunProperties = new NumberingSymbolRunProperties();
-                RunFonts runFonts = new RunFonts()
-                {
-                    Hint = FontTypeHintValues.Default,
-                    Ascii = "Symbol",
-                    HighAnsi = "Symbol"
-                };
+            abstractNum.Append(level);
 
-                numberingSymbolRunProperties.Append(runFonts);
+            NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numberId };
+            AbstractNumId abstractNumId = new AbstractNumId() { Val = numberId };
 
-                level.Append(startNumberingValue);
-                level.Append(numberingFormat);
-                level.Append(levelText);
-                level.Append(levelJustification);
-                level.Append(previousParagraphProperties);
-                level.Append(numberingSymbolRunProperties);
+            numberingInstance.Append(abstractNumId);
 
-                abstractNum.Append(level);
-
-                NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numberId };
-                AbstractNumId abstractNumId = new AbstractNumId() { Val = numberId };
-
-                numberingInstance.Append(abstractNumId);
-
-                context.SaveNumberingDefinition(numberFormat, abstractNum, numberingInstance);
-            }
+            context.SaveNumberingDefinition(numberId, abstractNum, numberingInstance);
         }
 
         internal DocxUL(IOpenXmlContext context)
@@ -159,6 +155,8 @@
 
             if (node.HasChildren)
             {
+                numberId = ++context.ListNumberId;
+
                 InitNumberDefinitions();
 
                 foreach (DocxNode child in node.Children)

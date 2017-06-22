@@ -1,7 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
-    using MariGold.HtmlParser;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -11,56 +10,50 @@
         private const string liName = "li";
 
         private bool isParagraphCreated;
-        private NumberFormatValues numberFormat;
+        private Int16 numberId;
         
         private void InitNumberDefinitions(NumberFormatValues numberFormat)
         {
-            if (!context.HasNumberingDefinition(numberFormat))
+            AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
+
+            Level level = new Level() { LevelIndex = 0 };
+            StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
+            NumberingFormat numberingFormat = new NumberingFormat() { Val = numberFormat };
+            LevelText levelText = new LevelText() { Val = "%1." };
+            LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
+
+            PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
+            Indentation indentation = new Indentation()
             {
-                //Enum values starting from zero. We need non zero values here
-                Int32 numberId = ((Int32)numberFormat) + 1;
+                Left = "720",
+                Hanging = "360"
+            };
 
-                AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
+            previousParagraphProperties.Append(indentation);
 
-                Level level = new Level() { LevelIndex = 0 };
-                StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
-                NumberingFormat numberingFormat = new NumberingFormat() { Val = numberFormat };
-                LevelText levelText = new LevelText() { Val = "%1." };
-                LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
+            level.Append(startNumberingValue);
+            level.Append(numberingFormat);
+            level.Append(levelText);
+            level.Append(levelJustification);
+            level.Append(previousParagraphProperties);
 
-                PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
-                Indentation indentation = new Indentation()
-                {
-                    Start = "720",
-                    Hanging = "360"
-                };
+            abstractNum.Append(level);
 
-                previousParagraphProperties.Append(indentation);
+            NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numberId };
+            AbstractNumId abstractNumId = new AbstractNumId() { Val = numberId };
 
-                level.Append(startNumberingValue);
-                level.Append(numberingFormat);
-                level.Append(levelText);
-                level.Append(levelJustification);
-                level.Append(previousParagraphProperties);
+            numberingInstance.Append(abstractNumId);
 
-                abstractNum.Append(level);
-
-                NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numberId };
-                AbstractNumId abstractNumId = new AbstractNumId() { Val = numberId };
-
-                numberingInstance.Append(abstractNumId);
-
-                context.SaveNumberingDefinition(numberFormat, abstractNum, numberingInstance);
-            }
+            context.SaveNumberingDefinition(numberId, abstractNum, numberingInstance);
         }
 
-        private void SetListProperties(NumberFormatValues numberFormat, ParagraphProperties paragraphProperties)
+        private void SetListProperties(ParagraphProperties paragraphProperties)
         {
             ParagraphStyleId paragraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
             NumberingProperties numberingProperties = new NumberingProperties();
             NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = 0 };
-            NumberingId numberingId = new NumberingId() { Val = ((Int32)numberFormat) + 1 };
+            NumberingId numberingId = new NumberingId() { Val = numberId };
 
             numberingProperties.Append(numberingLevelReference);
             numberingProperties.Append(numberingId);
@@ -86,7 +79,7 @@
                     args.Paragraph.ParagraphProperties = new ParagraphProperties();
                 }
 
-                SetListProperties(numberFormat, args.Paragraph.ParagraphProperties);
+                SetListProperties(args.Paragraph.ParagraphProperties);
 
                 isParagraphCreated = true;
             }
@@ -185,7 +178,8 @@
 
             if (node.HasChildren)
             {
-                numberFormat = GetNumberFormat(node);
+                NumberFormatValues numberFormat = GetNumberFormat(node);
+                numberId = ++context.ListNumberId;
 
                 InitNumberDefinitions(numberFormat);
 

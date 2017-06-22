@@ -2,7 +2,7 @@
 {
 	using System;
 	using NUnit.Framework;
-	using MariGold.OpenXHTML;
+	using OpenXHTML;
 	using System.IO;
 	using DocumentFormat.OpenXml;
 	using DocumentFormat.OpenXml.Wordprocessing;
