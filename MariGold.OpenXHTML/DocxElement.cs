@@ -232,8 +232,8 @@
                 return false;
             }
             else if (!string.IsNullOrEmpty(text) && 
-                node.Previous != null && !node.Previous.IsText && 
-                node.Next != null && !node.Next.IsText)
+                node.Previous != null && !node.Previous.IsText && !node.Previous.InnerHtml.EndsWith(whiteSpace) &&
+                node.Next != null && !node.Next.IsText && !node.Next.InnerHtml.StartsWith(whiteSpace))
             {
                 text = whiteSpace;
                 return false;
