@@ -126,4 +126,5 @@ The FindBodyOrFirstElement method is expected to return an IHtmlNode representat
 
 #### References
 [Convert HTML to Word Document using CKEditor and MariGold.OpenXHTML](https://www.codeproject.com/Tips/1193272/Convert-HTML-to-Word-Document-using-CKEditor-and-M)
+
 [Convert HTML Files To DOCX Files With MariGold.OpenXHTML](http://www.c-sharpcorner.com/article/convert-html-files-to-docx-files-with-marigold-openxhtml/)
