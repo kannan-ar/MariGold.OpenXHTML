@@ -9,9 +9,5 @@
     <Node UniqueName="[0-1156]MariGold" Expanded="true" />
     <Node UniqueName="[0-1157]MariGold.OpenXHTML" Expanded="true" />
     <Node UniqueName="[0-1158]MariGold.OpenXHTML.Tests" Expanded="true" />
-    <Node UniqueName="[0-1001]MariGold.OpenXHTML.Tests.BasicDocument" Expanded="true" />
-    <Node UniqueName="[0-1036]MariGold.OpenXHTML.Tests.BasicStyles" Expanded="true" />
-    <Node UniqueName="[0-1053]MariGold.OpenXHTML.Tests.ContainerElements" Expanded="true" />
-    <Node UniqueName="[0-1079]MariGold.OpenXHTML.Tests.InlineElements" Expanded="true" />
   </Nodes>
 </VisualState>

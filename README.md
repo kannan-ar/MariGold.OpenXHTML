@@ -123,3 +123,7 @@ return CSSUtility.CalculateRelativeChildFontSize(parentFontSize, childFontSize);
 ```
 
 The FindBodyOrFirstElement method is expected to return an IHtmlNode representation of html body tag and the hierarchy of its child elements. If the document does not have body element, then it is expected to return the first root element. All the CSS styles and HTML attributes of IHtmlNode must be resolved and filled in the respective properties.
+
+#### References
+[Convert HTML to Word Document using CKEditor and MariGold.OpenXHTML](https://www.codeproject.com/Tips/1193272/Convert-HTML-to-Word-Document-using-CKEditor-and-M)
+[Convert HTML Files To DOCX Files With MariGold.OpenXHTML](http://www.c-sharpcorner.com/article/convert-html-files-to-docx-files-with-marigold-openxhtml/)
