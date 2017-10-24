@@ -50,8 +50,7 @@ using (MemoryStream mem = new MemoryStream())
 {
 	WordDocument doc = new WordDocument(mem);
 	doc.Save();
-}
-			
+}		
 ```
 
 #### Relative Images
