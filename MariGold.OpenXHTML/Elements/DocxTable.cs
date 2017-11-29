@@ -48,7 +48,7 @@
                 foreach (DocxNode child in td.Children)
                 {
                     td.CopyExtentedStyles(child);
-                    
+
                     if (child.IsText)
                     {
                         if (!IsEmptyText(child.InnerHtml))
@@ -144,8 +144,8 @@
                 table.Append(row);
             }
         }
-
-        private void ProcessTBody(DocxNode tbody, Table table, DocxTableProperties tableProperties)
+        
+        private void ProcessGroupElement(DocxNode tbody, Table table, DocxTableProperties tableProperties)
         {
             foreach (DocxNode tr in tbody.Children)
             {
@@ -191,10 +191,10 @@
                         node.CopyExtentedStyles(child);
                         ProcessTr(child, table, tableProperties);
                     }
-                    else if (string.Compare(child.Tag, DocxTableProperties.tbody, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    else if (tableProperties.IsGroupElement(child.Tag))
                     {
                         node.CopyExtentedStyles(child);
-                        ProcessTBody(child, table, tableProperties);
+                        ProcessGroupElement(child, table, tableProperties);
                     }
                 }
 

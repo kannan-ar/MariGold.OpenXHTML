@@ -15,8 +15,10 @@
 		private Dictionary<int, int> rowSpanInfo;
 		
 		internal const string tableName = "table";
+        internal const string thead = "thead";
         internal const string tbody = "tbody";
-		internal const string trName = "tr";
+        internal const string tfoot = "tfoot";
+        internal const string trName = "tr";
 		internal const string tdName = "td";
 		internal const string thName = "th";
 		internal const string tableGridName = "TableGrid";
@@ -85,25 +87,29 @@
 			}
 		}
 
-        private Int32 GetTdCount(DocxNode table)
+        private Int32 GetTdCount(DocxNode element)
 		{
 			int count = 0;
 			
-			if (table != null && table.HasChildren)
+			if (element != null && element.HasChildren)
 			{
-				foreach (DocxNode tr in table.Children)
+				foreach (DocxNode child in element.Children)
 				{
-					if (string.Compare(tr.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    if(IsGroupElement(child.Tag))
+                    {
+                        return GetTdCount(child);
+                    }
+					else if (string.Compare(child.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
 					{
-						foreach (DocxNode td in tr.Children)
+						foreach (DocxNode td in child.Children)
 						{
 							if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 ||
 							    string.Compare(td.Tag, DocxTableProperties.thName, StringComparison.InvariantCultureIgnoreCase) == 0)
 							{
-								string colSpan = table.ExtractAttributeValue("colspan");
+								string colSpan = td.ExtractAttributeValue("colspan");
 								Int32 colspanValue;
 								
-								if (!string.IsNullOrEmpty(colspan) && Int32.TryParse(colspan, out colspanValue))
+								if (!string.IsNullOrEmpty(colSpan) && Int32.TryParse(colSpan, out colspanValue))
 								{
 									count += colspanValue;
 								}
@@ -170,5 +176,12 @@
 				table.AppendChild(tg);
 			}
 		}
-	}
+
+        internal bool IsGroupElement(string tag)
+        {
+            return string.Compare(tag, DocxTableProperties.thead, StringComparison.InvariantCultureIgnoreCase) == 0 ||
+                        string.Compare(tag, DocxTableProperties.tbody, StringComparison.InvariantCultureIgnoreCase) == 0 ||
+                        string.Compare(tag, DocxTableProperties.tfoot, StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+    }
 }

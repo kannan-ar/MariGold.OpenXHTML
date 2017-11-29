@@ -1002,5 +1002,360 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
-	}
+
+        [Test]
+        public void TableWithTBody()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<table><tr><th>Id</th></tr><tbody><tr><td>1</td></tr></tbody></table>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+
+                Assert.IsNotNull(table);
+                Assert.AreEqual(4, table.ChildElements.Count);
+
+                TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+                Assert.IsNotNull(tableProperties);
+
+                TableStyle tableStyle = tableProperties.ChildElements[0] as TableStyle;
+                Assert.IsNotNull(tableStyle);
+                Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+
+                TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+                Assert.IsNotNull(tableGrid);
+                Assert.AreEqual(1, tableGrid.ChildElements.Count);
+
+                TableRow row = table.ChildElements[2] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                TableCell cell = row.ChildElements[0] as TableCell;
+                Assert.IsNotNull(cell);
+                Assert.AreEqual(1, cell.ChildElements.Count);
+
+                Paragraph para = cell.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                Assert.IsNotNull(run.RunProperties);
+                Bold bold = run.RunProperties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("Id", text.InnerText);
+
+                row = table.ChildElements[3] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                cell = row.ChildElements[0] as TableCell;
+                cell.TestTableCell(1, "1");
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void TableWithTHead()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<table><thead><tr><th>Id</th></tr></thead><tr><td>1</td></tr></table>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+
+                Assert.IsNotNull(table);
+                Assert.AreEqual(4, table.ChildElements.Count);
+
+                TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+                Assert.IsNotNull(tableProperties);
+
+                TableStyle tableStyle = tableProperties.ChildElements[0] as TableStyle;
+                Assert.IsNotNull(tableStyle);
+                Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+
+                TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+                Assert.IsNotNull(tableGrid);
+                Assert.AreEqual(1, tableGrid.ChildElements.Count);
+
+                TableRow row = table.ChildElements[2] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                TableCell cell = row.ChildElements[0] as TableCell;
+                Assert.IsNotNull(cell);
+                Assert.AreEqual(1, cell.ChildElements.Count);
+
+                Paragraph para = cell.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                Assert.IsNotNull(run.RunProperties);
+                Bold bold = run.RunProperties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("Id", text.InnerText);
+
+                row = table.ChildElements[3] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                cell = row.ChildElements[0] as TableCell;
+                cell.TestTableCell(1, "1");
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void TableWithTFoot()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<table><thead><tr><th>Id</th></tr></thead><tfoot><tr><td>1</td></tr></tfoot></table>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+
+                Assert.IsNotNull(table);
+                Assert.AreEqual(4, table.ChildElements.Count);
+
+                TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+                Assert.IsNotNull(tableProperties);
+
+                TableStyle tableStyle = tableProperties.ChildElements[0] as TableStyle;
+                Assert.IsNotNull(tableStyle);
+                Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+
+                TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+                Assert.IsNotNull(tableGrid);
+                Assert.AreEqual(1, tableGrid.ChildElements.Count);
+
+                TableRow row = table.ChildElements[2] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                TableCell cell = row.ChildElements[0] as TableCell;
+                Assert.IsNotNull(cell);
+                Assert.AreEqual(1, cell.ChildElements.Count);
+
+                Paragraph para = cell.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                Assert.IsNotNull(run.RunProperties);
+                Bold bold = run.RunProperties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("Id", text.InnerText);
+
+                row = table.ChildElements[3] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                cell = row.ChildElements[0] as TableCell;
+                cell.TestTableCell(1, "1");
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void ColSpanTableGrid()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<table><tr><td colspan='2'>head</td></tr><tr><td>1</td><td>2</td></tr></table>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+
+                Assert.IsNotNull(table);
+                Assert.AreEqual(4, table.ChildElements.Count);
+
+                TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+                Assert.IsNotNull(tableProperties);
+                Assert.AreEqual(1, tableProperties.ChildElements.Count);
+
+                TableStyle tableStyle = tableProperties.ChildElements[0] as TableStyle;
+                Assert.IsNotNull(tableStyle);
+                Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+
+                TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+                Assert.IsNotNull(tableGrid);
+                Assert.AreEqual(2, tableGrid.ChildElements.Count);
+
+                TableRow row = table.ChildElements[2] as TableRow;
+
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                TableCell cell = row.ChildElements[0] as TableCell;
+
+                Assert.IsNotNull(cell);
+                Assert.AreEqual(2, cell.ChildElements.Count);
+
+                TableCellProperties cellProperties = cell.ChildElements[0] as TableCellProperties;
+
+                Assert.IsNotNull(cellProperties);
+                Assert.AreEqual(1, cellProperties.ChildElements.Count);
+
+                GridSpan gridSpan = cellProperties.ChildElements[0] as GridSpan;
+                Assert.IsNotNull(gridSpan);
+                Assert.AreEqual(2, gridSpan.Val.Value);
+
+                Word.Paragraph para = cell.ChildElements[1] as Word.Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Word.Run run = para.ChildElements[0] as Word.Run;
+
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                Word.Text text = run.ChildElements[0] as Word.Text;
+
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("head", text.InnerText);
+
+                row = table.ChildElements[3] as TableRow;
+
+                cell = row.ChildElements[0] as TableCell;
+                Assert.IsNotNull(cell);
+                cell.TestTableCell(1, "1");
+
+                cell = row.ChildElements[1] as TableCell;
+                Assert.IsNotNull(cell);
+                cell.TestTableCell(1, "2");
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
+        public void TableWithTHeadTBodyTFoot()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<table><thead><tr><th>Id</th></tr></thead><tbody><tr><td>1</td></tr></tbody><tfoot><tr><td>2</td></tr></tfoot></table>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+
+                Assert.IsNotNull(table);
+                Assert.AreEqual(5, table.ChildElements.Count);
+
+                TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+                Assert.IsNotNull(tableProperties);
+
+                TableStyle tableStyle = tableProperties.ChildElements[0] as TableStyle;
+                Assert.IsNotNull(tableStyle);
+                Assert.AreEqual("TableGrid", tableStyle.Val.Value);
+
+                TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+                Assert.IsNotNull(tableGrid);
+                Assert.AreEqual(1, tableGrid.ChildElements.Count);
+
+                TableRow row = table.ChildElements[2] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                TableCell cell = row.ChildElements[0] as TableCell;
+                Assert.IsNotNull(cell);
+                Assert.AreEqual(1, cell.ChildElements.Count);
+
+                Paragraph para = cell.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+                Assert.IsNotNull(run.RunProperties);
+                Bold bold = run.RunProperties.ChildElements[0] as Bold;
+                Assert.IsNotNull(bold);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("Id", text.InnerText);
+
+                row = table.ChildElements[3] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                cell = row.ChildElements[0] as TableCell;
+                cell.TestTableCell(1, "1");
+
+                row = table.ChildElements[4] as TableRow;
+                Assert.IsNotNull(row);
+                Assert.AreEqual(1, row.ChildElements.Count);
+
+                cell = row.ChildElements[0] as TableCell;
+                cell.TestTableCell(1, "2");
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+    }
 }
