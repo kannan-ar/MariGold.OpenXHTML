@@ -14,6 +14,7 @@
         internal const string fontWeight = "font-weight";
         internal const string fontStyle = "font-style";
         internal const string textDecoration = "text-decoration";
+        internal const string textDecorationLine = "text-decoration-line";
         internal const string fontSize = "font-size";
 
         internal const string bold = "bold";

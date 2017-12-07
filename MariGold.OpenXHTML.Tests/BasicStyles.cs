@@ -149,8 +149,47 @@
 			}
 			
 		}
-		
-		[Test]
+
+        [Test]
+        public void DivTextDecorationLine()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+
+                doc.Process(new HtmlParser("<div style='text-decoration-line:underline'>test</div>"));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                OpenXmlElement para = doc.Document.Body.ChildElements[0];
+
+                Assert.IsTrue(para is Paragraph);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                Assert.IsNotNull(run.RunProperties);
+                Assert.AreEqual(1, run.RunProperties.ChildElements.Count);
+                Underline underline = run.RunProperties.ChildElements[0] as Underline;
+                Assert.IsNotNull(underline);
+                Assert.AreEqual(UnderlineValues.Single, underline.Val.Value);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual(0, text.ChildElements.Count);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+
+        }
+
+        [Test]
 		public void bTag()
 		{
 			using (MemoryStream mem = new MemoryStream())

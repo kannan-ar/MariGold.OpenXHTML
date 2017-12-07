@@ -7,17 +7,25 @@
         private static bool MergeTextDecorationStyles(string value, Dictionary<string, string> styles)
         {
             string dictValue;
+            string style = string.Empty;
             bool merged = false;
 
             if (styles.TryGetValue(DocxFontStyle.textDecoration, out dictValue))
             {
-                if (!dictValue.CompareStringInvariantCultureIgnoreCase(value) &&
+                style = DocxFontStyle.textDecoration;
+            }
+            else if(styles.TryGetValue(DocxFontStyle.textDecorationLine, out dictValue))
+            {
+                style = DocxFontStyle.textDecorationLine;
+            }
+
+            if (!string.IsNullOrEmpty(style) &&
+                    !dictValue.CompareStringInvariantCultureIgnoreCase(value) &&
                     (value.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.lineThrough) ||
                     value.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.underLine)))
-                {
-                    styles[DocxFontStyle.textDecoration] = string.Concat(dictValue, "|", value);
-                    merged = true;
-                }
+            {
+                styles[style] = string.Concat(dictValue, "|", value);
+                merged = true;
             }
 
             return merged;
@@ -30,6 +38,7 @@
             switch (styleName)
             {
                 case DocxFontStyle.textDecoration:
+                case DocxFontStyle.textDecorationLine:
                     merged = MergeTextDecorationStyles(value, styles);
                     break;
             }
