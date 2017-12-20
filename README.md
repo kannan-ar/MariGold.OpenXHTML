@@ -127,3 +127,5 @@ The FindBodyOrFirstElement method is expected to return an IHtmlNode representat
 [Convert HTML to Word Document using CKEditor and MariGold.OpenXHTML](https://www.codeproject.com/Tips/1193272/Convert-HTML-to-Word-Document-using-CKEditor-and-M)
 
 [Windows Forms Application - Convert HTML Files To DOCX Files With MariGold.OpenXHTML](http://www.c-sharpcorner.com/article/convert-html-files-to-docx-files-with-marigold-openxhtml/)
+
+[Implement Custom HTML Parser using AngleSharp](https://www.codeproject.com/Tips/1221178/Convert-HTML-to-Open-XML-Word-document-using-MariG)
