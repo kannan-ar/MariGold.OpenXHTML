@@ -10,7 +10,7 @@
     <description>$description$</description>
     <releaseNotes>Bug fixes</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>MariGold OpenXML HtmlParser</tags>
+    <tags>MariGold OpenXML HTML office</tags>
     <dependencies>
     	<dependency id="DocumentFormat.OpenXml" version="2.7.2" />
 	    <dependency id="MariGold.HtmlParser" version="1.0.1" />
