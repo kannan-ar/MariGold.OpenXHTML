@@ -11,6 +11,7 @@
         internal const string center = "center";
         internal const string left = "left";
         internal const string right = "right";
+	internal const string justify = "justify";
         internal const string sub = "sub";
         internal const string super = "super";
 
@@ -56,6 +57,11 @@
                     assigned = true;
                     alignment = JustificationValues.Center;
                     break;
+			    
+	    	case justify:
+		    assigned = true;
+		    alignment = JustificationValues.Both;
+		    break;
             }
 
             return assigned;
