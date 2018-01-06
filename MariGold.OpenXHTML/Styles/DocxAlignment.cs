@@ -1,17 +1,17 @@
 ﻿namespace MariGold.OpenXHTML
 {
-	using DocumentFormat.OpenXml;
-	using DocumentFormat.OpenXml.Wordprocessing;
-	
-	internal static class DocxAlignment
-	{
-		internal const string textAlign = "text-align";
-		internal const string verticalAlign = "vertical-align";
+    using DocumentFormat.OpenXml;
+    using DocumentFormat.OpenXml.Wordprocessing;
+
+    internal static class DocxAlignment
+    {
+        internal const string textAlign = "text-align";
+        internal const string verticalAlign = "vertical-align";
 
         internal const string center = "center";
         internal const string left = "left";
         internal const string right = "right";
-	internal const string justify = "justify";
+        internal const string justify = "justify";
         internal const string sub = "sub";
         internal const string super = "super";
 
@@ -57,52 +57,52 @@
                     assigned = true;
                     alignment = JustificationValues.Center;
                     break;
-			    
-	    	case justify:
-		    assigned = true;
-		    alignment = JustificationValues.Both;
-		    break;
+
+                case justify:
+                    assigned = true;
+                    alignment = JustificationValues.Both;
+                    break;
             }
 
             return assigned;
         }
-		
-		internal static void ApplyTextAlign(string style, OpenXmlElement styleElement)
-		{
-			JustificationValues alignment;
-					
-			if (GetJustificationValue(style, out alignment))
-			{
-				styleElement.Append(new Justification() { Val = alignment });
-			}
-		}
-		
-		internal static bool GetCellVerticalAlignment(string style, out TableVerticalAlignmentValues alignment)
-		{
-			alignment = TableVerticalAlignmentValues.Top;
-			bool assigned = false;
 
-			switch (style.ToLower())
-			{
-				case "top":
-					assigned = true;
-					alignment = TableVerticalAlignmentValues.Top;
-					break;
+        internal static void ApplyTextAlign(string style, OpenXmlElement styleElement)
+        {
+            JustificationValues alignment;
 
-				case "middle":
-					assigned = true;
-					alignment = TableVerticalAlignmentValues.Center;
-					break;
+            if (GetJustificationValue(style, out alignment))
+            {
+                styleElement.Append(new Justification() { Val = alignment });
+            }
+        }
 
-				case "bottom":
-					assigned = true;
-					alignment = TableVerticalAlignmentValues.Bottom;
-					break;
-			}
+        internal static bool GetCellVerticalAlignment(string style, out TableVerticalAlignmentValues alignment)
+        {
+            alignment = TableVerticalAlignmentValues.Top;
+            bool assigned = false;
 
-			return assigned;
-		}
-		
+            switch (style.ToLower())
+            {
+                case "top":
+                    assigned = true;
+                    alignment = TableVerticalAlignmentValues.Top;
+                    break;
+
+                case "middle":
+                    assigned = true;
+                    alignment = TableVerticalAlignmentValues.Center;
+                    break;
+
+                case "bottom":
+                    assigned = true;
+                    alignment = TableVerticalAlignmentValues.Bottom;
+                    break;
+            }
+
+            return assigned;
+        }
+
         internal static void ApplyVerticalTextAlign(string style, OpenXmlElement styleElement)
         {
             VerticalPositionValues alignment;
@@ -112,5 +112,5 @@
                 styleElement.Append(new VerticalTextAlignment() { Val = alignment });
             }
         }
-	}
+    }
 }
