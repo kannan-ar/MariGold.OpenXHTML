@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MariGold.OpenXHTML")]
-[assembly: AssemblyDescription("A utility to convert html document to Open XML document")]
+[assembly: AssemblyDescription("A utility to convert html document to Open XML word document")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MariGold")]
 [assembly: AssemblyProduct("MariGold Framework")]
