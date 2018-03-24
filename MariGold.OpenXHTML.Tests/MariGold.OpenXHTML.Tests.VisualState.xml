@@ -5,10 +5,10 @@
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit" Expanded="true" />
-    <Node UniqueName="[0-1162]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll" Expanded="true" />
-    <Node UniqueName="[0-1163]MariGold" Expanded="true" />
-    <Node UniqueName="[0-1164]MariGold.OpenXHTML" Expanded="true" />
-    <Node UniqueName="[0-1165]MariGold.OpenXHTML.Tests" Expanded="true" />
-    <Node UniqueName="[0-1124]MariGold.OpenXHTML.Tests.TestP" Expanded="true" />
+    <Node UniqueName="[0-1163]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1164]MariGold" Expanded="true" />
+    <Node UniqueName="[0-1165]MariGold.OpenXHTML" Expanded="true" />
+    <Node UniqueName="[0-1166]MariGold.OpenXHTML.Tests" Expanded="true" />
+    <Node UniqueName="[0-1036]MariGold.OpenXHTML.Tests.BasicStyles" Expanded="true" />
   </Nodes>
 </VisualState>

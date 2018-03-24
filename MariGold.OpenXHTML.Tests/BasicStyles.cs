@@ -457,5 +457,45 @@
                 Assert.AreEqual(0, errors.Count());
             }
         }
-	}
+
+        [Test]
+        public void FiftyPercentageEMFontSize()
+        {
+            string html = "<div style=\"font-size:0.50em\">test</div>";
+
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+                doc.Process(new HtmlParser(html));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Run run = para.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(2, run.ChildElements.Count);
+
+                RunProperties properties = run.ChildElements[0] as RunProperties;
+                Assert.IsNotNull(properties);
+                Assert.AreEqual(1, properties.ChildElements.Count);
+
+                FontSize fontSize = properties.ChildElements[0] as FontSize;
+                Assert.IsNotNull(fontSize);
+                Assert.AreEqual("12", fontSize.Val.Value);
+
+                Word.Text text = run.ChildElements[1] as Word.Text;
+                Assert.IsNotNull(text);
+                Assert.AreEqual("test", text.InnerText);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+    }
 }
