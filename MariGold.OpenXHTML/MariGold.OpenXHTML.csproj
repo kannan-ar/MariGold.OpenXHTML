@@ -68,6 +68,7 @@
     <Compile Include="Elements\DocxBody.cs" />
     <Compile Include="Elements\DocxBr.cs" />
     <Compile Include="Elements\DocxCenter.cs" />
+    <Compile Include="Elements\DocxObject.cs" />
     <Compile Include="Elements\DocxStrike.cs" />
     <Compile Include="Elements\DocxDiv.cs" />
     <Compile Include="Elements\DocxDL.cs" />

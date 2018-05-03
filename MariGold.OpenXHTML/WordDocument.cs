@@ -7,9 +7,6 @@
     using System.IO;
     using MariGold.HtmlParser;
 
-    /// <summary>
-    /// 
-    /// </summary>
     public sealed class WordDocument
     {
         private readonly IOpenXmlContext context;

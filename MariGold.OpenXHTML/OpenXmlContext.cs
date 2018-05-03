@@ -22,35 +22,35 @@
         private void PrepareWordElements()
         {
             elements = new List<DocxElement>() {
-				new DocxDiv(this),
-				new DocxUL(this),
-				new DocxOL(this),
-				new DocxImage(this),
-				new DocxSpan(this),
-				new DocxA(this),
-				new DocxBr(this),
-				new DocxUnderline(this),
-				new DocxCenter(this),
-				new DocxItalic(this),
-				new DocxBold(this),
-				new DocxHeading(this),
+                new DocxDiv(this),
+                new DocxUL(this),
+                new DocxOL(this),
+                new DocxImage(this),
+                new DocxSpan(this),
+                new DocxA(this),
+                new DocxBr(this),
+                new DocxUnderline(this),
+                new DocxCenter(this),
+                new DocxItalic(this),
+                new DocxBold(this),
+                new DocxHeading(this),
                 new DocxHeader(this),
                 new DocxFooter(this),
-				new DocxAddress(this),
+                new DocxAddress(this),
                 new DocxSection(this),
                 new DocxFont(this),
-				new DocxDL(this),
-				new DocxHr(this),
+                new DocxDL(this),
+                new DocxHr(this),
                 new DocxQ(this),
                 new DocxSup(this),
                 new DocxSub(this),
                 new DocxStrike(this),
-				new DocxTable(this),
+                new DocxTable(this),
                 new DocxInline(this)
-			};
+            };
 
             textElements = new List<ITextElement>() {
-				new DocxBold(this),
+                new DocxBold(this),
                 new DocxSpan(this),
                 new DocxBr(this),
                 new DocxCenter(this),
@@ -66,7 +66,7 @@
                 new DocxSub(this),
                 new DocxStrike(this),
                 new DocxInline(this)
-			};
+            };
         }
 
         private void SaveNumberDefinitions()
@@ -240,12 +240,7 @@
         {
             return new DocxBody(this);
         }
-        /*
-        public bool HasNumberingDefinition(NumberFormatValues format)
-        {
-            return abstractNumList != null && numberingInstanceList != null && abstractNumList.ContainsKey(format) && numberingInstanceList.ContainsKey(format);
-        }
-        */
+
         public void SaveNumberingDefinition(Int16 numberId, AbstractNum abstractNum, NumberingInstance numberingInstance)
         {
             if (abstractNumList == null)

@@ -19,7 +19,6 @@
 		DocxElement Convert(DocxNode node);
         ITextElement ConvertTextElement(DocxNode node);
 		DocxElement GetBodyElement();
-		//bool HasNumberingDefinition(NumberFormatValues format);
 		void SaveNumberingDefinition(Int16 numberId, AbstractNum abstractNum, NumberingInstance numberingInstance);
         void SetParser(IParser parser);
 	}
