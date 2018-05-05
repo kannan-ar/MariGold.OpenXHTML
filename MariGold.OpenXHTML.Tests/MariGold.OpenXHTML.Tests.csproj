@@ -54,6 +54,7 @@
     <Compile Include="BasicStyles.cs" />
     <Compile Include="BlockElements.cs" />
     <Compile Include="ContainerElements.cs" />
+    <Compile Include="EmbedElements.cs" />
     <Compile Include="HtmlDefaultStyles.cs" />
     <Compile Include="InheritedStyles.cs" />
     <Compile Include="InlineElements.cs" />
@@ -85,6 +86,10 @@
   <ItemGroup>
     <Content Include="Html\imageinsideatag.htm" />
     <Content Include="Html\img.png" />
+    <Content Include="Html\objectimageinsidediv.htm" />
+    <Content Include="Html\objectimage.htm" />
+    <Content Include="Html\objectimagemultidiv.htm" />
+    <Content Include="Html\objectparagraphimage.htm" />
     <Content Include="Html\ownstyleoverride.htm" />
     <Content Include="Html\relativestylesheet.htm" />
   </ItemGroup>

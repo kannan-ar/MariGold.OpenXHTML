@@ -21,5 +21,6 @@
 		DocxElement GetBodyElement();
 		void SaveNumberingDefinition(Int16 numberId, AbstractNum abstractNum, NumberingInstance numberingInstance);
         void SetParser(IParser parser);
+        IDocxInterchanger GetInterchanger();
 	}
 }

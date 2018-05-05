@@ -1,4 +1,4 @@
-﻿namespace MariGold.OpenXHTML.Elements
+﻿namespace MariGold.OpenXHTML
 {
     using System;
     using DocumentFormat.OpenXml.Wordprocessing;
@@ -9,22 +9,34 @@
 
         internal override bool CanConvert(DocxNode node)
         {
-            throw new NotImplementedException();
+            return string.Compare(node.Tag, "object", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
         internal override void Process(DocxNode node, ref Paragraph paragraph)
         {
-            throw new NotImplementedException();
+            var interchanger = context.GetInterchanger();
+            string data = node.ExtractAttributeValue("data");
+
+            if (data.IsImage())
+            {
+                interchanger.ProcessImage(context, data, node, ref paragraph);
+            }
         }
 
         bool ITextElement.CanConvert(DocxNode node)
         {
-            throw new NotImplementedException();
+            return string.Compare(node.Tag, "object", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
         void ITextElement.Process(DocxNode node)
         {
-            throw new NotImplementedException();
+            var interchanger = context.GetInterchanger();
+            string data = node.ExtractAttributeValue("data");
+
+            if (data.IsImage())
+            {
+                interchanger.ProcessImage(context, data, node);
+            }
         }
     }
 }

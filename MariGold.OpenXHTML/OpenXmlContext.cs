@@ -45,6 +45,7 @@
                 new DocxSup(this),
                 new DocxSub(this),
                 new DocxStrike(this),
+                new DocxObject(this),
                 new DocxTable(this),
                 new DocxInline(this)
             };
@@ -65,6 +66,7 @@
                 new DocxSup(this),
                 new DocxSub(this),
                 new DocxStrike(this),
+                new DocxObject(this),
                 new DocxInline(this)
             };
         }
@@ -272,6 +274,11 @@
             }
 
             this.parser = parser;
+        }
+
+        public IDocxInterchanger GetInterchanger()
+        {
+            return new DocxInterchanger();
         }
     }
 }

@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocxCompare.cs" />
+    <Compile Include="DocxHtmlNode.cs" />
     <Compile Include="DocxNode.cs" />
     <Compile Include="Elements\DocxA.cs" />
     <Compile Include="Elements\DocxAddress.cs" />
@@ -91,6 +92,8 @@
     <Compile Include="Elements\DocxUL.cs" />
     <Compile Include="Elements\DocxUnderline.cs" />
     <Compile Include="HtmlParser.cs" />
+    <Compile Include="Interchangers\DocxInterchanger.cs" />
+    <Compile Include="Interchangers\IDocxInterchanger.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="IOpenXmlContext.cs" />
     <Compile Include="ITextElement.cs" />

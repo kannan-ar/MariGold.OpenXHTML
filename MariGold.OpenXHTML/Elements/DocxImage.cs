@@ -29,7 +29,7 @@
             return type;
         }
 
-        private Drawing CreateDrawingFromAbsoluteUri(string src)
+        private Drawing CreateDrawingFromAbsoluteUri(string src, Uri uri)
         {
             long cx;
             long cy;
@@ -38,7 +38,7 @@
             client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0");
             client.UseDefaultCredentials = true;
 
-            using (Stream stream = client.OpenRead(new Uri(src)))
+            using (Stream stream = client.OpenRead(uri))
             {
                 using (Bitmap bitmap = new Bitmap(stream))
                 {
@@ -47,9 +47,8 @@
                 }
             }
 
-            using (Stream stream = client.OpenRead(new Uri(src)))
+            using (Stream stream = client.OpenRead(uri))
             {
-
                 ImagePart imagePart = context.MainDocumentPart.AddImagePart(GetImagePartType(src));
 
                 imagePart.FeedData(stream);
@@ -131,9 +130,11 @@
                     src);
             }
 
-            if (Uri.IsWellFormedUriString(src, UriKind.Absolute))
+            Uri uri;
+
+            if (Uri.TryCreate(src, UriKind.Absolute, out uri))
             {
-                return CreateDrawingFromAbsoluteUri(src);
+                return CreateDrawingFromAbsoluteUri(src, uri);
             }
 
             return null;
