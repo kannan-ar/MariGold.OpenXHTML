@@ -58,6 +58,7 @@
     <Compile Include="InheritedStyles.cs" />
     <Compile Include="InlineElements.cs" />
     <Compile Include="InvalidElements.cs" />
+    <Compile Include="ObjectElements.cs" />
     <Compile Include="SimpleHtmlFromFile.cs" />
     <Compile Include="StyleOverrides.cs" />
     <Compile Include="TestDiv.cs" />
@@ -68,6 +69,9 @@
     <Compile Include="TestUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Html\assets\sample.docx" />
+    <None Include="Html\assets\sample.pptx" />
+    <None Include="Html\assets\sample.xlsx" />
     <None Include="Html\emptybody.htm" />
     <None Include="Html\oneptag.htm" />
     <None Include="Html\onesentanceinbody.htm" />
@@ -83,6 +87,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Html\docxobjecttag.htm" />
     <Content Include="Html\imageinsideatag.htm" />
     <Content Include="Html\img.png" />
     <Content Include="Html\objectimageinsidediv.htm" />
@@ -90,7 +95,9 @@
     <Content Include="Html\objectimagemultidiv.htm" />
     <Content Include="Html\objectparagraphimage.htm" />
     <Content Include="Html\ownstyleoverride.htm" />
+    <Content Include="Html\pptxobjecttag.htm" />
     <Content Include="Html\relativestylesheet.htm" />
+    <Content Include="Html\xlsxobjecttag.htm" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

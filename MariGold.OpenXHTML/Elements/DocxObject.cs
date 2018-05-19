@@ -15,7 +15,7 @@
 
         private bool IsImage(string filePath)
         {
-            return filePath.HasStringContains(".jpg", ".bmp", ".gif", ".png");
+            return filePath.HasStringContains(".jpg", ".bmp", ".gif", ".png", ".tiff");
         }
 
         private bool TryFormat(string filePath, out string contentType, out string progId)
@@ -29,46 +29,16 @@
                 progId = "Word.Document.12";
                 return true;
             }
-            else if (filePath.HasStringContains(".doc"))
-            {
-                contentType = "application/msword";
-                progId = "Word.Document.8";
-                return true;
-            }
-            else if (filePath.HasStringContains(".xlc"))
-            {
-                contentType = "application/vnd.ms-excel";
-                progId = "Excel.Chart.8";
-                return true;
-            }
             else if (filePath.HasStringContains(".xlsx"))
             {
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 progId = "Excel.Sheet.12";
                 return true;
             }
-            else if (filePath.HasStringContains(".xls"))
-            {
-                contentType = "application/vnd.ms-excel";
-                progId = "Excel.Sheet.8";
-                return true;
-            }
             else if (filePath.HasStringContains(".pptx"))
             {
                 contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
                 progId = "PowerPoint.Show.12";
-                return true;
-            }
-            else if (filePath.HasStringContains(".ppt"))
-            {
-                contentType = "application/vnd.ms-powerpoint";
-                progId = "PowerPoint.Show.8";
-                return true;
-            }
-            else if (filePath.HasStringContains(".rtf"))
-            {
-                contentType = "application/msword";
-                progId = "Word.Document.8";
                 return true;
             }
 
