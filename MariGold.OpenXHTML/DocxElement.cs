@@ -5,6 +5,8 @@
     using System.Text.RegularExpressions;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System.IO;
+    using System.Net;
 
     internal abstract class DocxElement
     {
@@ -161,6 +163,38 @@
 
                 RunCreated(node, run);
             }
+        }
+
+        protected bool TryCreateAbsoluteUri(string relativeUrl, out Uri uri)
+        {
+            if (relativeUrl.StartsWith("//") && !string.IsNullOrEmpty(context.UriSchema))
+            {
+                relativeUrl = string.Concat(context.UriSchema, ":" + relativeUrl);
+            }
+
+            if (Uri.IsWellFormedUriString(relativeUrl, UriKind.Relative) && !string.IsNullOrEmpty(context.ImagePath))
+            {
+                relativeUrl = string.Concat(context.ImagePath,
+                    (!context.ImagePath.EndsWith("/") && !relativeUrl.StartsWith("/")) ? "/" : string.Empty,
+                    relativeUrl);
+            }
+            else if (Uri.IsWellFormedUriString(relativeUrl, UriKind.Relative) && !string.IsNullOrEmpty(context.BaseURL))
+            {
+                relativeUrl = string.Concat(context.BaseURL,
+                    (!context.BaseURL.EndsWith("/") && !relativeUrl.StartsWith("/")) ? "/" : string.Empty,
+                    relativeUrl);
+            }
+
+            return Uri.TryCreate(relativeUrl, UriKind.Absolute, out uri);
+        }
+
+        protected Stream GetStream(Uri uri)
+        {
+            WebClient client = new WebClient() { Encoding = System.Text.Encoding.UTF8 };
+            client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0");
+            client.UseDefaultCredentials = true;
+
+            return client.OpenRead(uri);
         }
 
         internal DocxElement(IOpenXmlContext context)

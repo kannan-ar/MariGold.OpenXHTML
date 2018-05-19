@@ -34,11 +34,7 @@
             long cx;
             long cy;
 
-            WebClient client = new WebClient() { Encoding = System.Text.Encoding.UTF8 };
-            client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0");
-            client.UseDefaultCredentials = true;
-
-            using (Stream stream = client.OpenRead(uri))
+            using (Stream stream = GetStream(uri))
             {
                 using (Bitmap bitmap = new Bitmap(stream))
                 {
@@ -47,7 +43,7 @@
                 }
             }
 
-            using (Stream stream = client.OpenRead(uri))
+            using (Stream stream = GetStream(uri))
             {
                 ImagePart imagePart = context.MainDocumentPart.AddImagePart(GetImagePartType(src));
 
@@ -80,23 +76,21 @@
                                                         Name = Path.GetFileName(src)
                                                     },
                                                     new PIC.NonVisualPictureDrawingProperties()),
-                                                new PIC.BlipFill(
+                                                    new PIC.BlipFill(
                                                     new A.Blip(
                                                         new A.BlipExtensionList(
                                                             new A.BlipExtension()
                                                             {
-                                                                Uri =
-                                                                                        "{28A0092B-C50C-407E-A947-70E740481C1C}"
+                                                                Uri = "{28A0092B-C50C-407E-A947-70E740481C1C}"
                                                             })
                                                     )
                                                     {
                                                         Embed = context.MainDocumentPart.GetIdOfPart(imagePart),
-                                                        CompressionState =
-                                                                                A.BlipCompressionValues.Print
+                                                        CompressionState = A.BlipCompressionValues.Print
                                                     },
                                                     new A.Stretch(
                                                         new A.FillRectangle())),
-                                                new PIC.ShapeProperties(
+                                                    new PIC.ShapeProperties(
                                                     new A.Transform2D(
                                                         new A.Offset() { X = 0L, Y = 0L },
                                                         new A.Extents() { Cx = cx, Cy = cy }),
@@ -118,21 +112,9 @@
 
         private Drawing PrepareImage(string src)
         {
-            if (src.StartsWith("//") && !string.IsNullOrEmpty(context.UriSchema))
-            {
-                src = string.Concat(context.UriSchema, ":" + src);
-            }
-
-            if (Uri.IsWellFormedUriString(src, UriKind.Relative) && !string.IsNullOrEmpty(context.ImagePath))
-            {
-                src = string.Concat(context.ImagePath,
-                    (!context.ImagePath.EndsWith("/") && !src.StartsWith("/")) ? "/" : string.Empty,
-                    src);
-            }
-
             Uri uri;
 
-            if (Uri.TryCreate(src, UriKind.Absolute, out uri))
+            if (TryCreateAbsoluteUri(src, out uri))
             {
                 return CreateDrawingFromAbsoluteUri(src, uri);
             }

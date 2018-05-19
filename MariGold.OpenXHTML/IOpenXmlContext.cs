@@ -14,8 +14,9 @@
 		Document Document{ get; }
         IParser Parser { get; }
         Int16 ListNumberId { get; set; }
+        Int32 RelationshipId { get; set; }
 
-		void Save();
+        void Save();
 		DocxElement Convert(DocxNode node);
         ITextElement ConvertTextElement(DocxNode node);
 		DocxElement GetBodyElement();

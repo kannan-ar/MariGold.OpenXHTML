@@ -179,6 +179,42 @@
         }
 
         [Test]
+        public void ImageInsideATagWithBaseURL()
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                WordDocument doc = new WordDocument(mem);
+                string path = "file:///" + TestUtility.GetPath("Html");
+                path = path.Replace(@"\", "//");
+                doc.BaseURL = path + "//";
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\imageinsideatag.htm")));
+
+                Assert.IsNotNull(doc.Document.Body);
+                Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+
+                Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
+                Assert.IsNotNull(para);
+                Assert.AreEqual(1, para.ChildElements.Count);
+
+                Hyperlink link = para.ChildElements[0] as Hyperlink;
+                Assert.IsNotNull(link);
+                Assert.AreEqual(1, link.ChildElements.Count);
+
+                Run run = link.ChildElements[0] as Run;
+                Assert.IsNotNull(run);
+                Assert.AreEqual(1, run.ChildElements.Count);
+
+                Drawing image = run.ChildElements[0] as Drawing;
+                Assert.IsNotNull(image);
+
+                OpenXmlValidator validator = new OpenXmlValidator();
+                var errors = validator.Validate(doc.WordprocessingDocument);
+                errors.PrintValidationErrors();
+                Assert.AreEqual(0, errors.Count());
+            }
+        }
+
+        [Test]
         public void BootstrapCDN()
         {
             using (MemoryStream mem = new MemoryStream())

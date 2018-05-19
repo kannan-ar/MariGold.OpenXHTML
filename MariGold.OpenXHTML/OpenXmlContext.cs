@@ -18,6 +18,7 @@
         private string uriSchema;
         private IParser parser;
         private Int16 listNumberId;
+        private Int32 relationshipId { get; set; }
 
         private void PrepareWordElements()
         {
@@ -196,6 +197,19 @@
             set
             {
                 listNumberId = value;
+            }
+        }
+
+        public Int32 RelationshipId
+        {
+            get
+            {
+                return relationshipId;
+            }
+
+            set
+            {
+                relationshipId = value;
             }
         }
 

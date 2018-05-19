@@ -14,16 +14,14 @@
             return string.Compare(source, value, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal static bool IsImage(this string path)
+        internal static bool HasStringContains(this string path, params string[] extensions)
         {
             if (string.IsNullOrEmpty(path))
             {
                 return false;
             }
 
-            string[] imageExtensions = new string[] { ".jpg", ".bmp", ".gif", ".png" };
-
-            foreach(string ext in imageExtensions)
+            foreach(string ext in extensions)
             {
                 if(path.Contains(ext))
                 {
