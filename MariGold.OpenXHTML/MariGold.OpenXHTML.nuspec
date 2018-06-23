@@ -8,7 +8,7 @@
     <owners>$author$</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>DocumentFormat.OpenXml is upgraded to 2.8.1</releaseNotes>
+    <releaseNotes>Added support for object html tag, bug fixes</releaseNotes>
     <projectUrl>https://github.com/kannan-ar/MariGold.OpenXHTML</projectUrl>
     <summary>MariGold.OpenXHTML is a wrapper library for Open XML SDK to convert HTML documents into Open XML word documents.</summary>
     <copyright>Copyright 2016</copyright>
