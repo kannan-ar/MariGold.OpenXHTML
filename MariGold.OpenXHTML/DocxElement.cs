@@ -1,7 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
-    using System.Web;
     using System.Text.RegularExpressions;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
@@ -102,7 +101,7 @@
             }
 
             string display = node.ExtractStyleValue("display");
-            return display.CompareStringInvariantCultureIgnoreCase("none");
+            return display.CompareStringOrdinalIgnoreCase("none");
         }
 
         protected void ProcessElement(DocxNode node, ref Paragraph paragraph)
@@ -213,8 +212,8 @@
             {
                 return string.Empty;
             }
-
-            html = HttpUtility.HtmlDecode(html);
+            
+            html = WebUtility.HtmlDecode(html);
             html = html.Replace("&nbsp;", whiteSpace);
             html = html.Replace("&amp;", "&");
 

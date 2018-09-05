@@ -20,9 +20,9 @@
             }
 
             if (!string.IsNullOrEmpty(style) &&
-                    !dictValue.CompareStringInvariantCultureIgnoreCase(value) &&
-                    (value.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.lineThrough) ||
-                    value.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.underLine)))
+                    !dictValue.CompareStringOrdinalIgnoreCase(value) &&
+                    (value.CompareStringOrdinalIgnoreCase(DocxFontStyle.lineThrough) ||
+                    value.CompareStringOrdinalIgnoreCase(DocxFontStyle.underLine)))
             {
                 styles[style] = string.Concat(dictValue, "|", value);
                 merged = true;

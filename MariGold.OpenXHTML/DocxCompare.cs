@@ -4,14 +4,14 @@
 
     internal static class DocxCompare
     {
-        internal static bool CompareStringInvariantCultureIgnoreCase(this string source, string value)
+        internal static bool CompareStringOrdinalIgnoreCase(this string source, string value)
         {
             if(string.IsNullOrEmpty(source) || string.IsNullOrEmpty(value))
             {
                 return false;
             }
 
-            return string.Compare(source, value, StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Equals(source, value, StringComparison.OrdinalIgnoreCase);
         }
 
         internal static bool HasStringContains(this string path, params string[] extensions)

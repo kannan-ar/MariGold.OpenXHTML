@@ -1,130 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C6E09A05-5CEC-4980-A14D-D4747EAD7EE5}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MariGold.OpenXHTML</RootNamespace>
-    <AssemblyName>MariGold.OpenXHTML</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>MariGold.OpenXHTML</Title>
+    <Version>2.5.0</Version>
+    <Authors>MariGold</Authors>
+    <Description>A utility to convert html document to Open XML word document</Description>
+    <Copyright>Copyright © MariGold 2015</Copyright>
+    <PackageProjectUrl>https://github.com/kannan-ar/MariGold.OpenXHTML</PackageProjectUrl>
+    <PackageTags>MariGold OpenXML HTML office</PackageTags>
+    <Product>MariGold Framework</Product>
+    <PackageReleaseNotes>migrated to .net standard 2.0</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.8.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
-      <HintPath>..\packages\DocumentFormat.OpenXml.2.8.1\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="MariGold.HtmlParser, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MariGold.HtmlParser.1.0.1\lib\net35\MariGold.HtmlParser.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsBase" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.8.1" />
+    <PackageReference Include="MariGold.HtmlParser" Version="1.1.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DocxCompare.cs" />
-    <Compile Include="DocxHtmlNode.cs" />
-    <Compile Include="DocxNode.cs" />
-    <Compile Include="Elements\DocxA.cs" />
-    <Compile Include="Elements\DocxAddress.cs" />
-    <Compile Include="Elements\DocxBold.cs" />
-    <Compile Include="Elements\DocxBody.cs" />
-    <Compile Include="Elements\DocxBr.cs" />
-    <Compile Include="Elements\DocxCenter.cs" />
-    <Compile Include="Elements\DocxObject.cs" />
-    <Compile Include="Elements\DocxStrike.cs" />
-    <Compile Include="Elements\DocxDiv.cs" />
-    <Compile Include="Elements\DocxDL.cs" />
-    <Compile Include="Elements\DocxFont.cs" />
-    <Compile Include="Elements\DocxFooter.cs" />
-    <Compile Include="Elements\DocxHeader.cs" />
-    <Compile Include="Elements\DocxHeading.cs" />
-    <Compile Include="Elements\DocxHr.cs" />
-    <Compile Include="Elements\DocxInline.cs" />
-    <Compile Include="Elements\DocxItalic.cs" />
-    <Compile Include="Elements\DocxImage.cs" />
-    <Compile Include="Elements\DocxOL.cs" />
-    <Compile Include="Elements\DocxQ.cs" />
-    <Compile Include="Elements\DocxSection.cs" />
-    <Compile Include="Elements\DocxSpan.cs" />
-    <Compile Include="Elements\DocxSub.cs" />
-    <Compile Include="Elements\DocxSup.cs" />
-    <Compile Include="Elements\DocxTable.cs" />
-    <Compile Include="Elements\DocxTableProperties.cs" />
-    <Compile Include="Elements\DocxUL.cs" />
-    <Compile Include="Elements\DocxUnderline.cs" />
-    <Compile Include="HtmlParser.cs" />
-    <Compile Include="Interchangers\DocxInterchanger.cs" />
-    <Compile Include="Interchangers\IDocxInterchanger.cs" />
-    <Compile Include="IParser.cs" />
-    <Compile Include="IOpenXmlContext.cs" />
-    <Compile Include="ITextElement.cs" />
-    <Compile Include="ParagraphEventArgs.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OpenXmlContext.cs" />
-    <Compile Include="Styles\DocxAlignment.cs" />
-    <Compile Include="Styles\DocxBorder.cs" />
-    <Compile Include="Styles\DocxColor.cs" />
-    <Compile Include="Styles\DocxCombinedStyle.cs" />
-    <Compile Include="Styles\DocxFontStyle.cs" />
-    <Compile Include="Styles\DocxMargin.cs" />
-    <Compile Include="Styles\DocxParagraphStyle.cs" />
-    <Compile Include="Styles\DocxTableCellStyle.cs" />
-    <Compile Include="Styles\DocxTableRowStyle.cs" />
-    <Compile Include="Styles\DocxTableStyle.cs" />
-    <Compile Include="Styles\DocxUnits.cs" />
-    <Compile Include="WordDocument.cs" />
-    <Compile Include="DocxElement.cs" />
-    <Compile Include="Styles\DocxRunStyle.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

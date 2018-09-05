@@ -104,7 +104,7 @@
                     }
                 }
 
-                if (!string.IsNullOrEmpty(line) && !line.CompareStringInvariantCultureIgnoreCase(DocxFontStyle.normal))
+                if (!string.IsNullOrEmpty(line) && !line.CompareStringOrdinalIgnoreCase(DocxFontStyle.normal))
                 {
                     decimal number;
                     decimal dxa = -1;

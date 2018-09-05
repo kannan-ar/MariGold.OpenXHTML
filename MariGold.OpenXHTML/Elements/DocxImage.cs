@@ -9,6 +9,7 @@
     using A = DocumentFormat.OpenXml.Drawing;
     using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
     using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
+    using System.Threading.Tasks;
     using System.Drawing;
 
     internal sealed class DocxImage : DocxElement, ITextElement
@@ -112,9 +113,7 @@
 
         private Drawing PrepareImage(string src)
         {
-            Uri uri;
-
-            if (TryCreateAbsoluteUri(src, out uri))
+            if (TryCreateAbsoluteUri(src, out Uri uri))
             {
                 return CreateDrawingFromAbsoluteUri(src, uri);
             }
@@ -129,7 +128,7 @@
 
         internal override bool CanConvert(DocxNode node)
         {
-            return string.Compare(node.Tag, "img", StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Equals(node.Tag, "img", StringComparison.OrdinalIgnoreCase);
         }
 
         internal override void Process(DocxNode node, ref Paragraph paragraph)
@@ -146,7 +145,7 @@
                 try
                 {
                     Drawing drawing = PrepareImage(src);
-
+                    
                     if (drawing != null)
                     {
                         if (paragraph == null)

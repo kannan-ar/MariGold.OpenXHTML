@@ -141,12 +141,7 @@
 
         internal DocxNode(IHtmlNode node)
         {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
-
-            this.node = node;
+            this.node = node ?? throw new ArgumentNullException("node");
             this.styles = node.Styles;
             this.inheritedStyles = node.InheritedStyles;
             this.extentedStyles = new Dictionary<string, string>();
@@ -161,7 +156,7 @@
         {
             foreach (KeyValuePair<string, string> attribute in node.Attributes)
             {
-                if (string.Compare(attributeName, attribute.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Equals(attributeName, attribute.Key, StringComparison.OrdinalIgnoreCase))
                 {
                     return attribute.Value;
                 }
@@ -174,7 +169,7 @@
         {
             foreach (KeyValuePair<string, string> style in styles)
             {
-                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Equals(styleName, style.Key, StringComparison.OrdinalIgnoreCase))
                 {
                     return style.Value;
                 }
@@ -182,7 +177,7 @@
 
             foreach (KeyValuePair<string, string> style in extentedStyles)
             {
-                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Equals(styleName, style.Key, StringComparison.OrdinalIgnoreCase))
                 {
                     return style.Value;
                 }
@@ -190,7 +185,7 @@
 
             foreach (KeyValuePair<string, string> style in inheritedStyles)
             {
-                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Equals(styleName, style.Key, StringComparison.OrdinalIgnoreCase))
                 {
                     return style.Value;
                 }
@@ -203,7 +198,7 @@
         {
             foreach (KeyValuePair<string, string> style in styles)
             {
-                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Equals(styleName, style.Key, StringComparison.OrdinalIgnoreCase))
                 {
                     return style.Value;
                 }
@@ -216,7 +211,7 @@
         {
             foreach (KeyValuePair<string, string> style in extentedStyles)
             {
-                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Equals(styleName, style.Key, StringComparison.OrdinalIgnoreCase))
                 {
                     return style.Value;
                 }
@@ -224,7 +219,7 @@
 
             foreach (KeyValuePair<string, string> style in inheritedStyles)
             {
-                if (string.Compare(styleName, style.Key, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (string.Equals(styleName, style.Key, StringComparison.OrdinalIgnoreCase))
                 {
                     return style.Value;
                 }

@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Drawing;
+    using System.Threading.Tasks;
 
     using DocumentFormat.OpenXml.Wordprocessing;
     using DocumentFormat.OpenXml.Packaging;
@@ -83,9 +84,8 @@
 
         private EmbeddedObject ProcessObject(string filePath, string contentType, string progId)
         {
-            Uri uri;
 
-            if (TryCreateAbsoluteUri(filePath, out uri))
+            if (TryCreateAbsoluteUri(filePath, out Uri uri))
             {
                 int width, height;
                 string relationshipId = string.Concat("rId", (++context.RelationshipId).ToString());
@@ -127,7 +127,7 @@
 
         internal override bool CanConvert(DocxNode node)
         {
-            return string.Compare(node.Tag, "object", StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Equals(node.Tag, "object", StringComparison.OrdinalIgnoreCase);
         }
 
         internal override void Process(DocxNode node, ref Paragraph paragraph)
@@ -166,7 +166,7 @@
 
         bool ITextElement.CanConvert(DocxNode node)
         {
-            return string.Compare(node.Tag, "object", StringComparison.InvariantCultureIgnoreCase) == 0;
+            return string.Equals(node.Tag, "object", StringComparison.OrdinalIgnoreCase);
         }
 
         void ITextElement.Process(DocxNode node)
