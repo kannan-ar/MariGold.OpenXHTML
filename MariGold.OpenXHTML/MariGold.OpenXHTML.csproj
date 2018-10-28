@@ -3,14 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>MariGold.OpenXHTML</Title>
-    <Version>2.5.0</Version>
+    <Version>2.5.1</Version>
     <Authors>MariGold</Authors>
     <Description>A utility to convert html document to Open XML word document</Description>
     <Copyright>Copyright © MariGold 2015</Copyright>
     <PackageProjectUrl>https://github.com/kannan-ar/MariGold.OpenXHTML</PackageProjectUrl>
     <PackageTags>MariGold OpenXML HTML office</PackageTags>
     <Product>MariGold Framework</Product>
-    <PackageReleaseNotes>migrated to .net standard 2.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Bug fix - image name with white spaces</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

@@ -117,6 +117,7 @@
   <ItemGroup>
     <Content Include="Html\docxobjecttag.htm" />
     <Content Include="Html\imageinsideatag.htm" />
+    <Content Include="Html\imagewithspace.htm" />
     <Content Include="Html\img.png" />
     <Content Include="Html\objectimageinsidediv.htm" />
     <Content Include="Html\objectimage.htm" />
@@ -125,6 +126,7 @@
     <Content Include="Html\ownstyleoverride.htm" />
     <Content Include="Html\pptxobjecttag.htm" />
     <Content Include="Html\relativestylesheet.htm" />
+    <Content Include="Html\sample image.png" />
     <Content Include="Html\xlsxobjecttag.htm" />
   </ItemGroup>
   <ItemGroup>

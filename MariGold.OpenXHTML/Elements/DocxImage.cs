@@ -113,7 +113,7 @@
 
         private Drawing PrepareImage(string src)
         {
-            if (TryCreateAbsoluteUri(src, out Uri uri))
+            if (TryCreateAbsoluteUri(WebUtility.UrlEncode(src), out Uri uri))
             {
                 return CreateDrawingFromAbsoluteUri(src, uri);
             }

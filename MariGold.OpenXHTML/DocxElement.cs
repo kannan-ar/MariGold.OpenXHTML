@@ -184,7 +184,7 @@
                     relativeUrl);
             }
 
-            return Uri.TryCreate(relativeUrl, UriKind.Absolute, out uri);
+            return Uri.TryCreate(WebUtility.UrlDecode(relativeUrl), UriKind.Absolute, out uri);
         }
 
         protected Stream GetStream(Uri uri)
