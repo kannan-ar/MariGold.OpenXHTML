@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
-  <TopNode>[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit</TopNode>
-  <SelectedNode>[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit</SelectedNode>
+  <TopNode>[0-1175]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll</TopNode>
+  <SelectedNode>[0-1175]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll</SelectedNode>
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\MariGold.OpenXHTML.Tests.nunit" Expanded="true" />
-    <Node UniqueName="[0-1174]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll" Expanded="true" />
-    <Node UniqueName="[0-1175]MariGold" Expanded="true" />
-    <Node UniqueName="[0-1176]MariGold.OpenXHTML" Expanded="true" />
-    <Node UniqueName="[0-1177]MariGold.OpenXHTML.Tests" Expanded="true" />
+    <Node UniqueName="[0-1175]C:\Projects\MariGold.OpenXHTML\MariGold.OpenXHTML.Tests\bin\Debug\MariGold.OpenXHTML.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1176]MariGold" Expanded="true" />
+    <Node UniqueName="[0-1177]MariGold.OpenXHTML" Expanded="true" />
+    <Node UniqueName="[0-1178]MariGold.OpenXHTML.Tests" Expanded="true" />
+    <Node UniqueName="[0-1001]MariGold.OpenXHTML.Tests.BasicDocument" Expanded="true" />
     <Node UniqueName="[0-1036]MariGold.OpenXHTML.Tests.BasicStyles" Expanded="true" />
     <Node UniqueName="[0-1060]MariGold.OpenXHTML.Tests.EmbedElements" Expanded="true" />
-    <Node UniqueName="[0-1108]MariGold.OpenXHTML.Tests.ObjectElements" Expanded="true" />
-    <Node UniqueName="[0-1112]MariGold.OpenXHTML.Tests.SimpleHtmlFromFile" Expanded="true" />
+    <Node UniqueName="[0-1105]MariGold.OpenXHTML.Tests.InvalidElements" Expanded="true" />
   </Nodes>
 </VisualState>
