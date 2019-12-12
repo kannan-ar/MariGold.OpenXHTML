@@ -14,6 +14,11 @@
 
     internal sealed class DocxImage : DocxElement, ITextElement
     {
+        private Drawing TryCreateFromEncodedString()
+        {
+            throw new NotImplementedException();
+        }
+
         private ImagePartType GetImagePartType(string src)
         {
             ImagePartType type;
@@ -30,12 +35,12 @@
             return type;
         }
 
-        private Drawing CreateDrawingFromAbsoluteUri(string src, Uri uri)
+        private Drawing CreateDrawingFromStream(string src, Func<Stream> getStream)
         {
             long cx;
             long cy;
 
-            using (Stream stream = GetStream(uri))
+            using (Stream stream = getStream())
             {
                 using (Bitmap bitmap = new Bitmap(stream))
                 {
@@ -44,7 +49,7 @@
                 }
             }
 
-            using (Stream stream = GetStream(uri))
+            using (Stream stream = getStream())
             {
                 ImagePart imagePart = context.MainDocumentPart.AddImagePart(GetImagePartType(src));
 
@@ -97,8 +102,10 @@
                                                         new A.Extents() { Cx = cx, Cy = cy }),
                                                     new A.PresetGeometry(
                                                         new A.AdjustValueList()
-                                                    ) { Preset = A.ShapeTypeValues.Rectangle }))
-                                        ) { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
+                                                    )
+                                                    { Preset = A.ShapeTypeValues.Rectangle }))
+                                        )
+                                        { Uri = "http://schemas.openxmlformats.org/drawingml/2006/picture" })
                                 )
                                 {
                                     DistanceFromTop = (UInt32Value)0U,
@@ -111,13 +118,30 @@
             }
         }
 
+        private Drawing CreateDrawingFromData(string src, string data)
+        {
+            return CreateDrawingFromStream(src, () =>
+            {
+                var bytes = Convert.FromBase64String(data);
+                return new MemoryStream(bytes);
+            });
+        }
+
+        private Drawing CreateDrawingFromAbsoluteUri(string src, Uri uri)
+        {
+            return CreateDrawingFromStream(src, () =>
+            {
+                return GetStream(uri);
+            });
+        }
+
         private Drawing PrepareImage(string src)
         {
             if (TryCreateAbsoluteUri(WebUtility.UrlEncode(src), out Uri uri))
             {
                 return CreateDrawingFromAbsoluteUri(src, uri);
             }
-
+            
             return null;
         }
 
