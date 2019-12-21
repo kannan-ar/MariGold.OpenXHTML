@@ -9,20 +9,13 @@
     using A = DocumentFormat.OpenXml.Drawing;
     using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
     using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-    using System.Threading.Tasks;
     using System.Drawing;
+    using System.Text.RegularExpressions;
 
     internal sealed class DocxImage : DocxElement, ITextElement
     {
-        private Drawing TryCreateFromEncodedString()
-        {
-            throw new NotImplementedException();
-        }
-
         private ImagePartType GetImagePartType(string src)
         {
-            ImagePartType type;
-
             string ext = Path.GetExtension(src);
 
             if (ext != null)
@@ -30,12 +23,12 @@
                 ext = ext.ToLower().Replace(".", string.Empty);
             }
 
-            Enum.TryParse<ImagePartType>(ext, out type);
+            Enum.TryParse<ImagePartType>(ext, true, out ImagePartType type);
 
             return type;
         }
 
-        private Drawing CreateDrawingFromStream(string src, Func<Stream> getStream)
+        private Drawing CreateDrawingFromStream(string src, ImagePartType imagePartType, Func<Stream> getStream)
         {
             long cx;
             long cy;
@@ -51,7 +44,7 @@
 
             using (Stream stream = getStream())
             {
-                ImagePart imagePart = context.MainDocumentPart.AddImagePart(GetImagePartType(src));
+                ImagePart imagePart = context.MainDocumentPart.AddImagePart(imagePartType);
 
                 imagePart.FeedData(stream);
 
@@ -118,18 +111,36 @@
             }
         }
 
-        private Drawing CreateDrawingFromData(string src, string data)
+        private Drawing CreateDrawingFromData(string value)
         {
-            return CreateDrawingFromStream(src, () =>
+            if (string.IsNullOrWhiteSpace(value))
             {
-                var bytes = Convert.FromBase64String(data);
+                return null;
+            }
+
+            value = value.Trim();
+
+            Match match = Regex.Match(value, "image/([a-zA-Z]+)");
+            string ext = match.Groups.Count > 1 ? match.Groups[1].Value : string.Empty;
+            int dataIndex = value.LastIndexOf(',');
+
+            if (string.IsNullOrEmpty(ext) || dataIndex == -1 || dataIndex + 1 >= value.Length)
+            {
+                return null;
+            }
+
+            Enum.TryParse<ImagePartType>(ext, true, out ImagePartType type);
+
+            return CreateDrawingFromStream(value, type, () =>
+            {
+                var bytes = Convert.FromBase64String(value.Substring(dataIndex + 1).Trim());
                 return new MemoryStream(bytes);
             });
         }
 
         private Drawing CreateDrawingFromAbsoluteUri(string src, Uri uri)
         {
-            return CreateDrawingFromStream(src, () =>
+            return CreateDrawingFromStream(src, GetImagePartType(src), () =>
             {
                 return GetStream(uri);
             });
@@ -137,11 +148,15 @@
 
         private Drawing PrepareImage(string src)
         {
-            if (TryCreateAbsoluteUri(WebUtility.UrlEncode(src), out Uri uri))
+            if (TryCreateFromEncodedString(src, out string value))
+            {
+                return CreateDrawingFromData(value);
+            }
+            else if (TryCreateAbsoluteUri(WebUtility.UrlEncode(src), out Uri uri))
             {
                 return CreateDrawingFromAbsoluteUri(src, uri);
             }
-            
+
             return null;
         }
 
@@ -182,7 +197,7 @@
                         RunCreated(node, run);
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
                     return;//fails silently?
                 }

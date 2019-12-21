@@ -187,6 +187,19 @@
             return Uri.TryCreate(WebUtility.UrlDecode(relativeUrl), UriKind.Absolute, out uri);
         }
 
+        protected bool TryCreateFromEncodedString(string data, out string value)
+        {
+            Match match = Regex.Match(data, "data(\\s*):");
+            value = string.Empty;
+
+            if(match.Success)
+            {
+                value = data.Substring(match.Index + match.Length);
+            }
+
+            return match.Success;
+        }
+
         protected Stream GetStream(Uri uri)
         {
             WebClient client = new WebClient() { Encoding = System.Text.Encoding.UTF8 };
