@@ -18,7 +18,7 @@
             {
                 WordDocument doc = new WordDocument(mem);
 
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\emptybody.htm")));
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/emptybody.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
@@ -37,7 +37,7 @@
             {
                 WordDocument doc = new WordDocument(mem);
 
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\onesentanceinbody.htm")));
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/onesentanceinbody.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -69,7 +69,7 @@
             {
                 WordDocument doc = new WordDocument(mem);
 
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\oneptag.htm")));
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/oneptag.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -101,7 +101,7 @@
             {
                 WordDocument doc = new WordDocument(mem);
 
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\ptagwithstyle.htm")));
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/ptagwithstyle.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -148,10 +148,9 @@
             using (MemoryStream mem = new MemoryStream())
             {
                 WordDocument doc = new WordDocument(mem);
-                string path = "file:///" + TestUtility.GetPath("Html");
-                path = path.Replace(@"\", "//");
-                doc.ImagePath = path + "//";
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\imageinsideatag.htm")));
+                string path = TestUtility.GetPath("/Html");
+                doc.ImagePath = path;
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/imageinsideatag.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -184,10 +183,9 @@
             using (MemoryStream mem = new MemoryStream())
             {
                 WordDocument doc = new WordDocument(mem);
-                string path = "file:///" + TestUtility.GetPath("Html");
-                path = path.Replace(@"\", "//");
-                doc.BaseURL = path + "//";
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\imageinsideatag.htm")));
+                string path = TestUtility.GetPath("/Html");
+                doc.BaseURL = path;
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/imageinsideatag.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -221,7 +219,7 @@
             {
                 WordDocument doc = new WordDocument(mem);
                 doc.BaseURL = "https://maxcdn.bootstrapcdn.com";
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\relativestylesheet.htm")));
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/relativestylesheet.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -252,10 +250,9 @@
             using (MemoryStream mem = new MemoryStream())
             {
                 WordDocument doc = new WordDocument(mem);
-                string path = "file:///" + TestUtility.GetPath("Html");
-                path = path.Replace(@"\", "//");
-                doc.ImagePath = path + "//";
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\imagewithspace.htm")));
+                string path = TestUtility.GetPath("/Html");
+                doc.ImagePath = path;
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/imagewithspace.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);

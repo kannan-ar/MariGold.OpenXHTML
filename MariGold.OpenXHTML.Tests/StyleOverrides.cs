@@ -17,7 +17,7 @@
             {
                 WordDocument doc = new WordDocument(mem);
 
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\ownstyleoverride.htm")));
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/ownstyleoverride.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);

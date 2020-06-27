@@ -18,10 +18,9 @@
             using (MemoryStream mem = new MemoryStream())
             {
                 WordDocument doc = new WordDocument(mem);
-                string path = "file:///" + TestUtility.GetPath("Html");
-                path = path.Replace(@"\", "//");
-                doc.BaseURL = path + "//";
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\docxobjecttag.htm")));
+                string path = TestUtility.GetPath("/Html");
+                doc.BaseURL = path;
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/docxobjecttag.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -59,10 +58,9 @@
             using (MemoryStream mem = new MemoryStream())
             {
                 WordDocument doc = new WordDocument(mem);
-                string path = "file:///" + TestUtility.GetPath("Html");
-                path = path.Replace(@"\", "//");
-                doc.BaseURL = path + "//";
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\pptxobjecttag.htm")));
+                string path = TestUtility.GetPath("/Html");
+                doc.BaseURL = path;
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/pptxobjecttag.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
@@ -100,10 +98,9 @@
             using (MemoryStream mem = new MemoryStream())
             {
                 WordDocument doc = new WordDocument(mem);
-                string path = "file:///" + TestUtility.GetPath("Html");
-                path = path.Replace(@"\", "//");
-                doc.BaseURL = path + "//";
-                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("Html\\xlsxobjecttag.htm")));
+                string path = TestUtility.GetPath("/Html");
+                doc.BaseURL = path;
+                doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/xlsxobjecttag.htm")));
 
                 Assert.IsNotNull(doc.Document.Body);
                 Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);

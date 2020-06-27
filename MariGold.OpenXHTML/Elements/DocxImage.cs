@@ -197,7 +197,7 @@
                         RunCreated(node, run);
                     }
                 }
-                catch(Exception ex)
+                catch
                 {
                     return;//fails silently?
                 }

@@ -58,11 +58,10 @@
 		
         internal static string GetPath(string folderPath)
         {
-            string html = string.Empty;
             string path = Environment.CurrentDirectory;
-            int index = path.IndexOf("bin");
-
-            return path.Remove(index) + folderPath;
+			int index = path.IndexOf("bin");
+			path = path.Remove(index);
+            return path + folderPath;
         }
 
 		internal static string GetHtmlFromFile(string folderPath)
