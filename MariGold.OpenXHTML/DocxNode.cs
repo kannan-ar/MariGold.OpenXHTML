@@ -12,8 +12,8 @@
         private DocxNode paragraphNode;
         private OpenXmlElement parent;
         private Dictionary<string, string> extentedStyles;
-        private Dictionary<string, string> styles;
-        private Dictionary<string, string> inheritedStyles;
+        private readonly Dictionary<string, string> styles;
+        private readonly Dictionary<string, string> inheritedStyles;
 
         private void SetExtentedStyles(Dictionary<string, string> extentedStyles)
         {

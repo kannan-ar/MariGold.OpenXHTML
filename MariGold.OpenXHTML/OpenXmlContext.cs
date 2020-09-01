@@ -18,7 +18,7 @@
         private string uriSchema;
         private IParser parser;
         private Int16 listNumberId;
-        private Int32 relationshipId { get; set; }
+        public Int32 RelationshipId { get; set; }
 
         private void PrepareWordElements()
         {
@@ -78,7 +78,7 @@
             {
                 if (mainPart.NumberingDefinitionsPart == null)
                 {
-                    NumberingDefinitionsPart numberingPart = mainPart.AddNewPart<NumberingDefinitionsPart>("numberingDefinitionsPart");
+                    _ = mainPart.AddNewPart<NumberingDefinitionsPart>("numberingDefinitionsPart");
                 }
 
                 Numbering numbering = new Numbering();
@@ -200,19 +200,6 @@
             }
         }
 
-        public Int32 RelationshipId
-        {
-            get
-            {
-                return relationshipId;
-            }
-
-            set
-            {
-                relationshipId = value;
-            }
-        }
-
         public void Save()
         {
             SaveNumberDefinitions();
@@ -282,12 +269,7 @@
 
         public void SetParser(IParser parser)
         {
-            if (parser == null)
-            {
-                throw new ArgumentNullException("parser");
-            }
-
-            this.parser = parser;
+            this.parser = parser ?? throw new ArgumentNullException("parser");
         }
 
         public IDocxInterchanger GetInterchanger()

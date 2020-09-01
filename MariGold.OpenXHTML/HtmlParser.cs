@@ -66,10 +66,11 @@
 
 		public IHtmlNode FindBodyOrFirstElement()
 		{
-			MariGold.HtmlParser.HtmlParser parser = new HtmlTextParser(html);
-            
-            parser.UriSchema = uriSchema;
-            parser.BaseURL = baseUrl;
+			MariGold.HtmlParser.HtmlParser parser = new HtmlTextParser(html)
+			{
+				UriSchema = uriSchema,
+				BaseURL = baseUrl
+			};
 
 			parser.Parse();
 			parser.ParseStyles();

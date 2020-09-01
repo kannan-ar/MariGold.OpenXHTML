@@ -6,11 +6,10 @@
     {
         private static bool MergeTextDecorationStyles(string value, Dictionary<string, string> styles)
         {
-            string dictValue;
             string style = string.Empty;
             bool merged = false;
 
-            if (styles.TryGetValue(DocxFontStyle.textDecoration, out dictValue))
+            if (styles.TryGetValue(DocxFontStyle.textDecoration, out string dictValue))
             {
                 style = DocxFontStyle.textDecoration;
             }

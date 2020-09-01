@@ -20,15 +20,13 @@
             }
 
             Match match = Regex.Match(size, "^\\d+");
-            Int32 sizeValue;
-            Int32 fontSizeValue = 0;
 
-            if (!match.Success || !Int32.TryParse(match.Value, out sizeValue))
+            if (!match.Success || !Int32.TryParse(match.Value, out int sizeValue))
             {
                 return;
             }
 
-            if (!fontSizes.TryGetValue(sizeValue, out fontSizeValue))
+            if (!fontSizes.TryGetValue(sizeValue, out int fontSizeValue))
             {
                 if (sizeValue > 7)
                 {
@@ -90,7 +88,7 @@
         internal DocxFont(IOpenXmlContext context)
             : base(context)
         {
-            fontSizes = new Dictionary<Int32, Int32>();
+            fontSizes = new Dictionary<int, int>();
 
             Init();
         }

@@ -106,14 +106,13 @@
 
                 if (!string.IsNullOrEmpty(line) && !line.CompareStringOrdinalIgnoreCase(DocxFontStyle.normal))
                 {
-                    decimal number;
                     decimal dxa = -1;
                     LineSpacingRuleValues lineSpacingRuleValues = LineSpacingRuleValues.AtLeast;
 
-                    if (decimal.TryParse(line, out number))
+                    if (decimal.TryParse(line, out decimal number))
                     {
                         dxa = DocxUnits.GetDxaFromNumber(number);
-                        dxa = dxa - defaultLineHeight;//Removing the default line height
+                        dxa -= defaultLineHeight;//Removing the default line height
                     }
                     else if (line.Contains("%"))
                     {
@@ -122,7 +121,7 @@
                         if (decimal.TryParse(line, out number))
                         {
                             dxa = (number / 100) * DocxFontStyle.defaultFontSizeInPixel;
-                            dxa = dxa - defaultLineHeight;//Removing the default line height
+                            dxa -= defaultLineHeight;//Removing the default line height
                         }
                     }
                     else

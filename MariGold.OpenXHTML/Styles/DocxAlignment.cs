@@ -69,9 +69,7 @@
 
         internal static void ApplyTextAlign(string style, OpenXmlElement styleElement)
         {
-            JustificationValues alignment;
-
-            if (GetJustificationValue(style, out alignment))
+            if (GetJustificationValue(style, out JustificationValues alignment))
             {
                 styleElement.Append(new Justification() { Val = alignment });
             }
@@ -105,9 +103,7 @@
 
         internal static void ApplyVerticalTextAlign(string style, OpenXmlElement styleElement)
         {
-            VerticalPositionValues alignment;
-
-            if (GetVerticalPositionValues(style, out alignment))
+            if (GetVerticalPositionValues(style, out VerticalPositionValues alignment))
             {
                 styleElement.Append(new VerticalTextAlignment() { Val = alignment });
             }

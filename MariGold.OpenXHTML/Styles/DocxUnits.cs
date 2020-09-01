@@ -43,7 +43,7 @@
 			{
 				if (style.IndexOf(item.Key, StringComparison.OrdinalIgnoreCase) >= 0)
 				{
-					value = value * item.Value;
+					value *= item.Value;
 					return true;
 				}
 			}
@@ -123,13 +123,15 @@
 		static DocxUnits()
 		{
             digit = new Regex("(\\.)?\\d+(\\.?\\d+)?");
-			
-			toPt = new Dictionary<string, decimal>();
-			toPt.Add("px", 1);
-			toPt.Add("pt", 1);
-			toPt.Add("em", 12); 
-			toPt.Add("cm", 28.34m);
-			toPt.Add("in", 72);
+
+			toPt = new Dictionary<string, decimal>
+			{
+				{ "px", 1 },
+				{ "pt", 1 },
+				{ "em", 12 },
+				{ "cm", 28.34m },
+				{ "in", 72 }
+			};
 		}
 		
 		internal static Int32 GetDxaFromPixel(Int32 pixel)
@@ -148,14 +150,14 @@
 			
 			if (style.Contains("%"))
 			{
-				value = value * 50;//Convert to fifties
+				value *= 50;//Convert to fifties
 				unit = TableWidthUnitValues.Pct;
 						
 				return true;
 			}
 			else
 			{
-				value = value * 20; //Convert to Twentieths of a point
+				value *= 20; //Convert to Twentieths of a point
 				unit = TableWidthUnitValues.Dxa;
 								
 				return true;
@@ -164,13 +166,11 @@
 		
 		internal static decimal HalfPointFromStyle(string style)
 		{
-			decimal pt = 0;
-			
-			if (ExtractNamedFontSize(style, out pt))
+			if (ExtractNamedFontSize(style, out decimal pt))
 			{
 				return pt * 2;
 			}
-			
+
 			if (!ConvertToPt(style, out pt))
 			{
 				return 0;
@@ -182,7 +182,7 @@
 			}
 			else
 			{
-				pt = pt * 2;
+				pt *= 2;
 			}
 			
 			return pt;
@@ -190,18 +190,16 @@
 		
 		internal static decimal GetDxaFromStyle(string style)
 		{
-			decimal value;
-			
-			if (ConvertToPt(style, out value))
+			if (ConvertToPt(style, out decimal value))
 			{
-                if(style.Contains("%"))
-                {
-                    value = ConvertPercentageToPt(value);
-                }
+				if (style.Contains("%"))
+				{
+					value = ConvertPercentageToPt(value);
+				}
 
 				return value * 20;
 			}
-			
+
 			return -1;
 		}
 

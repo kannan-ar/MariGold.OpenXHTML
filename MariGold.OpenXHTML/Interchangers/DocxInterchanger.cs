@@ -7,8 +7,10 @@
     {
         private DocxNode GetImageNode(string imagePath)
         {
-            var attributes = new Dictionary<string, string>();
-            attributes.Add("src", imagePath);
+            var attributes = new Dictionary<string, string>
+            {
+                { "src", imagePath }
+            };
 
             return new DocxNode(new DocxHtmlNode(attributes));
         }

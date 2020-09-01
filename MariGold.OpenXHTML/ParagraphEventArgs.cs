@@ -5,19 +5,11 @@
 
     public class ParagraphEventArgs : EventArgs
     {
-        private readonly Paragraph paragraph;
-
-        public Paragraph Paragraph
-        {
-            get
-            {
-                return paragraph;
-            }
-        }
+        public Paragraph Paragraph { get; }
 
         public ParagraphEventArgs(Paragraph paragraph)
         {
-            this.paragraph = paragraph;
+            this.Paragraph = paragraph;
         }
     }
 }

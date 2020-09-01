@@ -15,9 +15,7 @@
             {
                 if (node.IsText)
                 {
-                    string text;
-
-                    if (!IsEmptyText(node, out text))
+                    if (!IsEmptyText(node, out string text))
                     {
                         if (paragraph == null)
                         {

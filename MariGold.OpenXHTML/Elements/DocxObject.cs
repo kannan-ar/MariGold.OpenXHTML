@@ -12,8 +12,6 @@
 
     internal sealed class DocxObject : DocxElement, ITextElement
     {
-        private Func<IOpenXmlContext, string> getRelationshipId = (context) => string.Concat("rId", (++context.RelationshipId).ToString());
-
         private bool IsImage(string filePath)
         {
             return filePath.HasStringContains(".jpg", ".bmp", ".gif", ".png", ".tiff");
@@ -137,8 +135,6 @@
                 return;
             }
 
-            string contentType;
-            string progId;
             string data = node.ExtractAttributeValue("data");
 
             if (IsImage(data))
@@ -146,7 +142,7 @@
                 var interchanger = context.GetInterchanger();
                 interchanger.ProcessImage(context, data, node, ref paragraph);
             }
-            else if (TryFormat(data, out contentType, out progId))
+            else if (TryFormat(data, out string contentType, out string progId))
             {
                 EmbeddedObject embeddedObject = ProcessObject(data, contentType, progId);
 
@@ -176,8 +172,6 @@
                 return;
             }
 
-            string contentType;
-            string progId;
             string data = node.ExtractAttributeValue("data");
 
             if (IsImage(data))
@@ -185,7 +179,7 @@
                 var interchanger = context.GetInterchanger();
                 interchanger.ProcessImage(context, data, node);
             }
-            else if (TryFormat(data, out contentType, out progId))
+            else if (TryFormat(data, out string contentType, out string progId))
             {
                 EmbeddedObject embeddedObject = ProcessObject(data, contentType, progId);
 

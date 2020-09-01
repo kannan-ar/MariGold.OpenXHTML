@@ -29,9 +29,7 @@
 
         private void ProcessColSpan(DocxNode node, TableCellProperties cellProperties)
 		{
-			Int32 value;
-
-            if (Int32.TryParse(node.ExtractAttributeValue(colspan), out value))
+			if (Int32.TryParse(node.ExtractAttributeValue(colspan), out int value))
 			{
 				if (value > 1)
 				{
@@ -46,16 +44,14 @@
 			
 			if (!string.IsNullOrEmpty(width))
 			{
-				decimal value;
-				TableWidthUnitValues unit;
-				
-				if (DocxUnits.TableUnitsFromStyle(width, out value, out unit))
+				if (DocxUnits.TableUnitsFromStyle(width, out decimal value, out TableWidthUnitValues unit))
 				{
-					TableCellWidth cellWidth = new TableCellWidth() {
+					TableCellWidth cellWidth = new TableCellWidth()
+					{
 						Width = value.ToString(),
 						Type = unit
 					};
-					
+
 					cellProperties.Append(cellWidth);
 				}
 			}
@@ -67,11 +63,9 @@
 			
 			if (!string.IsNullOrEmpty(alignment))
 			{
-				TableVerticalAlignmentValues value;
-				
-				if (DocxAlignment.GetCellVerticalAlignment(alignment, out value))
+				if (DocxAlignment.GetCellVerticalAlignment(alignment, out TableVerticalAlignmentValues value))
 				{
-					cellProperties.Append(new TableCellVerticalAlignment(){ Val = value });
+					cellProperties.Append(new TableCellVerticalAlignment() { Val = value });
 				}
 			}
 		}

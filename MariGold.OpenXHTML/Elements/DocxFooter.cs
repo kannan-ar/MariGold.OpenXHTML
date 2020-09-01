@@ -5,13 +5,6 @@
 
     internal sealed class DocxFooter : DocxElement, ITextElement
     {
-        private Paragraph CreateParagraph(DocxNode node)
-        {
-            Paragraph para = node.Parent.AppendChild(new Paragraph());
-            OnParagraphCreated(node, para);
-            return para;
-        }
-
         internal DocxFooter(IOpenXmlContext context) : base(context) { }
 
         internal override bool CanConvert(DocxNode node)

@@ -23,7 +23,7 @@
                 ext = ext.ToLower().Replace(".", string.Empty);
             }
 
-            Enum.TryParse<ImagePartType>(ext, true, out ImagePartType type);
+            Enum.TryParse(ext, true, out ImagePartType type);
 
             return type;
         }
@@ -129,7 +129,7 @@
                 return null;
             }
 
-            Enum.TryParse<ImagePartType>(ext, true, out ImagePartType type);
+            Enum.TryParse(ext, true, out ImagePartType type);
 
             return CreateDrawingFromStream(value, type, () =>
             {

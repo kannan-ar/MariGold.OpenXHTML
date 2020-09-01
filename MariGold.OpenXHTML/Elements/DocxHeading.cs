@@ -17,7 +17,7 @@
 
             if (match != null)
             {
-                Int32.TryParse(match.Value, out value);
+                int.TryParse(match.Value, out value);
             }
 
             return value;

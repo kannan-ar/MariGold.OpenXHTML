@@ -23,15 +23,17 @@
             bool hasRowSpan = false;
 
             string rowSpan = td.ExtractAttributeValue(DocxTableProperties.rowSpan);
-            Int32 rowSpanValue;
-            if (Int32.TryParse(rowSpan, out rowSpanValue))
+            if (int.TryParse(rowSpan, out int rowSpanValue))
             {
                 tableProperties.RowSpanInfo[colIndex] = rowSpanValue - 1;
                 hasRowSpan = true;
             }
 
-            DocxTableCellStyle style = new DocxTableCellStyle();
-            style.HasRowSpan = hasRowSpan;
+            DocxTableCellStyle style = new DocxTableCellStyle
+            {
+                HasRowSpan = hasRowSpan
+            };
+
             style.Process(cell, tableProperties, td);
 
             if (td.HasChildren)
@@ -90,15 +92,15 @@
 
         private void ProcessVerticalSpan(ref int colIndex, TableRow row, DocxTableProperties docxProperties)
         {
-            int rowSpan;
-
-            docxProperties.RowSpanInfo.TryGetValue(colIndex, out rowSpan);
+            docxProperties.RowSpanInfo.TryGetValue(colIndex, out int rowSpan);
 
             while (rowSpan > 0)
             {
-                TableCell cell = new TableCell();
+                TableCell cell = new TableCell
+                {
+                    TableCellProperties = new TableCellProperties()
+                };
 
-                cell.TableCellProperties = new TableCellProperties();
                 cell.TableCellProperties.Append(new VerticalMerge());
 
                 cell.AppendChild(new Paragraph());

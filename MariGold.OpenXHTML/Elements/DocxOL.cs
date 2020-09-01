@@ -10,7 +10,7 @@
         private const string liName = "li";
 
         private bool isParagraphCreated;
-        private Int16 numberId;
+        private short numberId;
         
         private void InitNumberDefinitions(NumberFormatValues numberFormat)
         {
@@ -85,7 +85,7 @@
             }
         }
 
-        private void ProcessLi(DocxNode li, OpenXmlElement parent, NumberFormatValues numberFormat)
+        private void ProcessLi(DocxNode li, OpenXmlElement parent)
         {
             Paragraph paragraph = null;
             isParagraphCreated = false;
@@ -188,7 +188,7 @@
                     if (string.Compare(child.Tag, liName, StringComparison.InvariantCultureIgnoreCase) == 0)
                     {
                         node.CopyExtentedStyles(child);
-                        ProcessLi(child, node.Parent, numberFormat);
+                        ProcessLi(child, node.Parent);
                     }
                 }
             }

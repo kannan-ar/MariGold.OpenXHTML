@@ -23,19 +23,19 @@
 		
 		private static void SetBorderValues()
 		{
-			boderStyles = new Dictionary<string,BorderValues>();
-			
-			boderStyles.Add("dotted", BorderValues.Dotted);
-			boderStyles.Add("dashed", BorderValues.Dashed);
-			boderStyles.Add("solid", BorderValues.Single);
-			boderStyles.Add("double", BorderValues.Double);
-			boderStyles.Add("groove", BorderValues.ThreeDEngrave);
-			boderStyles.Add("ridge", BorderValues.ThreeDEmboss);
-			boderStyles.Add("inset", BorderValues.Inset);
-			boderStyles.Add("outset", BorderValues.Outset);
-			boderStyles.Add("none", BorderValues.None);
-			boderStyles.Add("hidden", BorderValues.None);
-			
+			boderStyles = new Dictionary<string, BorderValues>
+			{
+				{ "dotted", BorderValues.Dotted },
+				{ "dashed", BorderValues.Dashed },
+				{ "solid", BorderValues.Single },
+				{ "double", BorderValues.Double },
+				{ "groove", BorderValues.ThreeDEngrave },
+				{ "ridge", BorderValues.ThreeDEmboss },
+				{ "inset", BorderValues.Inset },
+				{ "outset", BorderValues.Outset },
+				{ "none", BorderValues.None },
+				{ "hidden", BorderValues.None }
+			};
 		}
 		
 		private static string GetBorderWidth(ref string borderStyle)
@@ -111,12 +111,8 @@
 		private static void ApplyBorder<T>(string cssStyle, OpenXmlCompositeElement element)
 			where T : BorderType, new()
 		{
-			BorderValues borderValue;
-			string color;
-			UInt32 width;
-			
-			GetBorderProperties(cssStyle, out borderValue, out color, out width);
-				
+			GetBorderProperties(cssStyle, out BorderValues borderValue, out string color, out uint width);
+
 			T border = GetBorderType<T>(borderValue, color, width);
 				
 			if (border != null)

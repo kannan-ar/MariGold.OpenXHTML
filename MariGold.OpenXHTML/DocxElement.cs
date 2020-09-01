@@ -23,11 +23,8 @@
         {
             DocxParagraphStyle style = new DocxParagraphStyle();
             style.Process(para, node);
-            
-            if (ParagraphCreated != null)
-            {
-                ParagraphCreated(this, new ParagraphEventArgs(para));
-            }
+
+            ParagraphCreated?.Invoke(this, new ParagraphEventArgs(para));
         }
 
         protected void ProcessChild(DocxNode node, ref Paragraph paragraph)
@@ -144,9 +141,7 @@
 
         protected void ProcessParagraph(DocxNode child, DocxNode node, DocxNode paragraphNode, ref Paragraph paragraph)
         {
-            string text;
-
-            if (!IsEmptyText(child, out text))
+            if (!IsEmptyText(child, out string text))
             {
                 if (paragraph == null)
                 {
@@ -211,12 +206,7 @@
 
         internal DocxElement(IOpenXmlContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException("context");
-            }
-
-            this.context = context;
+            this.context = context ?? throw new ArgumentNullException("context");
         }
 
         internal string ClearHtml(string html)

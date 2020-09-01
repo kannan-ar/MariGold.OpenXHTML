@@ -8,8 +8,8 @@
 	{
 		private bool hasDefaultHeader;
 		private bool isCellHeader;
-		private Int16? cellPadding;
-		private Int16? cellSpacing;
+		private short? cellPadding;
+		private short? cellSpacing;
 		private Dictionary<int, int> rowSpanInfo;
 		
 		internal const string tableName = "table";
@@ -51,7 +51,7 @@
 			}
 		}
 		
-		internal Int16? CellPadding
+		internal short? CellPadding
 		{
 			get
 			{
@@ -64,7 +64,7 @@
 			}
 		}
 		
-		internal Int16? CellSpacing
+		internal short? CellSpacing
 		{
 			get
 			{
@@ -85,7 +85,7 @@
 			}
 		}
 
-        private Int32 GetTdCount(DocxNode element)
+        private int GetTdCount(DocxNode element)
 		{
 			int count = 0;
 			
@@ -105,9 +105,8 @@
 							    string.Compare(td.Tag, DocxTableProperties.thName, StringComparison.InvariantCultureIgnoreCase) == 0)
 							{
 								string colSpan = td.ExtractAttributeValue("colspan");
-								Int32 colspanValue;
-								
-								if (!string.IsNullOrEmpty(colSpan) && Int32.TryParse(colSpan, out colspanValue))
+
+								if (!string.IsNullOrEmpty(colSpan) && Int32.TryParse(colSpan, out int colspanValue))
 								{
 									count += colspanValue;
 								}
@@ -130,15 +129,13 @@
         internal void FetchTableProperties(DocxNode node)
 		{
             this.HasDefaultBorder = node.ExtractAttributeValue(DocxBorder.borderName) == "1";
-			
-			Int16 value;
 
-            if (Int16.TryParse(node.ExtractAttributeValue(cellSpacingName), out value))
+			if (short.TryParse(node.ExtractAttributeValue(cellSpacingName), out short value))
 			{
 				this.CellSpacing = value;
 			}
 
-            if (Int16.TryParse(node.ExtractAttributeValue(cellPaddingName), out value))
+			if (short.TryParse(node.ExtractAttributeValue(cellPaddingName), out value))
 			{
 				this.CellPadding = value;
 			}

@@ -8,8 +8,7 @@
     {
         private const string elementName = "ul";
         private const string liName = "li";
-        //private const NumberFormatValues numberFormat = NumberFormatValues.Bullet;
-        private Int16 numberId;
+        private short numberId;
         private bool isParagraphCreated;
 
         private Paragraph CreateParagraph(DocxNode node, OpenXmlElement parent)
@@ -98,6 +97,7 @@
             LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
 
             PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
+
             Indentation indentation = new Indentation()
             {
                 Start = "720",
@@ -107,6 +107,7 @@
             previousParagraphProperties.Append(indentation);
 
             NumberingSymbolRunProperties numberingSymbolRunProperties = new NumberingSymbolRunProperties();
+
             RunFonts runFonts = new RunFonts()
             {
                 Hint = FontTypeHintValues.Default,

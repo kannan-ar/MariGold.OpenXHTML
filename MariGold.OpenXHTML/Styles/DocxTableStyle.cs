@@ -78,15 +78,14 @@
 			
 			if (!string.IsNullOrEmpty(width))
 			{
-				decimal value;
-				TableWidthUnitValues unit;
-				
-				if (DocxUnits.TableUnitsFromStyle(width, out value, out unit))
+				if (DocxUnits.TableUnitsFromStyle(width, out decimal value, out TableWidthUnitValues unit))
 				{
-					TableWidth tableWidth = new TableWidth() {
+					TableWidth tableWidth = new TableWidth()
+					{
 						Width = value.ToString(),
 						Type = unit
 					};
+
 					tableProperties.Append(tableWidth);
 				}
 			}

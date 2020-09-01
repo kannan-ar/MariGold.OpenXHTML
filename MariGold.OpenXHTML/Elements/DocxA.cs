@@ -50,29 +50,6 @@
             }
         }
 
-        private void ProcessChildren(DocxNode currentNode, DocxNode newNode, Run run)
-        {
-            foreach (DocxNode child in currentNode.Children)
-            {
-                if (child.IsText)
-                {
-                    if (!IsEmptyText(child.InnerHtml))
-                    {
-                        run.AppendChild(new Text()
-                        {
-                            Text = ClearHtml(child.InnerHtml),
-                            Space = SpaceProcessingModeValues.Preserve
-                        });
-                    }
-                }
-                else
-                {
-                    currentNode.CopyExtentedStyles(newNode);
-                    ProcessTextElement(newNode);
-                }
-            }
-        }
-
         internal DocxA(IOpenXmlContext context)
             : base(context)
         {
