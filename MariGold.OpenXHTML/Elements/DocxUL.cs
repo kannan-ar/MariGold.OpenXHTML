@@ -76,7 +76,7 @@
             ParagraphStyleId paragraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
             NumberingProperties numberingProperties = new NumberingProperties();
-            NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = 0 };
+            NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = 1 };
             NumberingId numberingId = new NumberingId() { Val = numberId };
 
             numberingProperties.Append(numberingLevelReference);
@@ -90,7 +90,7 @@
         {
             AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
 
-            Level level = new Level() { LevelIndex = 0 };
+            Level level = new Level() { LevelIndex = 1 };
             StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
             NumberingFormat numberingFormat = new NumberingFormat() { Val = NumberFormatValues.Bullet };
             LevelText levelText = new LevelText() { Val = "·" };

@@ -40,7 +40,7 @@
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.AreEqual(1, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
@@ -88,7 +88,7 @@
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.AreEqual(1, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
