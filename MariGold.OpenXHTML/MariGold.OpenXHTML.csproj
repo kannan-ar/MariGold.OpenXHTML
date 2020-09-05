@@ -3,23 +3,23 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>MariGold.OpenXHTML</Title>
-    <Version>2.6.2</Version>
+    <Version>2.7.0</Version>
     <Authors>MariGold</Authors>
     <Description>A utility to convert html document to Open XML word document</Description>
     <Copyright>Copyright © MariGold 2015</Copyright>
     <PackageProjectUrl>https://github.com/kannan-ar/MariGold.OpenXHTML</PackageProjectUrl>
     <PackageTags>MariGold OpenXML HTML office</PackageTags>
     <Product>MariGold Framework</Product>
-    <PackageReleaseNotes>Bug fixes</PackageReleaseNotes>
-    <AssemblyVersion>2.6.2.0</AssemblyVersion>
-    <FileVersion>2.6.2.0</FileVersion>
+    <PackageReleaseNotes>Bug fixes on ordered and unordered list, DocumentFormat.OpenXml upgraded from 2.9.1 to 2.11.3</PackageReleaseNotes>
+    <AssemblyVersion>2.7.0.0</AssemblyVersion>
+    <FileVersion>2.7.0.0</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.9.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
     <PackageReference Include="MariGold.HtmlParser" Version="1.1.1" />
-    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
