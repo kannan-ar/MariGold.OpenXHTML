@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
 
     internal sealed class DocxAddress : DocxElement
@@ -15,7 +16,7 @@
             return string.Compare(node.Tag, "address", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
@@ -27,7 +28,7 @@
             Paragraph addrParagraph = null;
             node.SetExtentedStyle(DocxFontStyle.fontStyle, DocxFontStyle.italic);
 
-            ProcessBlockElement(node, ref addrParagraph);
+            ProcessBlockElement(node, ref addrParagraph, properties);
         }
     }
 }

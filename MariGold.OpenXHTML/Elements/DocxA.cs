@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -17,7 +18,7 @@
             }
         }
 
-        private void ProcessNonLinkText(DocxNode node, ref Paragraph paragraph)
+        private void ProcessNonLinkText(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             foreach (DocxNode child in node.Children)
             {
@@ -45,7 +46,7 @@
                     child.ParagraphNode = node.ParagraphNode;
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref paragraph);
+                    ProcessChild(child, ref paragraph, properties);
                 }
             }
         }
@@ -60,7 +61,7 @@
             return string.Compare(node.Tag, "a", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || IsHidden(node))
             {
@@ -99,7 +100,7 @@
                     {
                         child.Parent = hyperLink;
                         node.CopyExtentedStyles(child);
-                        ProcessTextElement(child);
+                        ProcessTextElement(child, properties);
                     }
                 }
 
@@ -108,7 +109,7 @@
             }
             else
             {
-                ProcessNonLinkText(node, ref paragraph);
+                ProcessNonLinkText(node, ref paragraph, properties);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
 	using System;
+	using System.Collections.Generic;
 	using DocumentFormat.OpenXml.Wordprocessing;
 	
 	internal sealed class DocxHr : DocxElement
@@ -15,7 +16,7 @@
 			return string.Compare(node.Tag, "hr", StringComparison.InvariantCultureIgnoreCase) == 0;
 		}
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
 		{
             if (node.IsNull() || node.Parent == null || IsHidden(node))
 			{

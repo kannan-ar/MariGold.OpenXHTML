@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -39,7 +40,7 @@
             return string.Compare(node.Tag, "q", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
@@ -69,7 +70,7 @@
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
                     ApplyOpenQuoteIfEmpty(node, ref paragraph);
-                    ProcessChild(child, ref paragraph);
+                    ProcessChild(child, ref paragraph, properties);
                 }
             }
 
@@ -84,14 +85,14 @@
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxNode node)
+        void ITextElement.Process(DocxNode node, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
                 return;
             }
 
-            ProcessTextChild(node);
+            ProcessTextChild(node, properties);
         }
     }
 }

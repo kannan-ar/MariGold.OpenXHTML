@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
@@ -27,7 +28,7 @@
             ParagraphCreated?.Invoke(this, new ParagraphEventArgs(para));
         }
 
-        protected void ProcessChild(DocxNode node, ref Paragraph paragraph)
+        protected void ProcessChild(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             DocxElement element = context.Convert(node);
 
@@ -38,21 +39,21 @@
                     element.ParagraphCreated = ParagraphCreated;
                 }
 
-                element.Process(node, ref paragraph);
+                element.Process(node, ref paragraph, properties);
             }
         }
 
-        protected void ProcessTextElement(DocxNode node)
+        protected void ProcessTextElement(DocxNode node, Dictionary<string, object> properties)
         {
             ITextElement element = context.ConvertTextElement(node);
 
             if (element != null)
             {
-                element.Process(node);
+                element.Process(node, properties);
             }
         }
 
-        protected void ProcessTextChild(DocxNode node)
+        protected void ProcessTextChild(DocxNode node, Dictionary<string, object> properties)
         {
             foreach (DocxNode child in node.Children)
             {
@@ -70,7 +71,7 @@
                 {
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
-                    ProcessTextElement(child);
+                    ProcessTextElement(child, properties);
                 }
             }
         }
@@ -101,7 +102,7 @@
             return display.CompareStringOrdinalIgnoreCase("none");
         }
 
-        protected void ProcessElement(DocxNode node, ref Paragraph paragraph)
+        protected void ProcessElement(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             foreach (DocxNode child in node.Children)
             {
@@ -114,12 +115,12 @@
                     child.ParagraphNode = node.ParagraphNode;
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref paragraph);
+                    ProcessChild(child, ref paragraph, properties);
                 }
             }
         }
 
-        protected void ProcessBlockElement(DocxNode node, ref Paragraph paragraph)
+        protected void ProcessBlockElement(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             foreach (DocxNode child in node.Children)
             {
@@ -134,7 +135,7 @@
                     child.ParagraphNode = node;
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref paragraph);
+                    ProcessChild(child, ref paragraph, properties);
                 }
             }
         }
@@ -280,6 +281,6 @@
 
         internal abstract bool CanConvert(DocxNode node);
 
-        internal abstract void Process(DocxNode node, ref Paragraph paragraph);
+        internal abstract void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties);
     }
 }

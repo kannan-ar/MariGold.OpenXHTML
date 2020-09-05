@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
 
     internal sealed class DocxItalic : DocxElement, ITextElement
@@ -26,7 +27,7 @@
             string.Compare(node.Tag, "em", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || IsHidden(node))
             {
@@ -35,7 +36,7 @@
 
             SetStyle(node);
 
-            ProcessElement(node, ref paragraph);
+            ProcessElement(node, ref paragraph, properties);
         }
 
         bool ITextElement.CanConvert(DocxNode node)
@@ -43,7 +44,7 @@
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxNode node)
+        void ITextElement.Process(DocxNode node, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
@@ -51,7 +52,7 @@
             }
 
             SetStyle(node);
-            ProcessTextChild(node);
+            ProcessTextChild(node, properties);
         }
     }
 }

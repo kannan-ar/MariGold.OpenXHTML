@@ -1,6 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
     using System.Text.RegularExpressions;
 
@@ -99,7 +99,7 @@
             return isValid.IsMatch(node.Tag);
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
@@ -110,7 +110,7 @@
             Paragraph headerParagraph = null;
             ApplyStyle(node);
 
-            ProcessBlockElement(node, ref headerParagraph);
+            ProcessBlockElement(node, ref headerParagraph, properties);
         }
     }
 }

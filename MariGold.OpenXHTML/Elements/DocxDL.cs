@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -9,7 +10,7 @@
         private const string defaultDDLeftMargin = "40px";
         private const string defaultDLMargin = "1em";
 
-        private void ProcessChild(DocxNode node)
+        private void ProcessChild(DocxNode node, Dictionary<string, object> properties)
         {
             if (node.IsNull())
             {
@@ -36,7 +37,7 @@
                     child.ParagraphNode = node;
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
-                    ProcessChild(child, ref paragraph);
+                    ProcessChild(child, ref paragraph, properties);
                 }
             }
         }
@@ -80,7 +81,7 @@
             return string.Compare(node.Tag, "dl", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || node.Parent == null || !CanConvert(node) || IsHidden(node))
             {
@@ -103,14 +104,14 @@
                 {
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
-                    ProcessChild(child);
+                    ProcessChild(child, properties);
                 }
                 else if (string.Compare(child.Tag, "dd", StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
                     node.CopyExtentedStyles(child);
                     SetDDProperties(child);
                     child.Parent = node.Parent;
-                    ProcessChild(child);
+                    ProcessChild(child, properties);
                 }
             }
 

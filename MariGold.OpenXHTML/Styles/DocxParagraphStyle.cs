@@ -22,7 +22,17 @@
 			}
 		}
 
-        internal void Process(Paragraph element, DocxNode node)
+		static internal void SetIndentation(Paragraph element, int indent)
+		{
+			if (element.ParagraphProperties == null)
+			{
+				element.ParagraphProperties = new ParagraphProperties();
+			}
+
+			element.ParagraphProperties.Append(new Indentation() { Left = indent.ToString() });
+		}
+
+		internal void Process(Paragraph element, DocxNode node)
 		{
 			ParagraphProperties properties = element.ParagraphProperties;
 			

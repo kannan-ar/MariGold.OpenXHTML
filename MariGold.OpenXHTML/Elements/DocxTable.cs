@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
     using System.Linq;
@@ -17,7 +18,7 @@
             }
         }
 
-        private void ProcessTd(int colIndex, DocxNode td, TableRow row, DocxTableProperties tableProperties)
+        private void ProcessTd(int colIndex, DocxNode td, TableRow row, DocxTableProperties tableProperties, Dictionary<string, object> properties)
         {
             TableCell cell = new TableCell();
             bool hasRowSpan = false;
@@ -74,7 +75,7 @@
                         child.ParagraphNode = DocxTableCellStyle.GetHtmlNodeForTableCellContent(td);
                         child.Parent = cell;
                         td.CopyExtentedStyles(child);
-                        ProcessChild(child, ref para);
+                        ProcessChild(child, ref para, properties);
                     }
                 }
             }
@@ -113,7 +114,7 @@
             }
         }
 
-        private void ProcessTr(DocxNode tr, Table table, DocxTableProperties tableProperties)
+        private void ProcessTr(DocxNode tr, Table table, DocxTableProperties tableProperties, Dictionary<string, object> properties)
         {
             if (tr.HasChildren)
             {
@@ -133,7 +134,7 @@
                     if (string.Compare(td.Tag, DocxTableProperties.tdName, StringComparison.InvariantCultureIgnoreCase) == 0 || tableProperties.IsCellHeader)
                     {
                         tr.CopyExtentedStyles(td);
-                        ProcessTd(colIndex++, td, row, tableProperties);
+                        ProcessTd(colIndex++, td, row, tableProperties, properties);
                     }
                 }
 
@@ -146,14 +147,14 @@
             }
         }
         
-        private void ProcessGroupElement(DocxNode tbody, Table table, DocxTableProperties tableProperties)
+        private void ProcessGroupElement(DocxNode tbody, Table table, DocxTableProperties tableProperties, Dictionary<string, object> properties)
         {
             foreach (DocxNode tr in tbody.Children)
             {
                 if (string.Compare(tr.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
                     tbody.CopyExtentedStyles(tr);
-                    ProcessTr(tr, table, tableProperties);
+                    ProcessTr(tr, table, tableProperties, properties);
                 }
             }
         }
@@ -168,7 +169,7 @@
             return string.Compare(node.Tag, DocxTableProperties.tableName, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || node.Parent == null || !CanConvert(node) || IsHidden(node))
             {
@@ -190,12 +191,12 @@
                     if (string.Compare(child.Tag, DocxTableProperties.trName, StringComparison.InvariantCultureIgnoreCase) == 0)
                     {
                         node.CopyExtentedStyles(child);
-                        ProcessTr(child, table, tableProperties);
+                        ProcessTr(child, table, tableProperties, properties);
                     }
                     else if (tableProperties.IsGroupElement(child.Tag))
                     {
                         node.CopyExtentedStyles(child);
-                        ProcessGroupElement(child, table, tableProperties);
+                        ProcessGroupElement(child, table, tableProperties, properties);
                     }
                 }
 

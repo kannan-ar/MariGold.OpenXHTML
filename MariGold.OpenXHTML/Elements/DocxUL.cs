@@ -1,6 +1,9 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -8,14 +11,17 @@
     {
         private const string elementName = "ul";
         private const string liName = "li";
-        private short numberId;
+        private const string levelIndexName = "LevelIndex";
+        private const int indent = 360;
+
+        private short gNumberId;
         private bool isParagraphCreated;
+        private int gLevelIndex;
 
         private Paragraph CreateParagraph(DocxNode node, OpenXmlElement parent)
         {
             Paragraph para = parent.AppendChild(new Paragraph());
             OnParagraphCreated(node, para);
-            OnULParagraphCreated(this, new ParagraphEventArgs(para));
             return para;
         }
 
@@ -32,9 +38,13 @@
 
                 isParagraphCreated = true;
             }
+            else
+            {
+                DocxParagraphStyle.SetIndentation(args.Paragraph, (gLevelIndex + 1) * indent);
+            }
         }
 
-        private void ProcessLi(DocxNode li, OpenXmlElement parent)
+        private void ProcessLi(DocxNode li, OpenXmlElement parent, Dictionary<string, object> properties)
         {
             Paragraph paragraph = null;
             isParagraphCreated = false;
@@ -66,7 +76,7 @@
                     child.ParagraphNode = li;
                     child.Parent = parent;
                     li.CopyExtentedStyles(child);
-                    ProcessChild(child, ref paragraph);
+                    ProcessChild(child, ref paragraph, properties);
                 }
             }
         }
@@ -76,8 +86,8 @@
             ParagraphStyleId paragraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
             NumberingProperties numberingProperties = new NumberingProperties();
-            NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = 1 };
-            NumberingId numberingId = new NumberingId() { Val = numberId };
+            NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = gLevelIndex };
+            NumberingId numberingId = new NumberingId() { Val = gNumberId };
 
             numberingProperties.Append(numberingLevelReference);
             numberingProperties.Append(numberingId);
@@ -86,11 +96,11 @@
             paragraphProperties.Append(numberingProperties);
         }
 
-        private void InitNumberDefinitions()
+        private void InitNumberDefinitions(int levelIndex)
         {
-            AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
+            AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = gNumberId };
 
-            Level level = new Level() { LevelIndex = 1 };
+            Level level = new Level() { LevelIndex = levelIndex };
             StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
             NumberingFormat numberingFormat = new NumberingFormat() { Val = NumberFormatValues.Bullet };
             LevelText levelText = new LevelText() { Val = "·" };
@@ -100,7 +110,7 @@
 
             Indentation indentation = new Indentation()
             {
-                Start = "720",
+                Start = (indent * (levelIndex + 1)).ToString(),
                 Hanging = "360"
             };
 
@@ -126,12 +136,12 @@
 
             abstractNum.Append(level);
 
-            NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numberId };
-            AbstractNumId abstractNumId = new AbstractNumId() { Val = numberId };
+            NumberingInstance numberingInstance = new NumberingInstance() { NumberID = gNumberId };
+            AbstractNumId abstractNumId = new AbstractNumId() { Val = gNumberId };
 
             numberingInstance.Append(abstractNumId);
 
-            context.SaveNumberingDefinition(numberId, abstractNum, numberingInstance);
+            context.SaveNumberingDefinition(gNumberId, abstractNum, numberingInstance);
         }
 
         internal DocxUL(IOpenXmlContext context)
@@ -144,7 +154,7 @@
             return string.Compare(node.Tag, elementName, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || !CanConvert(node) || IsHidden(node))
             {
@@ -152,19 +162,28 @@
             }
 
             paragraph = null;
+            int levelIndex = properties.ContainsKey(levelIndexName) ? Convert.ToInt32(properties[levelIndexName]) : 0;
 
             if (node.HasChildren)
             {
-                numberId = ++context.ListNumberId;
+                short numberId = gNumberId = ++context.ListNumberId;
 
-                InitNumberDefinitions();
+                InitNumberDefinitions(levelIndex);
+                
+                var newProperties = properties.ToDictionary(x => x.Key, x => x.Value);
+                newProperties[levelIndexName] = levelIndex + 1;
 
                 foreach (DocxNode child in node.Children)
                 {
+                    //Dirty hack to maintain the level since these elements are singleton. When it traverse to inner html elements, the level will increment
+                    //then, when it goes back to more root elements, we have to reset the level to its previous state.
+                    gLevelIndex = levelIndex;
+                    gNumberId = numberId;
+
                     if (string.Compare(child.Tag, liName, StringComparison.InvariantCultureIgnoreCase) == 0)
                     {
                         node.CopyExtentedStyles(child);
-                        ProcessLi(child, node.Parent);
+                        ProcessLi(child, node.Parent, newProperties);
                     }
                 }
             }

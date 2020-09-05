@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
 
     internal sealed class DocxHeader : DocxElement, ITextElement
@@ -19,7 +20,7 @@
             return string.Compare(node.Tag, "header", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
@@ -29,7 +30,7 @@
             paragraph = null;
             Paragraph headerParagraph = null;
 
-            ProcessBlockElement(node, ref headerParagraph);
+            ProcessBlockElement(node, ref headerParagraph, properties);
         }
 
         bool ITextElement.CanConvert(DocxNode node)
@@ -37,14 +38,14 @@
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxNode node)
+        void ITextElement.Process(DocxNode node, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
                 return;
             }
 
-            ProcessTextChild(node);
+            ProcessTextChild(node, properties);
         }
     }
 }

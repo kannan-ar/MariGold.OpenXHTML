@@ -40,11 +40,11 @@
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.AreEqual(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -72,11 +72,11 @@
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.AreEqual(2, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -120,11 +120,11 @@
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.AreEqual(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -168,11 +168,11 @@
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.AreEqual(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -200,11 +200,11 @@
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.AreEqual(3, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -248,11 +248,11 @@
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.AreEqual(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -280,11 +280,11 @@
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(2, numberingLevelReference.Val.Value);
+            Assert.AreEqual(1, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.AreEqual(3, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -328,11 +328,11 @@
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.AreEqual(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -360,11 +360,11 @@
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(2, numberingLevelReference.Val.Value);
+            Assert.AreEqual(1, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.AreEqual(3, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
             Assert.IsNotNull(run);
@@ -392,7 +392,7 @@
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
             Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.AreEqual(0, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
             Assert.IsNotNull(numberingId);

@@ -1,6 +1,8 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
 
@@ -8,24 +10,27 @@
     {
         private const string elementName = "ol";
         private const string liName = "li";
+        private const string levelIndexName = "LevelIndex";
+        private const int indent = 360;
+        private const int numIdValue = 1;
 
         private bool isParagraphCreated;
-        private short numberId;
-        
-        private void InitNumberDefinitions(NumberFormatValues numberFormat)
+        private AbstractNum abstractNum;
+        private int gLevelIndex;
+        private int gLevelId;
+        private int gNextLevelId;
+        private void DefineLevel(NumberFormatValues numberFormat, int levelIndex)
         {
-            AbstractNum abstractNum = new AbstractNum() { AbstractNumberId = numberId };
-
-            Level level = new Level() { LevelIndex = 0 };
+            Level level = new Level() { LevelIndex = gLevelId };
             StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
             NumberingFormat numberingFormat = new NumberingFormat() { Val = numberFormat };
-            LevelText levelText = new LevelText() { Val = "%1." };
+            LevelText levelText = new LevelText() { Val = $"%{gLevelId + 1})" }; //Later we need a provison to configure this text.
             LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
 
             PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
             Indentation indentation = new Indentation()
             {
-                Left = "720",
+                Left = (indent * (levelIndex + 1)).ToString(),
                 Hanging = "360"
             };
 
@@ -38,13 +43,18 @@
             level.Append(previousParagraphProperties);
 
             abstractNum.Append(level);
+        }
 
-            NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numberId };
-            AbstractNumId abstractNumId = new AbstractNumId() { Val = numberId };
+        private void InitNumberDefinitions()
+        {
+            abstractNum = new AbstractNum() { AbstractNumberId = numIdValue };
+
+            NumberingInstance numberingInstance = new NumberingInstance() { NumberID = numIdValue };
+            AbstractNumId abstractNumId = new AbstractNumId() { Val = numIdValue };
 
             numberingInstance.Append(abstractNumId);
 
-            context.SaveNumberingDefinition(numberId, abstractNum, numberingInstance);
+            context.SaveNumberingDefinition(numIdValue, abstractNum, numberingInstance);
         }
 
         private void SetListProperties(ParagraphProperties paragraphProperties)
@@ -52,8 +62,8 @@
             ParagraphStyleId paragraphStyleId = new ParagraphStyleId() { Val = "ListParagraph" };
 
             NumberingProperties numberingProperties = new NumberingProperties();
-            NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = 0 };
-            NumberingId numberingId = new NumberingId() { Val = numberId };
+            NumberingLevelReference numberingLevelReference = new NumberingLevelReference() { Val = gLevelId };
+            NumberingId numberingId = new NumberingId() { Val = numIdValue };
 
             numberingProperties.Append(numberingLevelReference);
             numberingProperties.Append(numberingId);
@@ -66,7 +76,6 @@
         {
             Paragraph para = parent.AppendChild(new Paragraph());
             OnParagraphCreated(node, para);
-            OnOLParagraphCreated(this, new ParagraphEventArgs(para));
             return para;
         }
 
@@ -83,9 +92,13 @@
 
                 isParagraphCreated = true;
             }
+            else
+            {
+                DocxParagraphStyle.SetIndentation(args.Paragraph, (gLevelIndex + 1) * indent);
+            }
         }
 
-        private void ProcessLi(DocxNode li, OpenXmlElement parent)
+        private void ProcessLi(DocxNode li, OpenXmlElement parent, Dictionary<string, object> properties)
         {
             Paragraph paragraph = null;
             isParagraphCreated = false;
@@ -117,7 +130,7 @@
                     child.ParagraphNode = li;
                     child.Parent = parent;
                     li.CopyExtentedStyles(child);
-                    ProcessChild(child, ref paragraph);
+                    ProcessChild(child, ref paragraph, properties);
                 }
             }
         }
@@ -167,7 +180,7 @@
             return string.Compare(node.Tag, elementName, StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || !CanConvert(node) || IsHidden(node))
             {
@@ -175,20 +188,33 @@
             }
 
             paragraph = null;
+            int levelIndex = properties.ContainsKey(levelIndexName) ? Convert.ToInt32(properties[levelIndexName]) : 0;
+
+            if (abstractNum == null)
+            {
+                InitNumberDefinitions();
+            }
 
             if (node.HasChildren)
             {
                 NumberFormatValues numberFormat = GetNumberFormat(node);
-                numberId = ++context.ListNumberId;
 
-                InitNumberDefinitions(numberFormat);
+                int levelId = gLevelId = gNextLevelId++;
+
+                DefineLevel(numberFormat, levelIndex);
+
+                var newProperties = properties.ToDictionary(x => x.Key, x => x.Value);
+                newProperties[levelIndexName] = levelIndex + 1;
 
                 foreach (DocxNode child in node.Children)
                 {
+                    gLevelIndex = levelIndex;
+                    gLevelId = levelId;
+
                     if (string.Compare(child.Tag, liName, StringComparison.InvariantCultureIgnoreCase) == 0)
                     {
                         node.CopyExtentedStyles(child);
-                        ProcessLi(child, node.Parent);
+                        ProcessLi(child, node.Parent, newProperties);
                     }
                 }
             }

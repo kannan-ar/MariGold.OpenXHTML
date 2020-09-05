@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
@@ -9,7 +10,7 @@
     {
         private OpenXmlElement body;
 
-        private void ProcessBody(DocxNode node, ref Paragraph paragraph)
+        private void ProcessBody(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             while (node != null)
             {
@@ -36,7 +37,7 @@
                 {
                     node.ParagraphNode = node;
                     node.Parent = body;
-                    ProcessChild(node, ref paragraph);
+                    ProcessChild(node, ref paragraph, properties);
                 }
 
                 node = node.Next;
@@ -53,7 +54,7 @@
             return string.Compare(node.Tag, "body", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             body = context.Document.AppendChild(new Body());
 
@@ -69,7 +70,7 @@
                 node = node.Children.ElementAt(0);
             }
 
-            ProcessBody(node, ref paragraph);
+            ProcessBody(node, ref paragraph, properties);
         }
     }
 }

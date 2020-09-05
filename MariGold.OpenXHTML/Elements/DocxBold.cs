@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
 
     internal sealed class DocxBold : DocxElement, ITextElement
@@ -16,7 +17,7 @@
             string.Compare(node.Tag, "strong", StringComparison.InvariantCultureIgnoreCase) == 0;
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || IsHidden(node))
             {
@@ -25,7 +26,7 @@
 
             node.SetExtentedStyle(DocxFontStyle.fontWeight, DocxFontStyle.bold);
 
-            ProcessElement(node, ref paragraph);
+            ProcessElement(node, ref paragraph, properties);
         }
 
         bool ITextElement.CanConvert(DocxNode node)
@@ -33,7 +34,7 @@
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxNode node)
+        void ITextElement.Process(DocxNode node, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
@@ -41,7 +42,7 @@
             }
 
             node.SetExtentedStyle(DocxFontStyle.fontWeight, DocxFontStyle.bold);
-            ProcessTextChild(node);
+            ProcessTextChild(node, properties);
         }
     }
 }

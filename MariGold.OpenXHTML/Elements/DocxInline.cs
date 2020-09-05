@@ -1,5 +1,6 @@
 ﻿namespace MariGold.OpenXHTML
 {
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
 
     internal sealed class DocxInline : DocxElement, ITextElement
@@ -26,14 +27,14 @@
             return IsTextTag(node.Tag);
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (node.IsNull() || node.Parent == null || IsHidden(node))
             {
                 return;
             }
 
-            ProcessElement(node, ref paragraph);
+            ProcessElement(node, ref paragraph, properties);
         }
 
         bool ITextElement.CanConvert(DocxNode node)
@@ -41,14 +42,14 @@
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxNode node)
+        void ITextElement.Process(DocxNode node, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
                 return;
             }
 
-            ProcessTextChild(node);
+            ProcessTextChild(node, properties);
         }
     }
 }

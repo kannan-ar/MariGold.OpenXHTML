@@ -11,6 +11,7 @@
     using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
     using System.Drawing;
     using System.Text.RegularExpressions;
+    using System.Collections.Generic;
 
     internal sealed class DocxImage : DocxElement, ITextElement
     {
@@ -170,7 +171,7 @@
             return string.Equals(node.Tag, "img", StringComparison.OrdinalIgnoreCase);
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
@@ -209,7 +210,7 @@
             return CanConvert(node);
         }
 
-        void ITextElement.Process(DocxNode node)
+        void ITextElement.Process(DocxNode node, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {

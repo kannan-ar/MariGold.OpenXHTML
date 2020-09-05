@@ -17,7 +17,7 @@
         private string baseUrl;
         private string uriSchema;
         private IParser parser;
-        private Int16 listNumberId;
+        private Int16 listNumberId = 1;
         public Int32 RelationshipId { get; set; }
 
         private void PrepareWordElements()

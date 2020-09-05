@@ -15,21 +15,21 @@
             return new DocxNode(new DocxHtmlNode(attributes));
         }
 
-        public void ProcessImage(IOpenXmlContext context, string imagePath, DocxNode node, ref Paragraph para)
+        public void ProcessImage(IOpenXmlContext context, string imagePath, DocxNode node, ref Paragraph para, Dictionary<string, object> properties)
         {
             DocxImage image = new DocxImage(context);
             DocxNode docxNode = GetImageNode(imagePath);
             docxNode.Parent = node.Parent;
-            image.Process(docxNode, ref para);
+            image.Process(docxNode, ref para, properties);
         }
 
-        public void ProcessImage(IOpenXmlContext context, string imagePath, DocxNode node)
+        public void ProcessImage(IOpenXmlContext context, string imagePath, DocxNode node, Dictionary<string, object> properties)
         {
             ITextElement image = new DocxImage(context);
             DocxNode docxNode = GetImageNode(imagePath);
             docxNode.Parent = node.Parent;
 
-            image.Process(docxNode);
+            image.Process(docxNode, properties);
         }
     }
 }

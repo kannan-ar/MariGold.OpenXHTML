@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using System.Drawing;
-    using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     using DocumentFormat.OpenXml.Wordprocessing;
     using DocumentFormat.OpenXml.Packaging;
@@ -128,7 +128,7 @@
             return string.Equals(node.Tag, "object", StringComparison.OrdinalIgnoreCase);
         }
 
-        internal override void Process(DocxNode node, ref Paragraph paragraph)
+        internal override void Process(DocxNode node, ref Paragraph paragraph, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
@@ -140,7 +140,7 @@
             if (IsImage(data))
             {
                 var interchanger = context.GetInterchanger();
-                interchanger.ProcessImage(context, data, node, ref paragraph);
+                interchanger.ProcessImage(context, data, node, ref paragraph, properties);
             }
             else if (TryFormat(data, out string contentType, out string progId))
             {
@@ -165,7 +165,7 @@
             return string.Equals(node.Tag, "object", StringComparison.OrdinalIgnoreCase);
         }
 
-        void ITextElement.Process(DocxNode node)
+        void ITextElement.Process(DocxNode node, Dictionary<string, object> properties)
         {
             if (IsHidden(node))
             {
@@ -177,7 +177,7 @@
             if (IsImage(data))
             {
                 var interchanger = context.GetInterchanger();
-                interchanger.ProcessImage(context, data, node);
+                interchanger.ProcessImage(context, data, node, properties);
             }
             else if (TryFormat(data, out string contentType, out string progId))
             {

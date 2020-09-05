@@ -1,6 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using System;
+    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Packaging;
     using DocumentFormat.OpenXml.Wordprocessing;
@@ -110,7 +111,7 @@
             {
                 DocxElement body = context.GetBodyElement();
                 Paragraph paragraph = null;
-                body.Process(new DocxNode(node), ref paragraph);
+                body.Process(new DocxNode(node), ref paragraph, new Dictionary<string, object>());
             }
         }
 
