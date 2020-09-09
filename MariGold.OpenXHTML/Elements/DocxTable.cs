@@ -103,7 +103,14 @@
                 };
 
                 cell.TableCellProperties.Append(new VerticalMerge());
-
+                // There should be a more elegant solution for drawing borders.
+                cell.TableCellProperties.Append(new LeftBorder() {
+                    Val = BorderValues.Single,
+                    Color = "auto",
+                    Size = (UInt32Value)4U,
+                    Space = (UInt32Value)0U
+                });
+                //
                 cell.AppendChild(new Paragraph());
 
                 row.Append(cell);
@@ -127,6 +134,13 @@
 
                 foreach (DocxNode td in tr.Children)
                 {
+                    if (Int32.TryParse(td.ExtractAttributeValue("colspan"), out value))
+                    {
+                        if (value > 1)
+                        {
+                            colIndex += value - 1;
+                        }
+                    }
                     ProcessVerticalSpan(ref colIndex, row, tableProperties);
 
                     tableProperties.IsCellHeader = string.Compare(td.Tag, DocxTableProperties.thName, StringComparison.InvariantCultureIgnoreCase) == 0;
