@@ -97,6 +97,39 @@
             }
         }
 
+        private void SaveStyleDefinitions()
+        {
+            if (mainPart.StyleDefinitionsPart is null)
+            {
+                _ = mainPart.AddNewPart<StyleDefinitionsPart>("styleDefinitionsPart");
+            }
+
+            var styles = new Styles();
+
+            // Hyperlink
+            var hyperlink = new Style { StyleId = "Hyperlink", Type = StyleValues.Character };
+            hyperlink.StyleName = new StyleName { Val = "Hyperlink" };
+            hyperlink.UnhideWhenUsed = new UnhideWhenUsed();
+            if (hyperlink.StyleRunProperties is null)
+            {
+                hyperlink.StyleRunProperties = new StyleRunProperties();
+            }
+            hyperlink.StyleRunProperties.Append(new Color { Val = "0563C1", ThemeColor = ThemeColorValues.Hyperlink });
+            hyperlink.StyleRunProperties.Append(new Underline { Val = UnderlineValues.Single });
+            styles.Append(hyperlink);
+
+            // Headings
+            for (int i = 1; i <= 6; i++)
+            {
+                var heading = new Style { StyleId = $"Heading{i}", Type = StyleValues.Paragraph };
+                heading.StyleName = new StyleName { Val = $"heading {i}" };
+                heading.LinkedStyle = new LinkedStyle { Val = $"Heading{i}Char" };
+                styles.Append(heading);
+            }
+
+            mainPart.StyleDefinitionsPart.Styles = styles;
+        }
+
         internal OpenXmlContext(WordprocessingDocument document)
         {
             this.document = document;
@@ -203,6 +236,7 @@
         public void Save()
         {
             SaveNumberDefinitions();
+            SaveStyleDefinitions();
 
             Document.Save();
 

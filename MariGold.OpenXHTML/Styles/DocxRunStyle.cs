@@ -72,6 +72,16 @@
             }
         }
 
+        private void ProcessDirection(DocxNode node, RunProperties properties)
+        {
+            string styleValue = node.ExtractStyleValue(DocxDirection.direction);
+
+            if (!string.IsNullOrEmpty(styleValue))
+            {
+                DocxDirection.ApplyDirection(styleValue, properties);
+            }
+        }
+
         internal void Process(Run element, DocxNode node)
         {
             RunProperties properties = element.RunProperties;
@@ -96,6 +106,8 @@
             ProcessBackGround(node, properties);
 
             ProcessVerticalAlign(node, properties);
+
+            ProcessDirection(node, properties);
 
             if (element.RunProperties == null && properties.HasChildren)
             {

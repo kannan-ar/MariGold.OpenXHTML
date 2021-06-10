@@ -13,6 +13,7 @@
         protected const string whiteSpace = " ";
         protected readonly IOpenXmlContext context;
         internal EventHandler<ParagraphEventArgs> ParagraphCreated;
+        protected readonly Regex newLineRegex = new Regex("(?:\n|\r\n)");
 
         protected void RunCreated(DocxNode node, Run run)
         {
@@ -221,7 +222,7 @@
             html = html.Replace("&nbsp;", whiteSpace);
             html = html.Replace("&amp;", "&");
 
-            Regex regex = new Regex(Environment.NewLine + "\\s+");
+            Regex regex = new Regex("(?:\n|\r\n)" + "\\s+");
             Match match = regex.Match(html);
 
             while (match.Success)
@@ -231,7 +232,7 @@
                 match = regex.Match(html);
             }
 
-            html = html.Replace(Environment.NewLine, string.Empty);
+            html = newLineRegex.Replace(html, string.Empty);
 
             return html;
         }
@@ -243,7 +244,7 @@
                 return true;
             }
 
-            html = html.Replace(Environment.NewLine, string.Empty);
+            html = newLineRegex.Replace(html, string.Empty);
 
             if (string.IsNullOrEmpty(html.Trim()))
             {
@@ -262,7 +263,7 @@
                 return true;
             }
 
-            text = node.InnerHtml.Replace(Environment.NewLine, string.Empty);
+            text = newLineRegex.Replace(node.InnerHtml, string.Empty);
 
             if (!string.IsNullOrEmpty(text.Trim()))
             {

@@ -2,7 +2,9 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using DocumentFormat.OpenXml.Wordprocessing;
+    using DocumentFormat.OpenXml.Vml;
+    using DocumentFormat.OpenXml.Vml.Office;
+    using DocumentFormat.OpenXml.Wordprocessing;
 	
 	internal sealed class DocxHr : DocxElement
 	{
@@ -32,12 +34,17 @@
 			{
 				hrParagraph.ParagraphProperties = new ParagraphProperties();
 			}
-				
-			ParagraphBorders paragraphBorders = new ParagraphBorders();
-			DocxBorder.ApplyDefaultBorder<TopBorder>(paragraphBorders);
-			hrParagraph.ParagraphProperties.Append(paragraphBorders);
-				
-			Run run = hrParagraph.AppendChild(new Run(new Text()));
+
+			var rectangle = new Rectangle();
+			rectangle.Style = "width:0;height:1.5pt";
+			rectangle.Horizontal = true;
+			rectangle.HorizontalStandard = true;
+			rectangle.FillColor = "#a0a0a0";
+			rectangle.Stroked = false;
+			rectangle.HorizontalAlignment = HorizontalRuleAlignmentValues.Center;
+			var picture = new Picture(rectangle);
+
+			Run run = hrParagraph.AppendChild(new Run(picture));
             RunCreated(node, run);
 		}
 	}

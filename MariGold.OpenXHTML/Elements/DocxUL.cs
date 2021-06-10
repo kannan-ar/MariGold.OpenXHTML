@@ -103,7 +103,7 @@
             Level level = new Level() { LevelIndex = levelIndex };
             StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
             NumberingFormat numberingFormat = new NumberingFormat() { Val = NumberFormatValues.Bullet };
-            LevelText levelText = new LevelText() { Val = "·" };
+            LevelText levelText = new LevelText() { Val = "" };
             LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
 
             PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();
@@ -122,7 +122,8 @@
             {
                 Hint = FontTypeHintValues.Default,
                 Ascii = "Symbol",
-                HighAnsi = "Symbol"
+                HighAnsi = "Symbol",
+                ComplexScript = "Symbol"
             };
 
             numberingSymbolRunProperties.Append(runFonts);

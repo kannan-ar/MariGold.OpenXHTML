@@ -24,7 +24,7 @@
             Level level = new Level() { LevelIndex = gLevelId };
             StartNumberingValue startNumberingValue = new StartNumberingValue() { Val = 1 };
             NumberingFormat numberingFormat = new NumberingFormat() { Val = numberFormat };
-            LevelText levelText = new LevelText() { Val = $"%{gLevelId + 1})" }; //Later we need a provison to configure this text.
+            LevelText levelText = new LevelText() { Val = $"%{gLevelId + 1}." }; //Later we need a provison to configure this text.
             LevelJustification levelJustification = new LevelJustification() { Val = LevelJustificationValues.Left };
 
             PreviousParagraphProperties previousParagraphProperties = new PreviousParagraphProperties();

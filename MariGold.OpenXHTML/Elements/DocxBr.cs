@@ -25,9 +25,11 @@
                     paragraph = node.Parent.AppendChild(new Paragraph());
                     OnParagraphCreated(node.ParagraphNode, paragraph);
 				}
-				
-				Run run = paragraph.AppendChild(new Run(new Break()));
-                RunCreated(node, run);
+				else
+                {
+					Run run = paragraph.AppendChild(new Run(new Break()));
+					RunCreated(node, run);
+				}
 			}
 		}
 
