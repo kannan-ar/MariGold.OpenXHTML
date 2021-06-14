@@ -16,21 +16,29 @@
             {
                 if (node.IsText)
                 {
-                    if (!IsEmptyText(node, out string text))
+                    if (TryGetText(node, out string text))
                     {
-                        if (paragraph == null)
+                        if (paragraph == null && !IsEmptyText(text))
                         {
                             paragraph = body.AppendChild(new Paragraph());
                             OnParagraphCreated(node, paragraph);
                         }
 
-                        Run run = paragraph.AppendChild(new Run(new Text()
+                        if (paragraph != null)
                         {
-                            Text = ClearHtml(text),
-                            Space = SpaceProcessingModeValues.Preserve
-                        }));
+                            if (node.Previous != null && node.Previous.InnerHtml.EndsWith(whiteSpace))
+                            {
+                                text = text.TrimStart();
+                            }
 
-                        RunCreated(node, run);
+                            Run run = paragraph.AppendChild(new Run(new Text()
+                            {
+                                Text = ClearHtml(text),
+                                Space = SpaceProcessingModeValues.Preserve
+                            }));
+
+                            RunCreated(node, run);
+                        }
                     }
                 }
                 else

@@ -8,7 +8,7 @@
     using System.IO;
     using MariGold.HtmlParser;
 
-    public sealed class WordDocument
+    public sealed class WordDocument : IDisposable
     {
         private readonly IOpenXmlContext context;
 
@@ -85,7 +85,7 @@
             context = new OpenXmlContext(WordprocessingDocument.Create(fileName, WordprocessingDocumentType.Document));
         }
 
-        public WordDocument(MemoryStream stream)
+        public WordDocument(Stream stream)
         {
             if (stream == null)
             {
@@ -118,6 +118,22 @@
         public void Save()
         {
             context.Save();
+        }
+
+        public void Close()
+        {
+            context.WordprocessingDocument.Close();
+        }
+
+        public void SaveAndClose()
+        {
+            Save();
+            Close();
+        }
+
+        public void Dispose()
+        {
+            context.Dispose();
         }
     }
 }

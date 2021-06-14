@@ -238,13 +238,7 @@
             SaveNumberDefinitions();
             SaveStyleDefinitions();
 
-            Document.Save();
-
-            document.Close();
-            document.Dispose();
-
-            document = null;
-            mainPart = null;
+            document.Save();
         }
 
         public DocxElement Convert(DocxNode node)
@@ -309,6 +303,14 @@
         public IDocxInterchanger GetInterchanger()
         {
             return new DocxInterchanger();
+        }
+
+        public void Dispose()
+        {
+            document.Dispose();
+
+            document = null;
+            mainPart = null;
         }
     }
 }
