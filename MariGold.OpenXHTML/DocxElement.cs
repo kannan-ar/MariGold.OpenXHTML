@@ -13,8 +13,8 @@
         protected const string whiteSpace = " ";
         protected readonly IOpenXmlContext context;
         internal EventHandler<ParagraphEventArgs> ParagraphCreated;
-        protected readonly Regex newLineRegex = new Regex(@"(?:\n|\r\n)");
-        protected readonly Regex whitespaceRegex = new Regex(@"[\r\n ]+");
+        protected static readonly Regex newLineRegex = new Regex(@"(?:\n|\r\n)", RegexOptions.Compiled);
+        protected static readonly Regex whitespaceRegex = new Regex(@"[\r\n ]+", RegexOptions.Compiled);
 
         protected void RunCreated(DocxNode node, Run run)
         {
