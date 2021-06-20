@@ -61,7 +61,8 @@
 
         internal static void ApplyFontFamily(string style, OpenXmlElement styleElement)
         {
-            styleElement.Append(new RunFonts() { Ascii = CleanFonts(style) });
+            var fontFamilies = CleanFonts(style);
+            styleElement.Append(new RunFonts() { Ascii = fontFamilies, ComplexScript = fontFamilies });
         }
 
         internal static void ApplyFontWeight(string style, OpenXmlElement styleElement)
@@ -70,6 +71,7 @@
                 string.Compare(bolder, style, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 styleElement.Append(new Bold());
+                styleElement.Append(new BoldComplexScript());
             }
         }
 
@@ -78,6 +80,7 @@
             if (string.Compare(italic, style, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 styleElement.Append(new Italic());
+                styleElement.Append(new ItalicComplexScript());
             }
         }
 
@@ -106,11 +109,13 @@
         internal static void ApplyFontItalic(OpenXmlElement styleElement)
         {
             styleElement.Append(new Italic());
+            styleElement.Append(new ItalicComplexScript());
         }
 
         internal static void ApplyBold(OpenXmlElement styleElement)
         {
             styleElement.Append(new Bold());
+            styleElement.Append(new BoldComplexScript());
         }
 
         internal static void ApplyFontSize(string style, OpenXmlElement styleElement)
@@ -120,20 +125,23 @@
             if (fontSize != 0)
             {
                 fontSize = decimal.Round(fontSize);
-                styleElement.Append(new FontSize() { Val = fontSize.ToString("N0") });
+                var fontSizeString = fontSize.ToString("N0");
+                styleElement.Append(new FontSize() { Val = fontSizeString });
+                styleElement.Append(new FontSizeComplexScript() { Val = fontSizeString });
             }
         }
 
         internal static void ApplyFont(int size, bool isBold, OpenXmlElement styleElement)
         {
-            FontSize fontSize = new FontSize() { Val = size.ToString() };
-
             if (isBold)
             {
                 styleElement.Append(new Bold());
+                styleElement.Append(new BoldComplexScript());
             }
 
-            styleElement.Append(fontSize);
+            var sizeString = size.ToString();
+            styleElement.Append(new FontSize() { Val = sizeString });
+            styleElement.Append(new FontSizeComplexScript() { Val = sizeString });
         }
     }
 }

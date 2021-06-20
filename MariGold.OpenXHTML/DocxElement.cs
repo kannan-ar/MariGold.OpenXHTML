@@ -13,6 +13,8 @@
         protected const string whiteSpace = " ";
         protected readonly IOpenXmlContext context;
         internal EventHandler<ParagraphEventArgs> ParagraphCreated;
+        protected static readonly Regex newLineRegex = new Regex(@"(?:\n|\r\n)", RegexOptions.Compiled);
+        protected static readonly Regex whitespaceRegex = new Regex(@"[\r\n ]+", RegexOptions.Compiled);
 
         protected void RunCreated(DocxNode node, Run run)
         {
@@ -142,21 +144,29 @@
 
         protected void ProcessParagraph(DocxNode child, DocxNode node, DocxNode paragraphNode, ref Paragraph paragraph)
         {
-            if (!IsEmptyText(child, out string text))
+            if (TryGetText(child, out string text))
             {
-                if (paragraph == null)
+                if (paragraph == null && !IsEmptyText(text))
                 {
                     paragraph = node.Parent.AppendChild(new Paragraph());
                     OnParagraphCreated(paragraphNode, paragraph);
                 }
 
-                Run run = paragraph.AppendChild(new Run(new Text()
+                if (paragraph != null)
                 {
-                    Text = ClearHtml(text),
-                    Space = SpaceProcessingModeValues.Preserve
-                }));
+                    if (child.Previous != null && child.Previous.InnerHtml.EndsWith(whiteSpace))
+                    {
+                        text = text.TrimStart();
+                    }
 
-                RunCreated(node, run);
+                    Run run = paragraph.AppendChild(new Run(new Text()
+                    {
+                        Text = ClearHtml(text),
+                        Space = SpaceProcessingModeValues.Preserve
+                    }));
+
+                    RunCreated(node, run);
+                }
             }
         }
 
@@ -216,67 +226,36 @@
             {
                 return string.Empty;
             }
-            
+
+            html = whitespaceRegex.Replace(html, " ");
+
             html = WebUtility.HtmlDecode(html);
-            html = html.Replace("&nbsp;", whiteSpace);
-            html = html.Replace("&amp;", "&");
-
-            Regex regex = new Regex(Environment.NewLine + "\\s+");
-            Match match = regex.Match(html);
-
-            while (match.Success)
-            {
-                //match.Length - 1 for leave a single space. Otherwise the sentences will collide.
-                html = html.Remove(match.Index, match.Length - 1);
-                match = regex.Match(html);
-            }
-
-            html = html.Replace(Environment.NewLine, string.Empty);
 
             return html;
         }
 
         internal bool IsEmptyText(string html)
         {
-            if (string.IsNullOrEmpty(html))
-            {
-                return true;
-            }
-
-            html = html.Replace(Environment.NewLine, string.Empty);
-
-            if (string.IsNullOrEmpty(html.Trim()))
-            {
-                return true;
-            }
-
-            return false;
+            return string.IsNullOrEmpty(html.Trim());
         }
 
-        internal bool IsEmptyText(DocxNode node, out string text)
+        internal bool TryGetText(DocxNode node, out string text)
         {
-            text = string.Empty;
-
-            if (string.IsNullOrEmpty(node.InnerHtml))
-            {
-                return true;
-            }
-
-            text = node.InnerHtml.Replace(Environment.NewLine, string.Empty);
+            text = node.InnerHtml;
 
             if (!string.IsNullOrEmpty(text.Trim()))
             {
-                return false;
+                return true;
             }
             else if (!string.IsNullOrEmpty(text) && 
                 node.Previous != null && !node.Previous.IsText && !node.Previous.InnerHtml.EndsWith(whiteSpace) &&
                 node.Next != null && !node.Next.IsText && !node.Next.InnerHtml.StartsWith(whiteSpace))
             {
                 text = whiteSpace;
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         internal abstract bool CanConvert(DocxNode node);

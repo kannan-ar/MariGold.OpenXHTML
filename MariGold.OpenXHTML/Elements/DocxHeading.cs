@@ -7,6 +7,7 @@
     internal sealed class DocxHeading : DocxElement
     {
         private Regex isValid;
+        private int number;
 
         private int GetHeaderNumber(DocxNode node)
         {
@@ -64,7 +65,7 @@
 
             if (string.IsNullOrEmpty(fontSizeValue))
             {
-                string headingFontSize = CalculateFontSize(GetHeaderNumber(node));
+                string headingFontSize = CalculateFontSize(number);
                 string inheritedStyle = node.ExtractInheritedStyleValue(DocxFontStyle.fontSize);
 
                 if (!string.IsNullOrEmpty(inheritedStyle))
@@ -88,6 +89,16 @@
             node.SetExtentedStyle(DocxFontStyle.fontWeight, fontWeightValue);
         }
 
+        private void OnHeadingParagraphCreated(object sender, ParagraphEventArgs args)
+        {
+            if (args.Paragraph.ParagraphProperties == null)
+            {
+                args.Paragraph.ParagraphProperties = new ParagraphProperties();
+            }
+
+            args.Paragraph.ParagraphProperties.Append(new ParagraphStyleId() { Val = $"Heading{number}" });
+        }
+
         internal DocxHeading(IOpenXmlContext context)
             : base(context)
         {
@@ -108,7 +119,10 @@
 
             paragraph = null;
             Paragraph headerParagraph = null;
+            number = GetHeaderNumber(node);
             ApplyStyle(node);
+
+            ParagraphCreated = OnHeadingParagraphCreated;
 
             ProcessBlockElement(node, ref headerParagraph, properties);
         }

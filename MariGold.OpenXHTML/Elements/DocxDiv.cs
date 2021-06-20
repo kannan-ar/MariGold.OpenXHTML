@@ -24,7 +24,7 @@
                 return;
             }
 
-            //Div creates it's own new paragraph. So old paragraph ends here and creats another one after this div 
+            //Div creates it's own new paragraph. So old paragraph ends here and creates another one after this div 
             //if there any text!
             paragraph = null;
             Paragraph divParagraph = null;
