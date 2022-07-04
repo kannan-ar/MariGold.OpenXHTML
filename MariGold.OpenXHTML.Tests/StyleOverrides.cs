@@ -1,16 +1,14 @@
 ﻿namespace MariGold.OpenXHTML.Tests
 {
-    using NUnit.Framework;
-    using OpenXHTML;
-    using DocumentFormat.OpenXml.Wordprocessing;
     using DocumentFormat.OpenXml.Validation;
+    using DocumentFormat.OpenXml.Wordprocessing;
+    using OpenXHTML;
     using System.IO;
-    using System.Linq;
+    using Xunit;
 
-    [TestFixture]
     public class StyleOverrides
     {
-        [Test]
+        [Fact]
         public void OwnStyleOverride()
         {
             using MemoryStream mem = new MemoryStream();
@@ -18,32 +16,32 @@
 
             doc.Process(new HtmlParser(TestUtility.GetHtmlFromFile("/Html/ownstyleoverride.htm")));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(1, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
-            Assert.IsNotNull(para);
-            Assert.AreEqual(1, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(1, para.ChildElements.Count);
 
             Run run = para.ChildElements[0] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(2, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(2, run.ChildElements.Count);
 
             RunProperties properties = run.ChildElements[0] as RunProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
 
             Bold bold = properties.ChildElements[0] as Bold;
-            Assert.IsNotNull(bold);
+            Assert.NotNull(bold);
 
             FontSize fontSize = properties.ChildElements[1] as FontSize;
-            Assert.IsNotNull(fontSize);
-            Assert.AreEqual("46", fontSize.Val.Value);
+            Assert.NotNull(fontSize);
+            Assert.Equal("46", fontSize.Val.Value);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
             errors.PrintValidationErrors();
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
     }
 }

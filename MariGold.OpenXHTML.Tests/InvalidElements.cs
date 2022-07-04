@@ -1,16 +1,14 @@
 ﻿namespace MariGold.OpenXHTML.Tests
 {
-    using NUnit.Framework;
+    using DocumentFormat.OpenXml.Validation;
     using OpenXHTML;
     using System.IO;
-    using DocumentFormat.OpenXml.Validation;
-    using System.Linq;
+    using Xunit;
     using Word = DocumentFormat.OpenXml.Wordprocessing;
 
-    [TestFixture]
     public class InvalidElements
     {
-        [Test]
+        [Fact]
         public void ScriptElement()
         {
             using MemoryStream mem = new MemoryStream();
@@ -19,15 +17,15 @@
 
             doc.Process(new HtmlParser(html));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(0, doc.Document.Body.ChildElements.Count);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void StyleElement()
         {
             using MemoryStream mem = new MemoryStream();
@@ -36,15 +34,15 @@
 
             doc.Process(new HtmlParser(html));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(0, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(0, doc.Document.Body.ChildElements.Count);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void InvalidHr()
         {
             using MemoryStream mem = new MemoryStream();
@@ -52,42 +50,42 @@
 
             doc.Process(new HtmlParser("<div>1</div><hr><div>2</div>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(3, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(3, doc.Document.Body.ChildElements.Count);
 
             Word.Paragraph para = doc.Document.Body.ChildElements[0] as Word.Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(1, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(1, para.ChildElements.Count);
 
             Word.Run run = para.ChildElements[0] as Word.Run;
 
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             Word.Text text = run.ChildElements[0] as Word.Text;
 
-            Assert.IsNotNull(text);
-            Assert.AreEqual("1", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("1", text.InnerText);
 
             para = doc.Document.Body.ChildElements[2] as Word.Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(1, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(1, para.ChildElements.Count);
 
             run = para.ChildElements[0] as Word.Run;
 
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             text = run.ChildElements[0] as Word.Text;
 
-            Assert.IsNotNull(text);
-            Assert.AreEqual("2", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("2", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
     }
 }

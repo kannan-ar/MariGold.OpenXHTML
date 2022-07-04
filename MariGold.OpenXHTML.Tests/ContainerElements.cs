@@ -1,17 +1,15 @@
 ﻿namespace MariGold.OpenXHTML.Tests
 {
-    using NUnit.Framework;
+    using DocumentFormat.OpenXml.Validation;
+    using DocumentFormat.OpenXml.Wordprocessing;
     using OpenXHTML;
     using System.IO;
-    using DocumentFormat.OpenXml.Wordprocessing;
+    using Xunit;
     using Word = DocumentFormat.OpenXml.Wordprocessing;
-    using DocumentFormat.OpenXml.Validation;
-    using System.Linq;
 
-    [TestFixture]
     public class ContainerElements
     {
-        [Test]
+        [Fact]
         public void SimpleUl()
         {
             using MemoryStream mem = new MemoryStream();
@@ -19,47 +17,47 @@
 
             doc.Process(new HtmlParser("<ul><li>test</li></ul>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(1, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             ParagraphProperties properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             ParagraphStyleId paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             NumberingProperties numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             Word.Text text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("test", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("test", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void UlWithH1()
         {
             using MemoryStream mem = new MemoryStream();
@@ -67,55 +65,55 @@
 
             doc.Process(new HtmlParser("<ul><li><h1>test</h1></li></ul>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(1, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             ParagraphProperties properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             ParagraphStyleId paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             NumberingProperties numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(2, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(2, run.ChildElements.Count);
 
             RunProperties runProperties = run.ChildElements[0] as RunProperties;
-            Assert.IsNotNull(runProperties);
+            Assert.NotNull(runProperties);
             Bold bold = runProperties.ChildElements[0] as Bold;
-            Assert.IsNotNull(bold);
+            Assert.NotNull(bold);
             FontSize fontSize = runProperties.ChildElements[1] as FontSize;
-            Assert.IsNotNull(fontSize);
-            Assert.AreEqual("48", fontSize.Val.Value);
+            Assert.NotNull(fontSize);
+            Assert.Equal("48", fontSize.Val.Value);
 
             Word.Text text = run.ChildElements[1] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("test", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("test", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void SimpleOL()
         {
             using MemoryStream mem = new MemoryStream();
@@ -123,47 +121,47 @@
 
             doc.Process(new HtmlParser("<ol><li>test</li></ol>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(1, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(1, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             ParagraphProperties properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             ParagraphStyleId paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             NumberingProperties numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(1, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             Word.Text text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("test", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("test", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void DoubleOL()
         {
             using MemoryStream mem = new MemoryStream();
@@ -171,79 +169,79 @@
 
             doc.Process(new HtmlParser("<ol><li>one</li></ol><ol><li>two</li></ol>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(2, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(2, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             ParagraphProperties properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             ParagraphStyleId paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             NumberingProperties numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(1, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             Word.Text text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("one", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("one", text.InnerText);
 
             para = doc.Document.Body.ChildElements[1] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(1, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(1, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(1, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("two", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("two", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void OlInsideUl()
         {
             using MemoryStream mem = new MemoryStream();
@@ -251,79 +249,79 @@
 
             doc.Process(new HtmlParser("<ul><li>One<ol><li>Two</li></ol></li></ul>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(2, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(2, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             ParagraphProperties properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             ParagraphStyleId paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             NumberingProperties numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             Word.Text text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("One", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("One", text.InnerText);
 
             para = doc.Document.Body.ChildElements[1] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(1, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("Two", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("Two", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void OlInsideUlInsideUl()
         {
             using MemoryStream mem = new MemoryStream();
@@ -331,111 +329,111 @@
 
             doc.Process(new HtmlParser("<ul><li>One<ol><li>Two<ul><li>Three</li></ul></li></ol></li></ul>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(3, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(3, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             ParagraphProperties properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             ParagraphStyleId paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             NumberingProperties numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             Word.Text text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("One", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("One", text.InnerText);
 
             para = doc.Document.Body.ChildElements[1] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(1, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("Two", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("Two", text.InnerText);
 
             para = doc.Document.Body.ChildElements[2] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(2, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(2, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(3, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(3, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("Three", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("Three", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
 
-        [Test]
+        [Fact]
         public void OlInsideUlInsideUlBetweenPAndDiv()
         {
             using MemoryStream mem = new MemoryStream();
@@ -443,108 +441,108 @@
 
             doc.Process(new HtmlParser("<ul><li>One<div><ol><li>Two<p><ul><li>Three</li></ul></p></li></ol></div></li></ul>"));
 
-            Assert.IsNotNull(doc.Document.Body);
-            Assert.AreEqual(3, doc.Document.Body.ChildElements.Count);
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(3, doc.Document.Body.ChildElements.Count);
 
             Paragraph para = doc.Document.Body.ChildElements[0] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             ParagraphProperties properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             ParagraphStyleId paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             NumberingProperties numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             NumberingLevelReference numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             NumberingId numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(2, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(2, numberingId.Val.Value);
 
             Run run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             Word.Text text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("One", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("One", text.InnerText);
 
             para = doc.Document.Body.ChildElements[1] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(0, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(0, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(1, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(1, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("Two", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("Two", text.InnerText);
 
             para = doc.Document.Body.ChildElements[2] as Paragraph;
 
-            Assert.IsNotNull(para);
-            Assert.AreEqual(2, para.ChildElements.Count);
+            Assert.NotNull(para);
+            Assert.Equal(2, para.ChildElements.Count);
 
             properties = para.ChildElements[0] as ParagraphProperties;
-            Assert.IsNotNull(properties);
-            Assert.AreEqual(2, properties.ChildElements.Count);
+            Assert.NotNull(properties);
+            Assert.Equal(2, properties.ChildElements.Count);
             paragraphStyleId = properties.ChildElements[0] as ParagraphStyleId;
-            Assert.IsNotNull(paragraphStyleId);
-            Assert.AreEqual("ListParagraph", paragraphStyleId.Val.Value);
+            Assert.NotNull(paragraphStyleId);
+            Assert.Equal("ListParagraph", paragraphStyleId.Val.Value);
 
             numberingProperties = properties.ChildElements[1] as NumberingProperties;
-            Assert.IsNotNull(numberingProperties);
-            Assert.AreEqual(2, numberingProperties.ChildElements.Count);
+            Assert.NotNull(numberingProperties);
+            Assert.Equal(2, numberingProperties.ChildElements.Count);
 
             numberingLevelReference = numberingProperties.ChildElements[0] as NumberingLevelReference;
-            Assert.IsNotNull(numberingLevelReference);
-            Assert.AreEqual(2, numberingLevelReference.Val.Value);
+            Assert.NotNull(numberingLevelReference);
+            Assert.Equal(2, numberingLevelReference.Val.Value);
 
             numberingId = numberingProperties.ChildElements[1] as NumberingId;
-            Assert.IsNotNull(numberingId);
-            Assert.AreEqual(3, numberingId.Val.Value);
+            Assert.NotNull(numberingId);
+            Assert.Equal(3, numberingId.Val.Value);
 
             run = para.ChildElements[1] as Run;
-            Assert.IsNotNull(run);
-            Assert.AreEqual(1, run.ChildElements.Count);
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
 
             text = run.ChildElements[0] as Word.Text;
-            Assert.IsNotNull(text);
-            Assert.AreEqual("Three", text.InnerText);
+            Assert.NotNull(text);
+            Assert.Equal("Three", text.InnerText);
 
             OpenXmlValidator validator = new OpenXmlValidator();
             var errors = validator.Validate(doc.WordprocessingDocument);
-            Assert.AreEqual(0, errors.Count());
+            Assert.Empty(errors);
         }
     }
 }
