@@ -838,7 +838,7 @@
             Assert.Equal(1, cellProperties.ChildElements.Count);
             verticalMerge = cellProperties.ChildElements[0] as VerticalMerge;
             Assert.NotNull(verticalMerge);
-            Assert.Equal(false, verticalMerge.HasChildren);
+            Assert.False(verticalMerge.HasChildren);
 
             para = cell.ChildElements[1] as Paragraph;
             Assert.NotNull(para);

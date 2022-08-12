@@ -17,9 +17,9 @@
 
         private void SetExtentedStyles(Dictionary<string, string> extentedStyles)
         {
-            this.extentedStyles = new Dictionary<string,string>();
+            this.extentedStyles = new Dictionary<string, string>();
 
-            foreach(var style in extentedStyles)
+            foreach (var style in extentedStyles)
             {
                 if (!node.Styles.ContainsKey(style.Key))
                 {

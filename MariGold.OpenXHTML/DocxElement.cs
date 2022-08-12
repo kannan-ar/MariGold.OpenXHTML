@@ -1,12 +1,13 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using MariGold.OpenXHTML.Styles;
+    using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Net;
+    using System.Text.RegularExpressions;
 
     internal abstract class DocxElement
     {
@@ -135,6 +136,8 @@
                     child.ParagraphNode = node;
                     child.Parent = node.Parent;
                     node.CopyExtentedStyles(child);
+                    DocxBlockStyle.ApplyBlockStyles(node, child);
+
                     ProcessChild(child, ref paragraph, properties);
                 }
             }
@@ -188,7 +191,7 @@
             Match match = Regex.Match(data, "data(\\s*):");
             value = string.Empty;
 
-            if(match.Success)
+            if (match.Success)
             {
                 value = data.Substring(match.Index + match.Length);
             }
@@ -216,7 +219,7 @@
             {
                 return string.Empty;
             }
-            
+
             html = WebUtility.HtmlDecode(html);
             html = html.Replace("&nbsp;", whiteSpace);
             html = html.Replace("&amp;", "&");
@@ -268,7 +271,7 @@
             {
                 return false;
             }
-            else if (!string.IsNullOrEmpty(text) && 
+            else if (!string.IsNullOrEmpty(text) &&
                 node.Previous != null && !node.Previous.IsText && !node.Previous.InnerHtml.EndsWith(whiteSpace) &&
                 node.Next != null && !node.Next.IsText && !node.Next.InnerHtml.StartsWith(whiteSpace))
             {

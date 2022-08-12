@@ -1,17 +1,18 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Net;
-    using System.IO;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Packaging;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using MariGold.OpenXHTML.Styles;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+    using System.Net;
+    using System.Text.RegularExpressions;
     using A = DocumentFormat.OpenXml.Drawing;
     using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
     using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
-    using System.Drawing;
-    using System.Text.RegularExpressions;
-    using System.Collections.Generic;
 
     internal sealed class DocxImage : DocxElement, ITextElement
     {
@@ -29,7 +30,7 @@
             return type;
         }
 
-        private Drawing CreateDrawingFromStream(string src, ImagePartType imagePartType, Func<Stream> getStream)
+        private Drawing CreateDrawingFromStream(string src, ImagePartType imagePartType, Func<Stream> getStream, DocxImageStyle imageStyle)
         {
             long cx;
             long cy;
@@ -38,8 +39,24 @@
             {
                 using (Bitmap bitmap = new Bitmap(stream))
                 {
-                    cx = (long)bitmap.Width * (long)((float)914400 / bitmap.HorizontalResolution);
-                    cy = (long)bitmap.Height * (long)((float)914400 / bitmap.VerticalResolution);
+                    var width = bitmap.Width;
+                    var height = bitmap.Height;
+
+                    imageStyle.TryGetDimensions(out decimal? widthFromStyle, out decimal? heightFromStyle);
+
+                    if (widthFromStyle != null)
+                    {
+                        height = (int)imageStyle.ScaleWithAspectRatio(widthFromStyle.Value, width, height);
+                        width = (int)widthFromStyle;
+                    }
+
+                    if (heightFromStyle != null)
+                    {
+                        height = (int)heightFromStyle;
+                    }
+
+                    cx = (long)width * (long)((float)914400 / bitmap.HorizontalResolution);
+                    cy = (long)height * (long)((float)914400 / bitmap.VerticalResolution);
                 }
             }
 
@@ -112,7 +129,7 @@
             }
         }
 
-        private Drawing CreateDrawingFromData(string value)
+        private Drawing CreateDrawingFromData(string value, DocxImageStyle imageStyle)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -136,26 +153,26 @@
             {
                 var bytes = Convert.FromBase64String(value.Substring(dataIndex + 1).Trim());
                 return new MemoryStream(bytes);
-            });
+            }, imageStyle);
         }
 
-        private Drawing CreateDrawingFromAbsoluteUri(string src, Uri uri)
+        private Drawing CreateDrawingFromAbsoluteUri(string src, Uri uri, DocxImageStyle imageStyle)
         {
             return CreateDrawingFromStream(src, GetImagePartType(src), () =>
             {
                 return GetStream(uri);
-            });
+            }, imageStyle);
         }
 
-        private Drawing PrepareImage(string src)
+        private Drawing PrepareImage(string src, DocxImageStyle imageStyle)
         {
             if (TryCreateFromEncodedString(src, out string value))
             {
-                return CreateDrawingFromData(value);
+                return CreateDrawingFromData(value, imageStyle);
             }
             else if (TryCreateAbsoluteUri(WebUtility.UrlEncode(src), out Uri uri))
             {
-                return CreateDrawingFromAbsoluteUri(src, uri);
+                return CreateDrawingFromAbsoluteUri(src, uri, imageStyle);
             }
 
             return null;
@@ -178,14 +195,17 @@
                 return;
             }
 
+            var imageStyle = new DocxImageStyle(node);
             string src = node.ExtractAttributeValue("src");
+
+            imageStyle.ApplyInheritedStyles();
 
             if (!string.IsNullOrEmpty(src))
             {
                 try
                 {
-                    Drawing drawing = PrepareImage(src);
-                    
+                    Drawing drawing = PrepareImage(src, imageStyle);
+
                     if (drawing != null)
                     {
                         if (paragraph == null)
@@ -194,11 +214,11 @@
                             OnParagraphCreated(node, paragraph);
                         }
 
-                        Run run = paragraph.AppendChild(new Run(drawing));
+                        Run run = paragraph.AppendChild(new Run(new OpenXmlElement[] { drawing }));
                         RunCreated(node, run);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     return;//fails silently?
                 }
@@ -223,7 +243,7 @@
             {
                 try
                 {
-                    Drawing drawing = PrepareImage(src);
+                    Drawing drawing = PrepareImage(src, new DocxImageStyle(node));
 
                     if (drawing != null)
                     {
