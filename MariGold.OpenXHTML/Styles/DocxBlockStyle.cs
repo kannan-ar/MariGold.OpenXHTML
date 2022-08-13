@@ -9,7 +9,7 @@
 
         internal static void ApplyBlockStyles(DocxNode parent, DocxNode child)
         {
-            foreach(var blockStyle in blockStyles)
+            foreach (var blockStyle in blockStyles)
             {
                 string value = child.ExtractStyleValue(blockStyle);
 

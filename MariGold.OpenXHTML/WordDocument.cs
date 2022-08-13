@@ -1,12 +1,12 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Packaging;
     using DocumentFormat.OpenXml.Wordprocessing;
-    using System.IO;
     using MariGold.HtmlParser;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
 
     public sealed class WordDocument
     {

@@ -39,7 +39,7 @@
 
             string inheritedWidthValue = node.ExtractInheritedStyleValue(widthName);
 
-            if(!string.IsNullOrEmpty(inheritedWidthValue))
+            if (!string.IsNullOrEmpty(inheritedWidthValue))
             {
                 node.SetExtentedStyle(widthName, inheritedWidthValue);
             }

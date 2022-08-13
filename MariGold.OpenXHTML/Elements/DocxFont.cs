@@ -1,7 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
 
@@ -63,11 +63,11 @@
 
             string color = node.ExtractOwnStyleValue(DocxColor.color);
 
-            if(string.IsNullOrEmpty(color))
+            if (string.IsNullOrEmpty(color))
             {
                 color = node.ExtractAttributeValue("color");
 
-                if(!string.IsNullOrEmpty(color))
+                if (!string.IsNullOrEmpty(color))
                 {
                     node.SetExtentedStyle(DocxColor.color, color);
                 }

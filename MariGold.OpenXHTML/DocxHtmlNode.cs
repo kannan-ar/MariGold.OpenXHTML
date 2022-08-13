@@ -1,7 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
     using MariGold.HtmlParser;
+    using System;
     using System.Collections.Generic;
 
     internal sealed class DocxHtmlNode : IHtmlNode

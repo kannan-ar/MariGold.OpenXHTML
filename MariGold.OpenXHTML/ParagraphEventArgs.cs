@@ -1,7 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
 
     public class ParagraphEventArgs : EventArgs
     {

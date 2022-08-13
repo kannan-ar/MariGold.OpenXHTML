@@ -13,7 +13,7 @@
             {
                 style = DocxFontStyle.textDecoration;
             }
-            else if(styles.TryGetValue(DocxFontStyle.textDecorationLine, out dictValue))
+            else if (styles.TryGetValue(DocxFontStyle.textDecorationLine, out dictValue))
             {
                 style = DocxFontStyle.textDecorationLine;
             }

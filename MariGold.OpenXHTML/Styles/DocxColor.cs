@@ -1,10 +1,10 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Drawing;
     using DocumentFormat.OpenXml;
-    using Word = DocumentFormat.OpenXml.Wordprocessing;
+    using System;
     using System.Collections.Generic;
+    using System.Drawing;
+    using Word = DocumentFormat.OpenXml.Wordprocessing;
 
     internal static class DocxColor
     {

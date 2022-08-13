@@ -1,9 +1,9 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
+    using System.Collections.Generic;
 
     internal sealed class DocxA : DocxElement
     {
@@ -33,10 +33,10 @@
                     if (!IsEmptyText(child.InnerHtml))
                     {
                         Run run = paragraph.AppendChild<Run>(new Run(new Text()
-                         {
-                             Text = ClearHtml(child.InnerHtml),
-                             Space = SpaceProcessingModeValues.Preserve
-                         }));
+                        {
+                            Text = ClearHtml(child.InnerHtml),
+                            Space = SpaceProcessingModeValues.Preserve
+                        }));
 
                         RunCreated(node, run);
                     }
@@ -87,10 +87,10 @@
                         if (!IsEmptyText(child.InnerHtml))
                         {
                             Run run = hyperLink.AppendChild<Run>(new Run(new Text()
-                             {
-                                 Text = ClearHtml(child.InnerHtml),
-                                 Space = SpaceProcessingModeValues.Preserve
-                             }));
+                            {
+                                Text = ClearHtml(child.InnerHtml),
+                                Space = SpaceProcessingModeValues.Preserve
+                            }));
 
                             run.RunProperties = new RunProperties((new RunStyle() { Val = "Hyperlink" }));
                             RunCreated(node, run);

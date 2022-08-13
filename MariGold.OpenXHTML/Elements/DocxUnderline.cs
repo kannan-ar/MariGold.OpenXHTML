@@ -1,8 +1,8 @@
 ﻿namespace MariGold.OpenXHTML
 {
+    using DocumentFormat.OpenXml.Wordprocessing;
     using System;
     using System.Collections.Generic;
-    using DocumentFormat.OpenXml.Wordprocessing;
 
     internal sealed class DocxUnderline : DocxElement, ITextElement
     {
@@ -23,7 +23,7 @@
             {
                 return;
             }
-            
+
             node.SetExtentedStyle(DocxFontStyle.textDecoration, DocxFontStyle.underLine);
 
             ProcessElement(node, ref paragraph, properties);

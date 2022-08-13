@@ -1,9 +1,9 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
+    using System.Collections.Generic;
 
     internal static class DocxFontStyle
     {

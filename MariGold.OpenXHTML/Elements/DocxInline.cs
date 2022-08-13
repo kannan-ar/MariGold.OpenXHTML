@@ -1,7 +1,7 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System.Collections.Generic;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System.Collections.Generic;
 
     internal sealed class DocxInline : DocxElement, ITextElement
     {

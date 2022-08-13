@@ -6,7 +6,7 @@
     {
         internal static bool CompareStringOrdinalIgnoreCase(this string source, string value)
         {
-            if(string.IsNullOrEmpty(source) || string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(source) || string.IsNullOrEmpty(value))
             {
                 return false;
             }
@@ -21,9 +21,9 @@
                 return false;
             }
 
-            foreach(string ext in extensions)
+            foreach (string ext in extensions)
             {
-                if(path.Contains(ext))
+                if (path.Contains(ext))
                 {
                     return true;
                 }

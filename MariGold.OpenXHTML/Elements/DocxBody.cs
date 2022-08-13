@@ -1,10 +1,10 @@
 ﻿namespace MariGold.OpenXHTML
 {
+    using DocumentFormat.OpenXml;
+    using DocumentFormat.OpenXml.Wordprocessing;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using DocumentFormat.OpenXml;
-    using DocumentFormat.OpenXml.Wordprocessing;
 
     internal sealed class DocxBody : DocxElement
     {

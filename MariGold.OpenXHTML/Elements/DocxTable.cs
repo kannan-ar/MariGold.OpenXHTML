@@ -1,9 +1,9 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     internal sealed class DocxTable : DocxElement
@@ -146,7 +146,7 @@
                 table.Append(row);
             }
         }
-        
+
         private void ProcessGroupElement(DocxNode tbody, Table table, DocxTableProperties tableProperties, Dictionary<string, object> properties)
         {
             foreach (DocxNode tr in tbody.Children)

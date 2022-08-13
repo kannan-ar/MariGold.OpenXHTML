@@ -1,9 +1,9 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.Collections.Generic;
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
+    using System.Collections.Generic;
 
     internal sealed class DocxQ : DocxElement, ITextElement
     {
@@ -13,7 +13,7 @@
         {
             Paragraph paragraph = node.Parent.AppendChild(new Paragraph());
             OnParagraphCreated(node.ParagraphNode, paragraph);
-           
+
             return paragraph;
         }
 

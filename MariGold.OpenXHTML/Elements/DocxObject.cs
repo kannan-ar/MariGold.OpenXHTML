@@ -1,14 +1,13 @@
 ﻿namespace MariGold.OpenXHTML
 {
-    using System;
-    using System.IO;
-    using System.Drawing;
-    using System.Collections.Generic;
-
-    using DocumentFormat.OpenXml.Wordprocessing;
     using DocumentFormat.OpenXml.Packaging;
-    using V = DocumentFormat.OpenXml.Vml;
+    using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
     using OVML = DocumentFormat.OpenXml.Vml.Office;
+    using V = DocumentFormat.OpenXml.Vml;
 
     internal sealed class DocxObject : DocxElement, ITextElement
     {
@@ -21,7 +20,7 @@
         {
             contentType = string.Empty;
             progId = string.Empty;
-            
+
             if (filePath.HasStringContains(".docx"))
             {
                 contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
