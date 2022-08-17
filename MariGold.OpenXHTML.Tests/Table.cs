@@ -1313,5 +1313,220 @@
             var errors = validator.Validate(doc.WordprocessingDocument);
             Assert.Empty(errors);
         }
+
+        [Fact]
+        public void TableWithRowSpanWithBorder()
+        {
+            using MemoryStream mem = new MemoryStream();
+            WordDocument doc = new WordDocument(mem);
+
+            doc.Process(new HtmlParser("<style>table td { border:1px solid #000;}</style><table><tr><td rowspan=\"2\">11</td><td>12</td></tr><tr><td>22</td></tr></table>"));
+
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(1, doc.Document.Body.ChildElements.Count);
+
+            Word.Table table = doc.Document.Body.ChildElements[0] as Word.Table;
+
+            Assert.NotNull(table);
+            Assert.Equal(4, table.ChildElements.Count);
+
+            TableProperties tableProperties = table.ChildElements[0] as TableProperties;
+            Assert.NotNull(tableProperties);
+
+            TableStyle tableStyle = tableProperties.ChildElements[0] as TableStyle;
+            Assert.NotNull(tableStyle);
+            Assert.Equal("TableGrid", tableStyle.Val.Value);
+
+            TableGrid tableGrid = table.ChildElements[1] as TableGrid;
+            Assert.NotNull(tableGrid);
+            Assert.Equal(2, tableGrid.ChildElements.Count);
+
+            TableRow row = table.ChildElements[2] as TableRow;
+            Assert.NotNull(row);
+            Assert.Equal(2, row.ChildElements.Count);
+
+            TableCell cell = row.ChildElements[0] as TableCell;
+            Assert.NotNull(cell);
+            Assert.Equal(2, cell.ChildElements.Count);
+
+            TableCellProperties cellProperties = cell.ChildElements[0] as TableCellProperties;
+
+            Assert.NotNull(cellProperties);
+            Assert.Equal(2, cellProperties.ChildElements.Count);
+
+            var verticalMerge = cellProperties.ChildElements[0] as VerticalMerge;
+            Assert.NotNull(verticalMerge);
+            Assert.Equal(verticalMerge.Val, MergedCellValues.Restart.ToString().ToLower());
+
+            TableCellBorders borders = cellProperties.ChildElements[1] as TableCellBorders;
+            Assert.NotNull(borders);
+            Assert.Equal(4, borders.ChildElements.Count);
+
+            TopBorder topBorder = borders.ChildElements[0] as TopBorder;
+            Assert.NotNull(topBorder);
+            TestUtility.TestBorder<TopBorder>(topBorder, BorderValues.Single, "000000", 1U);
+
+            LeftBorder leftBorder = borders.ChildElements[1] as LeftBorder;
+            Assert.NotNull(leftBorder);
+            TestUtility.TestBorder<LeftBorder>(leftBorder, BorderValues.Single, "000000", 1U);
+
+            BottomBorder bottomBorder = borders.ChildElements[2] as BottomBorder;
+            Assert.NotNull(bottomBorder);
+            TestUtility.TestBorder<BottomBorder>(bottomBorder, BorderValues.Single, "000000", 1U);
+
+            RightBorder rightBorder = borders.ChildElements[3] as RightBorder;
+            Assert.NotNull(rightBorder);
+            TestUtility.TestBorder<RightBorder>(rightBorder, BorderValues.Single, "000000", 1U);
+
+            Paragraph para = cell.ChildElements[1] as Paragraph;
+
+            Assert.NotNull(para);
+            Assert.Equal(1, para.ChildElements.Count);
+
+            Run run = para.ChildElements[0] as Run;
+
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
+
+            Word.Text text = run.ChildElements[0] as Word.Text;
+            Assert.NotNull(text);
+            Assert.Equal(0, text.ChildElements.Count);
+            Assert.Equal("11", text.InnerText);
+
+            cell = row.ChildElements[1] as TableCell;
+            Assert.NotNull(cell);
+            Assert.Equal(2, cell.ChildElements.Count);
+
+            cellProperties = cell.ChildElements[0] as TableCellProperties;
+
+            Assert.NotNull(cellProperties);
+            Assert.Equal(1, cellProperties.ChildElements.Count);
+
+            borders = cellProperties.ChildElements[0] as TableCellBorders;
+            Assert.NotNull(borders);
+            Assert.Equal(4, borders.ChildElements.Count);
+
+            topBorder = borders.ChildElements[0] as TopBorder;
+            Assert.NotNull(topBorder);
+            TestUtility.TestBorder<TopBorder>(topBorder, BorderValues.Single, "000000", 1U);
+
+            leftBorder = borders.ChildElements[1] as LeftBorder;
+            Assert.NotNull(leftBorder);
+            TestUtility.TestBorder<LeftBorder>(leftBorder, BorderValues.Single, "000000", 1U);
+
+            bottomBorder = borders.ChildElements[2] as BottomBorder;
+            Assert.NotNull(bottomBorder);
+            TestUtility.TestBorder<BottomBorder>(bottomBorder, BorderValues.Single, "000000", 1U);
+
+            rightBorder = borders.ChildElements[3] as RightBorder;
+            Assert.NotNull(rightBorder);
+            TestUtility.TestBorder<RightBorder>(rightBorder, BorderValues.Single, "000000", 1U);
+
+            para = cell.ChildElements[1] as Paragraph;
+
+            Assert.NotNull(para);
+            Assert.Equal(1, para.ChildElements.Count);
+
+            run = para.ChildElements[0] as Run;
+
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
+
+            text = run.ChildElements[0] as Word.Text;
+            Assert.NotNull(text);
+            Assert.Equal(0, text.ChildElements.Count);
+            Assert.Equal("12", text.InnerText);
+
+            row = table.ChildElements[3] as TableRow;
+            Assert.NotNull(row);
+            Assert.Equal(2, row.ChildElements.Count);
+
+            cell = row.ChildElements[0] as TableCell;
+            Assert.NotNull(cell);
+            Assert.Equal(2, cell.ChildElements.Count);
+
+            cellProperties = cell.ChildElements[0] as TableCellProperties;
+
+            Assert.NotNull(cellProperties);
+            Assert.Equal(2, cellProperties.ChildElements.Count);
+
+            verticalMerge = cellProperties.ChildElements[0] as VerticalMerge;
+            Assert.NotNull(verticalMerge);
+            Assert.Equal(verticalMerge.Val, MergedCellValues.Continue.ToString().ToLower());
+
+            borders = cellProperties.ChildElements[1] as TableCellBorders;
+            Assert.NotNull(borders);
+            Assert.Equal(4, borders.ChildElements.Count);
+
+            topBorder = borders.ChildElements[0] as TopBorder;
+            Assert.NotNull(topBorder);
+            TestUtility.TestBorder<TopBorder>(topBorder, BorderValues.Single, "000000", 1U);
+
+            leftBorder = borders.ChildElements[1] as LeftBorder;
+            Assert.NotNull(leftBorder);
+            TestUtility.TestBorder<LeftBorder>(leftBorder, BorderValues.Single, "000000", 1U);
+
+            bottomBorder = borders.ChildElements[2] as BottomBorder;
+            Assert.NotNull(bottomBorder);
+            TestUtility.TestBorder<BottomBorder>(bottomBorder, BorderValues.Single, "000000", 1U);
+
+            rightBorder = borders.ChildElements[3] as RightBorder;
+            Assert.NotNull(rightBorder);
+            TestUtility.TestBorder<RightBorder>(rightBorder, BorderValues.Single, "000000", 1U);
+
+            para = cell.ChildElements[1] as Paragraph;
+
+            Assert.NotNull(para);
+            Assert.Equal(0, para.ChildElements.Count);
+
+
+            cell = row.ChildElements[1] as TableCell;
+            Assert.NotNull(cell);
+            Assert.Equal(2, cell.ChildElements.Count);
+
+            cellProperties = cell.ChildElements[0] as TableCellProperties;
+
+            Assert.NotNull(cellProperties);
+            Assert.Equal(1, cellProperties.ChildElements.Count);
+
+            borders = cellProperties.ChildElements[0] as TableCellBorders;
+            Assert.NotNull(borders);
+            Assert.Equal(4, borders.ChildElements.Count);
+
+            topBorder = borders.ChildElements[0] as TopBorder;
+            Assert.NotNull(topBorder);
+            TestUtility.TestBorder<TopBorder>(topBorder, BorderValues.Single, "000000", 1U);
+
+            leftBorder = borders.ChildElements[1] as LeftBorder;
+            Assert.NotNull(leftBorder);
+            TestUtility.TestBorder<LeftBorder>(leftBorder, BorderValues.Single, "000000", 1U);
+
+            bottomBorder = borders.ChildElements[2] as BottomBorder;
+            Assert.NotNull(bottomBorder);
+            TestUtility.TestBorder<BottomBorder>(bottomBorder, BorderValues.Single, "000000", 1U);
+
+            rightBorder = borders.ChildElements[3] as RightBorder;
+            Assert.NotNull(rightBorder);
+            TestUtility.TestBorder<RightBorder>(rightBorder, BorderValues.Single, "000000", 1U);
+
+            para = cell.ChildElements[1] as Paragraph;
+
+            Assert.NotNull(para);
+            Assert.Equal(1, para.ChildElements.Count);
+
+            run = para.ChildElements[0] as Run;
+
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
+
+            text = run.ChildElements[0] as Word.Text;
+            Assert.NotNull(text);
+            Assert.Equal(0, text.ChildElements.Count);
+            Assert.Equal("22", text.InnerText);
+
+            OpenXmlValidator validator = new OpenXmlValidator();
+            var errors = validator.Validate(doc.WordprocessingDocument);
+            Assert.Empty(errors);
+        }
     }
 }

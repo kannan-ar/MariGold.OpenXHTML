@@ -10,7 +10,19 @@
         private bool isCellHeader;
         private short? cellPadding;
         private short? cellSpacing;
-        private Dictionary<int, int> rowSpanInfo;
+        private Dictionary<int, RowSpan> rowSpanInfo;
+
+        private sealed class RowSpan
+        {
+            internal RowSpan(int count, DocxNode node)
+            {
+                Count = count;
+                Node = node;
+            }
+
+            internal int Count { get; set; }
+            internal DocxNode Node { get; set; }
+        }
 
         internal const string tableName = "table";
         internal const string thead = "thead";
@@ -74,14 +86,6 @@
             set
             {
                 cellSpacing = value;
-            }
-        }
-
-        internal Dictionary<int, int> RowSpanInfo
-        {
-            get
-            {
-                return rowSpanInfo;
             }
         }
 
@@ -156,7 +160,7 @@
 
             int count = GetTdCount(node);
 
-            rowSpanInfo = new Dictionary<int, int>();
+            rowSpanInfo = new Dictionary<int, RowSpan>();
 
             if (count > 0)
             {
@@ -164,7 +168,7 @@
 
                 for (int i = 0; i < count; i++)
                 {
-                    rowSpanInfo.Add(i, 0);
+                    rowSpanInfo.Add(i, new RowSpan(0, null));
                     tg.AppendChild(new GridColumn());
                 }
 
@@ -177,6 +181,33 @@
             return string.Compare(tag, DocxTableProperties.thead, StringComparison.InvariantCultureIgnoreCase) == 0 ||
                         string.Compare(tag, DocxTableProperties.tbody, StringComparison.InvariantCultureIgnoreCase) == 0 ||
                         string.Compare(tag, DocxTableProperties.tfoot, StringComparison.InvariantCultureIgnoreCase) == 0;
+        }
+
+        internal void UpdateRowSpan(int colIndex, int count, DocxNode node)
+        {
+            rowSpanInfo[colIndex].Count = count;
+            rowSpanInfo[colIndex].Node = node;
+        }
+
+        internal bool TryGetRowSpan(int colIndex, out int rowSpan, out DocxNode node)
+        {
+            rowSpan = 0;
+            node = null;
+
+            var recordFound = rowSpanInfo.TryGetValue(colIndex, out RowSpan row);
+
+            if(recordFound)
+            {
+                rowSpan = row.Count;
+                node = row.Node;
+            }
+
+            return rowSpan > 0;
+        }
+
+        internal int GetRowSpanCount()
+        {
+            return rowSpanInfo.Count;
         }
     }
 }

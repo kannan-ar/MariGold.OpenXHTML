@@ -1,9 +1,13 @@
 ﻿namespace MariGold.OpenXHTML
 {
     using DocumentFormat.OpenXml.Wordprocessing;
+    using System;
 
     internal sealed class DocxParagraphStyle
     {
+        private const string pageBreakBefore = "page-break-before";
+        private const string pageBreakAlways = "always";
+
         private void ProcessBorder(DocxNode node, ParagraphProperties properties)
         {
             ParagraphBorders paragraphBorders = new ParagraphBorders();
@@ -39,6 +43,13 @@
             if (properties == null)
             {
                 properties = new ParagraphProperties();
+            }
+
+            var pageBreak = node.ExtractStyleValue(pageBreakBefore);
+
+            if (!string.IsNullOrEmpty(pageBreak) && string.Compare(pageBreak, pageBreakAlways, StringComparison.InvariantCultureIgnoreCase) == 0)
+            {
+                properties.PageBreakBefore = new PageBreakBefore();
             }
 
             //Order of assigning styles to paragraph property is important. The order should not change.

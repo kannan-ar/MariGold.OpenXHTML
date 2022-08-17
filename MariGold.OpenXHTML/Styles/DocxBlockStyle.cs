@@ -2,7 +2,7 @@
 {
     internal static class DocxBlockStyle
     {
-        private static string[] blockStyles =
+        private static readonly string[] blockStyles =
         {
             "width"
         };

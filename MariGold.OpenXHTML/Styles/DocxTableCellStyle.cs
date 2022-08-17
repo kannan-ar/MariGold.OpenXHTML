@@ -8,7 +8,7 @@
         private const string colspan = "colspan";
 
         private void ProcessBorders(DocxNode node, DocxTableProperties docxProperties,
-            TableCellProperties cellProperties)
+            TableCell cell)
         {
             string borderStyle = node.ExtractStyleValue(DocxBorder.borderName);
             string leftBorder = node.ExtractStyleValue(DocxBorder.leftBorderName);
@@ -23,22 +23,24 @@
 
             if (cellBorders.HasChildren)
             {
-                cellProperties.Append(cellBorders);
+                AssignTableCellPropertiesIfEmpty(cell);
+                cell.TableCellProperties.Append(cellBorders);
             }
         }
 
-        private void ProcessColSpan(DocxNode node, TableCellProperties cellProperties)
+        private void ProcessColSpan(DocxNode node, TableCell cell)
         {
             if (Int32.TryParse(node.ExtractAttributeValue(colspan), out int value))
             {
                 if (value > 1)
                 {
-                    cellProperties.Append(new GridSpan() { Val = value });
+                    AssignTableCellPropertiesIfEmpty(cell);
+                    cell.TableCellProperties.Append(new GridSpan() { Val = value });
                 }
             }
         }
 
-        private void ProcessWidth(DocxNode node, TableCellProperties cellProperties)
+        private void ProcessWidth(DocxNode node, TableCell cell)
         {
             string width = node.ExtractStyleValue(DocxUnits.width);
 
@@ -52,12 +54,13 @@
                         Type = unit
                     };
 
-                    cellProperties.Append(cellWidth);
+                    AssignTableCellPropertiesIfEmpty(cell);
+                    cell.TableCellProperties.Append(cellWidth);
                 }
             }
         }
 
-        private void ProcessVerticalAlignment(DocxNode node, TableCellProperties cellProperties)
+        private void ProcessVerticalAlignment(DocxNode node, TableCell cell)
         {
             string alignment = node.ExtractStyleValue(DocxAlignment.verticalAlign);
 
@@ -65,8 +68,17 @@
             {
                 if (DocxAlignment.GetCellVerticalAlignment(alignment, out TableVerticalAlignmentValues value))
                 {
-                    cellProperties.Append(new TableCellVerticalAlignment() { Val = value });
+                    AssignTableCellPropertiesIfEmpty(cell);
+                    cell.TableCellProperties.Append(new TableCellVerticalAlignment() { Val = value });
                 }
+            }
+        }
+
+        private void AssignTableCellPropertiesIfEmpty(TableCell cell)
+        {
+            if (cell.TableCellProperties == null)
+            {
+                cell.TableCellProperties = new TableCellProperties();
             }
         }
 
@@ -74,32 +86,27 @@
 
         internal void Process(TableCell cell, DocxTableProperties docxProperties, DocxNode node)
         {
-            TableCellProperties cellProperties = new TableCellProperties();
-
-            ProcessColSpan(node, cellProperties);
-            ProcessWidth(node, cellProperties);
+            ProcessColSpan(node, cell);
+            ProcessWidth(node, cell);
 
             if (HasRowSpan)
             {
-                cellProperties.Append(new VerticalMerge() { Val = MergedCellValues.Restart });
+                AssignTableCellPropertiesIfEmpty(cell);
+                cell.TableCellProperties.Append(new VerticalMerge() { Val = MergedCellValues.Restart });
             }
 
             //Processing border should be after colspan
-            ProcessBorders(node, docxProperties, cellProperties);
+            ProcessBorders(node, docxProperties, cell);
 
             string backgroundColor = node.ExtractStyleValue(DocxColor.backGroundColor);
 
             if (!string.IsNullOrEmpty(backgroundColor))
             {
-                DocxColor.ApplyBackGroundColor(backgroundColor, cellProperties);
+                AssignTableCellPropertiesIfEmpty(cell);
+                DocxColor.ApplyBackGroundColor(backgroundColor, cell.TableCellProperties);
             }
 
-            ProcessVerticalAlignment(node, cellProperties);
-
-            if (cellProperties.HasChildren)
-            {
-                cell.Append(cellProperties);
-            }
+            ProcessVerticalAlignment(node, cell);
         }
 
         internal static DocxNode GetHtmlNodeForTableCellContent(DocxNode node)

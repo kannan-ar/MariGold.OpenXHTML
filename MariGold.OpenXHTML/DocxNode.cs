@@ -143,7 +143,7 @@
         {
             this.node = node ?? throw new ArgumentNullException("node");
             this.styles = node.Styles;
-            this.inheritedStyles = node.InheritedStyles;
+            this.inheritedStyles = node?.InheritedStyles;
             this.extentedStyles = new Dictionary<string, string>();
         }
 
@@ -257,6 +257,11 @@
             {
                 inheritedStyles.Remove(styleName);
             }
+        }
+
+        internal DocxNode Clone()
+        {
+            return new DocxNode(node?.Clone());
         }
     }
 }

@@ -393,5 +393,78 @@
             errors.PrintValidationErrors();
             Assert.Empty(errors);
         }
+
+        [Fact]
+        public void PageBreak()
+        {
+            using MemoryStream mem = new MemoryStream();
+            WordDocument doc = new WordDocument(mem);
+
+            doc.Process(new HtmlParser("<div style='page-break-before:always'>test</div>"));
+
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(1, doc.Document.Body.ChildElements.Count);
+
+            Paragraph paragraph = doc.Document.Body.ChildElements[0] as Paragraph;
+            Assert.NotNull(paragraph);
+            Assert.Equal(2, paragraph.ChildElements.Count);
+
+            ParagraphProperties properties = paragraph.ChildElements[0] as ParagraphProperties;
+            Assert.NotNull(properties);
+            Assert.NotNull(properties.PageBreakBefore);
+
+            Run run = paragraph.ChildElements[1] as Run;
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
+            Word.Text text = run.ChildElements[0] as Word.Text;
+            Assert.Equal("test", text.InnerText);
+
+            OpenXmlValidator validator = new OpenXmlValidator();
+            var errors = validator.Validate(doc.WordprocessingDocument);
+            errors.PrintValidationErrors();
+            Assert.Empty(errors);
+        }
+
+        [Fact]
+        public void PageBreakWithTwoDiv()
+        {
+            using MemoryStream mem = new MemoryStream();
+            WordDocument doc = new WordDocument(mem);
+
+            doc.Process(new HtmlParser("<div>1</div><div style='page-break-before:always'>2</div>"));
+
+            Assert.NotNull(doc.Document.Body);
+            Assert.Equal(2, doc.Document.Body.ChildElements.Count);
+
+            Paragraph paragraph = doc.Document.Body.ChildElements[0] as Paragraph;
+            Assert.NotNull(paragraph);
+            Assert.Equal(1, paragraph.ChildElements.Count);
+            Assert.Null(paragraph.ParagraphProperties);
+
+            Run run = paragraph.ChildElements[0] as Run;
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
+            Word.Text text = run.ChildElements[0] as Word.Text;
+            Assert.Equal("1", text.InnerText);
+
+            paragraph = doc.Document.Body.ChildElements[1] as Paragraph;
+            Assert.NotNull(paragraph);
+            Assert.Equal(2, paragraph.ChildElements.Count);
+
+            ParagraphProperties properties = paragraph.ChildElements[0] as ParagraphProperties;
+            Assert.NotNull(properties);
+            Assert.NotNull(properties.PageBreakBefore);
+
+            run = paragraph.ChildElements[1] as Run;
+            Assert.NotNull(run);
+            Assert.Equal(1, run.ChildElements.Count);
+            text = run.ChildElements[0] as Word.Text;
+            Assert.Equal("2", text.InnerText);
+
+            OpenXmlValidator validator = new OpenXmlValidator();
+            var errors = validator.Validate(doc.WordprocessingDocument);
+            errors.PrintValidationErrors();
+            Assert.Empty(errors);
+        }
     }
 }
