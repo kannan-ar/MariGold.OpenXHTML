@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://github.com/kannan-ar/MariGold.OpenXHTML</PackageProjectUrl>
     <PackageTags>MariGold OpenXML HTML office</PackageTags>
     <Product>MariGold Framework</Product>
-    <PackageReleaseNotes>Bug fixes on image width and height, Fixed the border line issues on table cell with vertical span, DocumentFormat.OpenXml upgraded from 2.11.3 to 2.17.1, Upgraded to .NET Core 3.1</PackageReleaseNotes>
+    <PackageReleaseNotes>Bug fixes on image width and height, Fixed the border line issues on table cell with vertical span, page-break-before 'always' implemented for block elements, DocumentFormat.OpenXml upgraded from 2.11.3 to 2.17.1, Upgraded to .NET Core 3.1</PackageReleaseNotes>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -2,6 +2,7 @@
 {
     using DocumentFormat.OpenXml;
     using DocumentFormat.OpenXml.Wordprocessing;
+    using MariGold.OpenXHTML.Styles;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -50,6 +51,7 @@
                 foreach (DocxNode child in td.Children)
                 {
                     td.CopyExtentedStyles(child);
+                    td.ApplyBlockStyles(child);
 
                     if (child.IsText)
                     {
@@ -61,11 +63,11 @@
                                 OnParagraphCreated(DocxTableCellStyle.GetHtmlNodeForTableCellContent(td.Clone()), para);
                             }
 
-                            Run run = para.AppendChild(new Run(new Text()
+                            Run run = para.AppendChild(new Run(new[] { new Text()
                             {
                                 Text = ClearHtml(child.InnerHtml),
                                 Space = SpaceProcessingModeValues.Preserve
-                            }));
+                            }}));
 
                             RunCreated(child, run);
                         }
@@ -75,6 +77,7 @@
                         child.ParagraphNode = DocxTableCellStyle.GetHtmlNodeForTableCellContent(td.Clone());
                         child.Parent = cell;
                         td.CopyExtentedStyles(child);
+                        td.ApplyBlockStyles(child);
                         ProcessChild(child, ref para, properties);
                     }
                 }
@@ -83,12 +86,12 @@
             //The last element of the table cell must be a paragraph.
             var lastElement = cell.Elements().LastOrDefault();
 
-            if (lastElement == null || !(lastElement is Paragraph))
+            if (!(lastElement is Paragraph))
             {
                 cell.AppendChild(new Paragraph());
             }
 
-            row.Append(cell);
+            row.Append(new[] { cell });
         }
 
         private void ProcessVerticalSpan(ref int colIndex, TableRow row, DocxTableProperties docxProperties)
@@ -103,13 +106,13 @@
                     TableCellProperties = new TableCellProperties()
                 };
 
-                cell.TableCellProperties.Append(new VerticalMerge { Val = MergedCellValues.Continue });
+                cell.TableCellProperties.Append(new[] { new VerticalMerge { Val = MergedCellValues.Continue } } );
 
                 style.Process(cell, docxProperties, node);
 
                 cell.AppendChild(new Paragraph());
 
-                row.Append(cell);
+                row.Append(new[] { cell } );
 
                 docxProperties.UpdateRowSpan(colIndex, rowSpan - 1, node);
                 ++colIndex;
@@ -146,7 +149,7 @@
                     ProcessVerticalSpan(ref colIndex, row, tableProperties);
                 }
 
-                table.Append(row);
+                table.Append(new[] { row } );
             }
         }
 
@@ -203,7 +206,7 @@
                     }
                 }
 
-                node.Parent.Append(table);
+                node.Parent.Append(new[] { table } );
             }
         }
     }

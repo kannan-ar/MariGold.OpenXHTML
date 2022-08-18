@@ -37,27 +37,25 @@
 
             using (Stream stream = getStream())
             {
-                using (Bitmap bitmap = new Bitmap(stream))
+                using Bitmap bitmap = new Bitmap(stream);
+                var width = bitmap.Width;
+                var height = bitmap.Height;
+
+                imageStyle.TryGetDimensions(out decimal? widthFromStyle, out decimal? heightFromStyle);
+
+                if (widthFromStyle != null)
                 {
-                    var width = bitmap.Width;
-                    var height = bitmap.Height;
-
-                    imageStyle.TryGetDimensions(out decimal? widthFromStyle, out decimal? heightFromStyle);
-
-                    if (widthFromStyle != null)
-                    {
-                        height = (int)imageStyle.ScaleWithAspectRatio(widthFromStyle.Value, width, height);
-                        width = (int)widthFromStyle;
-                    }
-
-                    if (heightFromStyle != null)
-                    {
-                        height = (int)heightFromStyle;
-                    }
-
-                    cx = (long)width * (long)((float)914400 / bitmap.HorizontalResolution);
-                    cy = (long)height * (long)((float)914400 / bitmap.VerticalResolution);
+                    height = (int)imageStyle.ScaleWithAspectRatio(widthFromStyle.Value, width, height);
+                    width = (int)widthFromStyle;
                 }
+
+                if (heightFromStyle != null)
+                {
+                    height = (int)heightFromStyle;
+                }
+
+                cx = (long)width * (long)((float)914400 / bitmap.HorizontalResolution);
+                cy = (long)height * (long)((float)914400 / bitmap.VerticalResolution);
             }
 
             using (Stream stream = getStream())
@@ -151,7 +149,7 @@
 
             return CreateDrawingFromStream(value, type, () =>
             {
-                var bytes = Convert.FromBase64String(value.Substring(dataIndex + 1).Trim());
+                var bytes = Convert.FromBase64String(value[(dataIndex + 1)..].Trim());
                 return new MemoryStream(bytes);
             }, imageStyle);
         }
@@ -247,7 +245,7 @@
 
                     if (drawing != null)
                     {
-                        Run run = node.Parent.AppendChild(new Run(drawing));
+                        Run run = node.Parent.AppendChild(new Run(new[] { drawing }));
                         RunCreated(node, run);
                     }
                 }

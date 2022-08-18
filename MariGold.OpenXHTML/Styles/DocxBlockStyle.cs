@@ -7,7 +7,7 @@
             "width"
         };
 
-        internal static void ApplyBlockStyles(DocxNode parent, DocxNode child)
+        internal static void ApplyBlockStyles(this DocxNode parent, DocxNode child)
         {
             foreach (var blockStyle in blockStyles)
             {
